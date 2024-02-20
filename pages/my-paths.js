@@ -2,14 +2,16 @@
 import { Button } from 'react-bootstrap';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { getAllPaths } from '../api/pathsData';
+import { getPathsByUserId } from '../api/pathsData';
+import { useAuth } from '../utils/context/authContext';
 import PathCard from '../components/pathCard';
 
-function Home() {
+function MyPaths() {
   const [paths, setPaths] = useState([]);
+  const { user } = useAuth();
 
   const getAllThePaths = () => {
-    getAllPaths().then((response) => {
+    getPathsByUserId(user.uid).then((response) => {
       setPaths(response);
       console.warn(response);
     });
@@ -33,4 +35,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default MyPaths;

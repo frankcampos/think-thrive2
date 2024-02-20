@@ -2,16 +2,14 @@
 import { Button } from 'react-bootstrap';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { getPaths } from '../api/pathsData';
-import { useAuth } from '../utils/context/authContext';
+import { getAllPaths } from '../api/pathsData';
 import PathCard from '../components/pathCard';
 
 function Home() {
   const [paths, setPaths] = useState([]);
-  const { user } = useAuth();
 
   const getAllThePaths = () => {
-    getPaths(user.uid).then((response) => {
+    getAllPaths().then((response) => {
       setPaths(response);
       console.warn(response);
     });

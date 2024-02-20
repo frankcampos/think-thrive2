@@ -35,8 +35,22 @@ const updatePath = (payload) => new Promise((resolve, reject) => {
     });
 });
 
-const getPaths = (userId) => new Promise((resolve, reject) => {
+const getPathsByUserId = (userId) => new Promise((resolve, reject) => {
   fetch(`${endpoint}/paths.json?orderBy="user_id"&equalTo="${userId}"`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => resolve(Object.values(data)))
+    .catch((error) => {
+      reject(error);
+    });
+});
+
+const getAllPaths = () => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/paths.json`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -76,5 +90,5 @@ const getSinglePath = (firebaseKey) => new Promise((resolve, reject) => {
 });
 
 export {
-  createPath, updatePath, getPaths, deletePath, getSinglePath,
+  createPath, updatePath, getPathsByUserId, deletePath, getSinglePath, getAllPaths,
 };

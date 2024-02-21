@@ -9,7 +9,7 @@ function ConceptualKnowledgePage() {
   return (
     <div className="text-center my-4">
       <h1>{firebaseKey}</h1>
-      <Link href="./path/new" passHref>
+      <Link href={`/conceptual-knowledge/new/${firebaseKey}`} passHref>
         <Button variant="dark" style={{ margin: '0 0 10px' }}>
           Add A Conceptual Card
         </Button>

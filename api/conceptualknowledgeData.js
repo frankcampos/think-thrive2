@@ -34,4 +34,18 @@ const updateConceptualKnowledge = (payload) => new Promise((resolve, reject) => 
     });
 });
 
-export { createConceptualKnowledge, updateConceptualKnowledge };
+const getConceptualKnowledgeByPathId = (pathId) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/conceptualknowledge.json?orderBy="pathId"&equalTo="${pathId}"`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => resolve(Object.values(data)))
+    .catch((error) => {
+      reject(error);
+    });
+});
+
+export { createConceptualKnowledge, updateConceptualKnowledge, getConceptualKnowledgeByPathId };

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useAuth } from '../utils/context/authContext';
 import { deletePath } from '../api/pathsData';
 
+// i need the firebasekey of the path to use it my dinamic router
 function PathCard({ path, onUpdate }) {
   const { user } = useAuth();
   console.warn('this is my user id ', user.uid);
@@ -14,12 +15,12 @@ function PathCard({ path, onUpdate }) {
     if (window.confirm(`Are you sure you want to delete this ${path.title}?`)) deletePath(path.firebaseKey).then(onUpdate());
   };
   return (
-    <Card variant="danger" style={{ width: '18rem', padding:'10px', margin:'10px'}}>
+    <Card variant="danger" style={{ width: '18rem', padding: '10px', margin: '10px' }}>
       <Card.Title>{path.title}</Card.Title>
       <Card.Img style={{ width: '100%', height: '250px' }} variant="top" src={path.image} />
       <Card.Body>
         <Card.Text>{`Goal: ${path.goal}`}</Card.Text>
-        <Link href={`/path/${path.firebaseKey}`} passHref>
+        <Link href={`/conceptual-knowledge/${path.firebaseKey}`} passHref>
           <Button variant="dark" style={{ marginRight: '10px' }}>View</Button>
         </Link>
         {user.uid === path.user_id && (

@@ -8,7 +8,6 @@ import { deleteConceptualKnowledge } from '../api/conceptualknowledgeData';
 
 function ConceptualCard({ conceptualCard, onUpdate, userID }) {
   const { user } = useAuth();
-  const firebaseKey = conceptualCard.pathId;
   const deletethisConceptualCard = () => {
     if (window.confirm(`Are you sure you want to delete this ${conceptualCard.question}?`)) deleteConceptualKnowledge(conceptualCard.firebaseKey).then(onUpdate());
   };
@@ -17,7 +16,7 @@ function ConceptualCard({ conceptualCard, onUpdate, userID }) {
       <Card.Title>{conceptualCard.question}</Card.Title>
       <Card.Img style={{ width: '100%', height: '250px' }} variant="top" src={conceptualCard.imageUrl} />
       <Card.Body>
-        <Link href={`/conceptual-knowledge/${firebaseKey}`} passHref>
+        <Link href={`/conceptual-knowledge/review/${conceptualCard.firebaseKey}`} passHref>
           <Button variant="dark" style={{ marginRight: '10px' }}>Review
           </Button>
         </Link>

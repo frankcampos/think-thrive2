@@ -4,22 +4,21 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Link from 'next/link';
 import { useAuth } from '../utils/context/authContext';
-import { deletePath } from '../api/pathsData';
+import { deleteConceptualKnowledge } from '../api/conceptualknowledgeData';
 
 function ConceptualCard({ conceptualCard, onUpdate, userID }) {
   const { user } = useAuth();
   const deletethisConceptualCard = () => {
-    if (window.confirm(`Are you sure you want to delete this ${conceptualCard.question}?`)) deletePath(conceptualCard.firebaseKey).then(onUpdate());
+    if (window.confirm(`Are you sure you want to delete this ${conceptualCard.question}?`)) deleteConceptualKnowledge(conceptualCard.firebaseKey).then(onUpdate());
   };
   return (
-    <Card variant="danger" style={{ width: '18rem', padding: '10px', margin: '10px' }}>
+    <Card variant="danger" style={{ width: '19rem', padding: '10px', margin: '10px' }}>
       <Card.Title>{conceptualCard.question}</Card.Title>
       <Card.Img style={{ width: '100%', height: '250px' }} variant="top" src={conceptualCard.imageUrl} />
       <Card.Body>
         <Card.Text>{`Difficulty: ${conceptualCard.difficulty}`}</Card.Text>
         <Link href={`/conceptual-knowledge/${conceptualCard.firebaseKey}`} passHref>
-          <Button variant="dark" style={{ marginRight: '10px' }}>
-            View
+          <Button variant="dark" style={{ marginRight: '10px' }}>Review
           </Button>
         </Link>
         {user.uid === userID && (

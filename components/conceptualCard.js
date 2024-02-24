@@ -8,6 +8,7 @@ import { deleteConceptualKnowledge } from '../api/conceptualknowledgeData';
 
 function ConceptualCard({ conceptualCard, onUpdate, userID }) {
   const { user } = useAuth();
+  const firebaseKey = conceptualCard.pathId;
   const deletethisConceptualCard = () => {
     if (window.confirm(`Are you sure you want to delete this ${conceptualCard.question}?`)) deleteConceptualKnowledge(conceptualCard.firebaseKey).then(onUpdate());
   };
@@ -16,14 +17,13 @@ function ConceptualCard({ conceptualCard, onUpdate, userID }) {
       <Card.Title>{conceptualCard.question}</Card.Title>
       <Card.Img style={{ width: '100%', height: '250px' }} variant="top" src={conceptualCard.imageUrl} />
       <Card.Body>
-        <Card.Text>{`Difficulty: ${conceptualCard.difficulty}`}</Card.Text>
-        <Link href={`/conceptual-knowledge/${conceptualCard.firebaseKey}`} passHref>
+        <Link href={`/conceptual-knowledge/${firebaseKey}`} passHref>
           <Button variant="dark" style={{ marginRight: '10px' }}>Review
           </Button>
         </Link>
         {user.uid === userID && (
           <>
-            <Link href={`/conceptual/edit/${conceptualCard.firebaseKey}`} passHref>
+            <Link href={`/conceptual-knowledge/edit/${conceptualCard.firebaseKey}`} passHref>
               <Button variant="dark" style={{ marginRight: '10px' }}>
                 Edit
               </Button>
@@ -45,17 +45,10 @@ ConceptualCard.propTypes = {
     imageUrl: PropTypes.string,
     difficulty: PropTypes.string,
     user_id: PropTypes.string,
+    pathId: PropTypes.string,
   }).isRequired,
   onUpdate: PropTypes.func.isRequired,
   userID: PropTypes.string.isRequired,
 };
 
 export default ConceptualCard;
-//         onChange={handleChange}
-//         style={{ backgroundColor: 'grey', color: 'black', border: '1px solid white' }}
-//       />
-//
-//       <Form.Label style={{ color: 'white' }}>Answer</Form.Label>
-//       <Form.Control
-//         type="text"
-//

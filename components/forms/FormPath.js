@@ -32,11 +32,11 @@ function FormPath({ objPath }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (objPath.firebaseKey) {
-      updatePath(formState).then(() => {
+      updatePath({ ...formState, user_name: user.displayName }).then(() => {
         router.push('/');
       });
     } else {
-      const payload = { ...formState, user_id: user.uid };
+      const payload = { ...formState, user_id: user.uid, user_name: user.displayName };
       createPath(payload).then(({ name }) => {
         const patchPayload = { firebaseKey: name };
         updatePath(patchPayload).then(() => {

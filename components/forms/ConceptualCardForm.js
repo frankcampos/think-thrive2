@@ -35,7 +35,7 @@ function ConceptualCardForm({ objConceptualCard, pathId }) {
     console.warn(formState);
     if (objConceptualCard.firebaseKey) {
       updateConceptualKnowledge(formState).then(() => {
-        router.push('/');
+        router.push(`/conceptual-knowledge/${objConceptualCard.pathId}`);
       });
     } else {
       const payload = { ...formState, pathId };

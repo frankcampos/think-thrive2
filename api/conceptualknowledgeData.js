@@ -64,6 +64,24 @@ const deleteConceptualKnowledge = (firebaseKey) => new Promise((resolve, reject)
     });
 });
 
+const getSingleConceptualKnowledge = (firebaseKey) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/conceptualknowledge/${firebaseKey}.json`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => resolve(data))
+    .catch((error) => {
+      reject(error);
+    });
+});
+
 export {
-  createConceptualKnowledge, updateConceptualKnowledge, getConceptualKnowledgeByPathId, deleteConceptualKnowledge,
+  createConceptualKnowledge,
+  updateConceptualKnowledge,
+  getConceptualKnowledgeByPathId,
+  deleteConceptualKnowledge,
+  getSingleConceptualKnowledge,
 };

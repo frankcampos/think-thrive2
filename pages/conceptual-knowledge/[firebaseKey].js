@@ -13,16 +13,18 @@ function ConceptualKnowledgePage() {
   const [ConceptualKnowledgeCards, setConceptualKnowledgeCards] = useState([]);
   const [pathId, setPathId] = useState('');
 
-  useEffect(() => {
+  const getAllTheConceptualKnowledge = () => {
     if (firebaseKey) {
       getSinglePath(firebaseKey).then((response) => setPathId(response.user_id));
       getConceptualKnowledgeByPathId(firebaseKey).then((response) => setConceptualKnowledgeCards(response));
-      console.warn('this is my conceptual knowledge cards', ConceptualKnowledgeCards);
     }
-  }, [ConceptualKnowledgeCards, firebaseKey]);
+  };
+
+  useEffect(() => {
+    getAllTheConceptualKnowledge();
+  }, []);
   return (
     <div className="text-center my-4">
-      <h1>{firebaseKey}</h1>
       <Link href={`/conceptual-knowledge/new/${firebaseKey}`} passHref>
         <Button variant="dark" style={{ margin: '0 0 10px' }}>
           Add A Conceptual Card
@@ -30,7 +32,7 @@ function ConceptualKnowledgePage() {
       </Link>
       <div className="d-flex flex-wrap justify-content-center">
         {ConceptualKnowledgeCards.map((card) => (
-          <ConceptualCard key={card.firebaseKey} conceptualCard={card} onUpdate={{}} userID={pathId} />
+          <ConceptualCard key={card.firebaseKey} conceptualCard={card} onUpdate={getAllTheConceptualKnowledge} userID={pathId} />
         ))}
       </div>
     </div>

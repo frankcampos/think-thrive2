@@ -7,7 +7,6 @@ function AddConceptualCard() {
 
   return (
     <div className="text-center my-4">
-      <h1>this is my conceptual card form{firebaseKey}</h1>
       <ConceptualCardForm objConceptualCard={{ }} pathId={firebaseKey} />
     </div>
   );

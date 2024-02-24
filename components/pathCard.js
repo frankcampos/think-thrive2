@@ -11,7 +11,7 @@ function PathCard({ path, onUpdate }) {
   const deletethisPath = () => {
     if (window.confirm(`Are you sure you want to delete this ${path.title}?`)) deletePath(path.firebaseKey).then(onUpdate());
   };
-  const madeBy = user.uid === path.user_id ? `Made by: ${user.displayName}` : path.user_name;
+  const madeBy = user.uid === path.user_id ? `Made by: ${user.displayName}` : `Made by: ${path.user_name}`;
   return (
     <Card variant="danger" style={{ width: '18rem', padding: '10px', margin: '10px' }}>
       <Card.Title>{path.title}</Card.Title>

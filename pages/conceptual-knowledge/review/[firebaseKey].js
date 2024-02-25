@@ -12,6 +12,7 @@ function ReviewConceptualKnowledge() {
   const { firebaseKey } = router.query;
   const [conceptualCard, setConceptualCard] = useState({});
   const [showAnswer, setShowAnswer] = useState(false);
+  const [userAnswer, setUserAnswer] = useState('');
   console.warn(firebaseKey);
 
   useEffect(() => {
@@ -23,12 +24,15 @@ function ReviewConceptualKnowledge() {
   []);
 
   const handleShowAnswer = () => {
+    setUserAnswer('');
     if (showAnswer) {
       setShowAnswer(false);
+      setUserAnswer('');
     }
 
     if (!showAnswer) {
       setShowAnswer(true);
+      setUserAnswer(userAnswer);
     }
   };
 
@@ -37,26 +41,44 @@ function ReviewConceptualKnowledge() {
       display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh',
     }}
     >
-      <Card variant="dark" style={{ width: '23rem', height: '400px' }}>
+      <Card
+        variant="dark"
+        style={{
+          width: '23rem',
+          height: 'auto',
+          backgroundColor: '#f8f9fa',
+          borderRadius: '10px',
+          padding: '20px',
+          display: 'flex',
+          flexDirection: 'column',
+          boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.1)',
+        }}
+      >
         {!showAnswer && (
         <div>
-          <h1>{conceptualCard.question}</h1>
+          <h4 style={{ marginBottom: '20px' }}>{conceptualCard.question}</h4>
           <Form.Control
+            as="textarea"
             style={{
-              width: '20rem',
+              width: '18rem',
               height: '100px',
               margin: '10px',
+              padding: '10px',
             }}
             type="text"
             placeholder="Enter Answer"
+            value={userAnswer}
+            onChange={(e) => setUserAnswer(e.target.value)}
           />
           <Button variant="dark" style={{ margin: '10px' }} onClick={handleShowAnswer}>Show the Answer</Button>
         </div>
         )}
         {showAnswer && (
         <div>
-          <h3>{conceptualCard.question}</h3>
-          <h5>{conceptualCard.answer}</h5>
+          <h4 style={{ marginBottom: '20px' }}>{conceptualCard.question}</h4>
+          <h5 style={{ marginBottom: '10px' }}>{conceptualCard.answer}</h5>
+          <h5 style={{ marginBottom: '10px' }}>what I remember</h5>
+          <h6 style={{ marginBottom: '1px' }}>{userAnswer}</h6>
           <Button variant="dark" style={{ margin: '10px' }} onClick={handleShowAnswer}>Review</Button>
         </div>
         )}

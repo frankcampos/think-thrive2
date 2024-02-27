@@ -76,8 +76,11 @@ function ReviewConceptualKnowledge() {
         {showAnswer && (
         <div>
           <h4 style={{ marginBottom: '20px' }}>{conceptualCard.question}</h4>
+          <p>__________________________________</p>
           <h5 style={{ marginBottom: '10px' }}>{conceptualCard.answer}</h5>
+          <p>__________________________________</p>
           <h5 style={{ marginBottom: '10px' }}>what I remember</h5>
+          <p>__________________________________</p>
           <h6 style={{ marginBottom: '1px' }}>{userAnswer}</h6>
           <Button variant="dark" style={{ margin: '10px' }} onClick={handleShowAnswer}>Review</Button>
         </div>

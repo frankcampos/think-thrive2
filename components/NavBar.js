@@ -24,7 +24,7 @@ export default function NavBar() {
             <Link passHref href="/">
               <Nav.Link variant="underline">Learning Paths</Nav.Link>
             </Link>
-            <Link passHref href="./my-paths">
+            <Link passHref href="/my-paths">
               <Nav.Link variant="underline">My Paths</Nav.Link>
             </Link>
           </Nav>

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Button } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import ConceptualCard from '../../components/conceptualCard';
+import { useAuth } from '../../utils/context/authContext';
 import { getConceptualKnowledgeByPathId } from '../../api/conceptualknowledgeData';
 import { getSinglePath } from '../../api/pathsData';
 
@@ -12,6 +13,7 @@ function ConceptualKnowledgePage() {
   const { firebaseKey } = router.query;
   const [ConceptualKnowledgeCards, setConceptualKnowledgeCards] = useState([]);
   const [pathId, setPathId] = useState('');
+  const { user } = useAuth();
 
   const getAllTheConceptualKnowledge = () => {
     if (firebaseKey) {
@@ -25,11 +27,13 @@ function ConceptualKnowledgePage() {
   }, []);
   return (
     <div className="text-center my-4">
+      {pathId === user.uid && (
       <Link href={`/conceptual-knowledge/new/${firebaseKey}`} passHref>
         <Button variant="dark" style={{ margin: '0 0 10px' }}>
           Add A Conceptual Card
         </Button>
       </Link>
+      )}
       <div className="d-flex flex-wrap justify-content-center">
         {ConceptualKnowledgeCards.map((card) => (
           <ConceptualCard key={card.firebaseKey} conceptualCard={card} onUpdate={getAllTheConceptualKnowledge} userID={pathId} />

@@ -36,7 +36,9 @@ function FormPath({ objPath }) {
         router.push('/');
       });
     } else {
-      const payload = { ...formState, user_id: user.uid, user_name: user.displayName };
+      const payload = {
+        ...formState, user_id: user.uid, user_name: user.displayName, user_photo: user.photoURL,
+      };
       createPath(payload).then(({ name }) => {
         const patchPayload = { firebaseKey: name };
         updatePath(patchPayload).then(() => {

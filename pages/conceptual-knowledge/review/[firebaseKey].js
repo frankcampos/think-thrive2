@@ -75,7 +75,7 @@ function ReviewConceptualKnowledge() {
         )}
         {showAnswer && (
         <div>
-          <h4 style={{ marginBottom: '20px' }}>{conceptualCard.question}</h4>
+          <h4 style={{ marginBottom: '10px' }}>{conceptualCard.question}</h4>
           <p>__________________________________</p>
           <h5 style={{ marginBottom: '10px' }}>{conceptualCard.answer}</h5>
           <p>__________________________________</p>

@@ -32,7 +32,7 @@ function FormPath({ objPath }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (objPath.firebaseKey) {
-      updatePath({ ...formState, user_name: user.displayName }).then(() => {
+      updatePath({ ...formState, user_name: user.displayName, user_photo: user.photoURL }).then(() => {
         router.push('/');
       });
     } else {

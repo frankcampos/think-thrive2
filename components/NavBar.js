@@ -12,9 +12,9 @@ export default function NavBar() {
       {/* Change the bg and variant props here */}
       <Container fluid>
         <Nav>
-          <Image src="/thinkthrive.png" alt="No Simple Books" style={{ height: '40px', backgroundColor: 'transparent' }} />
+          <Image src="/thinkthrive.png" alt="Think Thrive" className=" logo" style={{ height: '100px', backgroundColor: 'transparent' }} />
           <Link passHref href="/">
-            <Navbar.Brand style={{ marginLeft: '10px' }}>ThinkThrive</Navbar.Brand>
+            <Navbar.Brand style={{ marginLeft: '10px', marginTop: '30px' }}>ThinkThrive</Navbar.Brand>
           </Link>
         </Nav>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />

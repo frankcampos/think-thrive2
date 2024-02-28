@@ -27,6 +27,9 @@ export default function NavBar() {
             <Link passHref href="/my-paths">
               <Nav.Link variant="underline">My Paths</Nav.Link>
             </Link>
+            <Link passHref href="/ask-ai">
+              <Nav.Link variant="underline">Ask me AI</Nav.Link>
+            </Link>
           </Nav>
           <Nav style={{ alignContent: 'flex-end' }}>
             <Button variant="dark" onClick={signOut}>

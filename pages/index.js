@@ -11,7 +11,6 @@ function Home() {
   const getAllThePaths = () => {
     getAllPaths().then((response) => {
       setPaths(response);
-      console.warn(response);
     });
   };
 

@@ -34,4 +34,13 @@ const updateTag = (payload) => new Promise((resolve, reject) => {
     });
 });
 
-export { createTag, updateTag };
+const getTags = () => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/tags.json`)
+    .then((response) => response.json())
+    .then((data) => resolve(Object.values(data)))
+    .catch((error) => {
+      reject(error);
+    });
+});
+
+export { createTag, updateTag, getTags };

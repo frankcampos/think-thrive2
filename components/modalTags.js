@@ -3,12 +3,18 @@
 // And this snippet from components/modalTags.js:
 import { Modal, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
-import { createTag, updateTag } from '../api/tagsData';
+import { useEffect, useState } from 'react';
+import { createTag, getTags, updateTag } from '../api/tagsData';
 
 function ModalTags({ show, onHide }) {
   const [searchTerm, setSearchTerm] = useState('');
+  const [tags, setTags] = useState([]);
   console.warn(searchTerm);
+
+  useEffect(() => {
+    getTags().then((tagsArray) => setTags(tagsArray));
+  },
+  []);
 
   const addTag = () => {
     createTag({ label: searchTerm }).then(({ name }) => {
@@ -27,6 +33,11 @@ function ModalTags({ show, onHide }) {
       <Modal.Body>
         <input type="text" placeholder="Search" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
       </Modal.Body>
+      {tags.map((tag) => (
+        <div key={tag.firebaseKey}>
+          <p>{tag.label}</p>
+        </div>
+      ))}
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
           Close

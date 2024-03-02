@@ -1,18 +1,22 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Modal, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { createTag, getTags, updateTag } from '../api/tagsData';
-import { createConceptualTag, updateConceptualTag } from '../api/conceptualtagsData';
+import {
+  createConceptualTag, deleteConceptualTag, getConceptualTagByTagId, getConceptualTags, updateConceptualTag,
+} from '../api/conceptualtagsData';
 
-function ModalTags({ show, onHide, conceptualCardId }) {
+function ModalTags({
+  show, onHide, conceptualCardId,
+}) {
   const [searchTerm, setSearchTerm] = useState('');
   const [tags, setTags] = useState([]);
-  console.warn(conceptualCardId);
-
+  const [conceptualTags, setConceptualTags] = useState([]);
   useEffect(() => {
     getTags().then((tagsArray) => setTags(tagsArray));
-  },
-  []);
+    getConceptualTags().then((conceptualTagsArray) => setConceptualTags(conceptualTagsArray));
+  }, [tags]);
 
   const addTag = () => {
     createTag({ label: searchTerm }).then(({ name }) => {
@@ -20,14 +24,34 @@ function ModalTags({ show, onHide, conceptualCardId }) {
       updateTag(pathPayload);
     });
     setSearchTerm('');
-    onHide();
   };
+
+  const deleteTagOfTheConceptualCard = (tagObject) => {
+    console.warn('this is my tagObject', tagObject.firebaseKey);
+    const tagId = tagObject.firebaseKey;
+    getConceptualTagByTagId(tagId).then((data) => {
+      const { firebaseKey } = Object.values(data)[0];
+      console.warn('this is my firebasekey', firebaseKey);
+      deleteConceptualTag(firebaseKey);
+    });
+  };
+
+  const isTagINConceptualCard = (tag, conceptualCardsTags) => conceptualCardsTags.some((conceptualtag) => conceptualtag.tag_label === tag.label);
 
   const addTagToTheConceptualCard = (tagObject) => {
     createConceptualTag({ tag_id: tagObject.firebaseKey, tag_label: tagObject.label, conceptual_card_id: conceptualCardId }).then(({ name }) => {
       const pathPayload = { firebaseKey: name };
       updateConceptualTag(pathPayload);
     });
+  };
+
+  const tagsController = (tag, conceptualCardsTags) => {
+    const tagIsInConceptualCard = isTagINConceptualCard(tag, conceptualCardsTags);
+    if (tagIsInConceptualCard) {
+      deleteTagOfTheConceptualCard(tag);
+    } else {
+      addTagToTheConceptualCard(tag);
+    }
   };
 
   return (
@@ -45,10 +69,10 @@ function ModalTags({ show, onHide, conceptualCardId }) {
             style={{ marginLeft: '20px' }}
             variant="dark"
             onClick={() => {
-              addTagToTheConceptualCard(tag);
+              tagsController(tag, conceptualTags);
             }}
           >
-            Add Tag
+            {isTagINConceptualCard(tag, conceptualTags) ? 'Remove' : 'Add'}
           </Button>
         </div>
       ))}

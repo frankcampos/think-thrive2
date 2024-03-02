@@ -29,7 +29,7 @@ function ConceptualCard({ conceptualCard, onUpdate, userID }) {
       <Card.Text onClick={handleShowModal}>
         Tags: no tags yet <br />
       </Card.Text>
-      <ModalTags show={showModal} onHide={handleCloseModal} />
+      <ModalTags show={showModal} onHide={handleCloseModal} conceptualCardId={conceptualCard.firebaseKey} />
       <Card.Body>
         <Link href={`/conceptual-knowledge/review/${conceptualCard.firebaseKey}`} passHref>
           <Button variant="dark" style={{ marginRight: '10px' }}>Review

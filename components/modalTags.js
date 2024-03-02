@@ -1,15 +1,13 @@
-// give me a modal with a browser with a button, I will add the functionality later
-//
-// And this snippet from components/modalTags.js:
 import { Modal, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { createTag, getTags, updateTag } from '../api/tagsData';
+import { createConceptualTag, updateConceptualTag } from '../api/conceptualtagsData';
 
-function ModalTags({ show, onHide }) {
+function ModalTags({ show, onHide, conceptualCardId }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [tags, setTags] = useState([]);
-  console.warn(searchTerm);
+  console.warn(conceptualCardId);
 
   useEffect(() => {
     getTags().then((tagsArray) => setTags(tagsArray));
@@ -25,6 +23,13 @@ function ModalTags({ show, onHide }) {
     onHide();
   };
 
+  const addTagToTheConceptualCard = (tagObject) => {
+    createConceptualTag({ tag_id: tagObject.firebaseKey, tag_label: tagObject.label, conceptual_card_id: conceptualCardId }).then(({ name }) => {
+      const pathPayload = { firebaseKey: name };
+      updateConceptualTag(pathPayload);
+    });
+  };
+
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
@@ -35,16 +40,21 @@ function ModalTags({ show, onHide }) {
       </Modal.Body>
       {tags.map((tag) => (
         <div key={tag.firebaseKey}>
-          <p>{tag.label}</p>
+          {tag.label}
+          <Button
+            style={{ marginLeft: '20px' }}
+            variant="dark"
+            onClick={() => {
+              addTagToTheConceptualCard(tag);
+            }}
+          >
+            Add Tag
+          </Button>
         </div>
       ))}
-      <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
-          Close
-        </Button>
-
+      <Modal.Footer style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Button variant="primary" onClick={addTag}>
-          Add Tag
+          Create Tag
         </Button>
       </Modal.Footer>
     </Modal>
@@ -54,6 +64,11 @@ function ModalTags({ show, onHide }) {
 ModalTags.propTypes = {
   show: PropTypes.bool.isRequired,
   onHide: PropTypes.func.isRequired,
+  conceptualCardId: PropTypes.shape({}), // Update the prop type to a more specific shape
+};
+
+ModalTags.defaultProps = {
+  conceptualCardId: {}, // Add defaultProps declaration for conceptualCardId
 };
 
 export default ModalTags;

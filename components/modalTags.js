@@ -13,17 +13,27 @@ function ModalTags({
   const [searchTerm, setSearchTerm] = useState('');
   const [tags, setTags] = useState([]);
   const [conceptualTags, setConceptualTags] = useState([]);
+  const [filteredTags, setFilteredTags] = useState([]);
   useEffect(() => {
     getTags().then((tagsArray) => setTags(tagsArray));
     getConceptualTags().then((conceptualTagsArray) => setConceptualTags(conceptualTagsArray));
-  }, [tags]);
+  }, [filteredTags, conceptualTags]);
 
   const addTag = () => {
+    if (searchTerm.trim() === '') {
+      return;
+    }
+
     createTag({ label: searchTerm }).then(({ name }) => {
       const pathPayload = { firebaseKey: name };
       updateTag(pathPayload);
+
+      setFilteredTags([{
+        firebaseKey: name,
+        label: searchTerm,
+      }]);
+      setSearchTerm('');
     });
-    setSearchTerm('');
   };
 
   const deleteTagOfTheConceptualCard = (tagObject) => {
@@ -33,6 +43,9 @@ function ModalTags({
       const { firebaseKey } = Object.values(data)[0];
       console.warn('this is my firebasekey', firebaseKey);
       deleteConceptualTag(firebaseKey);
+      setSearchTerm('');
+      setFilteredTags(filteredTags);
+      setConceptualTags(filteredTags);
     });
   };
 
@@ -42,6 +55,8 @@ function ModalTags({
     createConceptualTag({ tag_id: tagObject.firebaseKey, tag_label: tagObject.label, conceptual_card_id: conceptualCardId }).then(({ name }) => {
       const pathPayload = { firebaseKey: name };
       updateConceptualTag(pathPayload);
+      setSearchTerm('');
+      setFilteredTags(filteredTags);
     });
   };
 
@@ -49,10 +64,23 @@ function ModalTags({
     const tagIsInConceptualCard = isTagINConceptualCard(tag, conceptualCardsTags);
     if (tagIsInConceptualCard) {
       deleteTagOfTheConceptualCard(tag);
+      setSearchTerm('');
     } else {
       addTagToTheConceptualCard(tag);
     }
+    getTags().then((tagsArray) => setTags(tagsArray));
+    getConceptualTags().then((conceptualTagsArray) => setConceptualTags(conceptualTagsArray));
+    setFilteredTags(conceptualTags);
   };
+
+  useEffect(() => {
+    if (searchTerm !== '') {
+      const filtered = tags.filter((tag) => tag.label.toLowerCase().includes(searchTerm.toLowerCase()));
+      setFilteredTags(filtered);
+    } else {
+      setFilteredTags(tags);
+    }
+  }, [searchTerm]);
 
   return (
     <Modal show={show} onHide={onHide}>
@@ -60,26 +88,35 @@ function ModalTags({
         <Modal.Title>Tags</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <input type="text" placeholder="Search" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+        <input type="text" placeholder="Search Tag" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
       </Modal.Body>
-      {tags.map((tag) => (
-        <div key={tag.firebaseKey}>
-          {tag.label}
-          <Button
-            style={{ marginLeft: '20px' }}
-            variant="dark"
-            onClick={() => {
-              tagsController(tag, conceptualTags);
-            }}
-          >
-            {isTagINConceptualCard(tag, conceptualTags) ? 'Remove' : 'Add'}
-          </Button>
-        </div>
-      ))}
-      <Modal.Footer style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <Button variant="primary" onClick={addTag}>
-          Create Tag
+      {
+  filteredTags.map((tag) => (
+    <div key={tag.firebaseKey}>
+      {tag.label}
+      <Button
+        style={{ marginLeft: '20px' }}
+        variant="dark"
+        onClick={() => {
+          tagsController(tag, conceptualTags);
+        }}
+      >
+        {isTagINConceptualCard(tag, conceptualTags) ? 'Remove' : 'Add'}
+      </Button>
+    </div>
+  ))
+}
+      <Modal.Footer style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Button variant="secondary" onClick={onHide}>
+          Close
         </Button>
+        {
+          !filteredTags.some((tag) => tag && tag.label && tag.label.toLowerCase() === searchTerm.toLowerCase()) && (
+            <Button variant="primary" onClick={addTag}>
+              Create Tag
+            </Button>
+          )
+        }
       </Modal.Footer>
     </Modal>
   );
@@ -88,11 +125,11 @@ function ModalTags({
 ModalTags.propTypes = {
   show: PropTypes.bool.isRequired,
   onHide: PropTypes.func.isRequired,
-  conceptualCardId: PropTypes.shape({}), // Update the prop type to a more specific shape
+  conceptualCardId: PropTypes.shape({}),
 };
 
 ModalTags.defaultProps = {
-  conceptualCardId: {}, // Add defaultProps declaration for conceptualCardId
+  conceptualCardId: {},
 };
 
 export default ModalTags;

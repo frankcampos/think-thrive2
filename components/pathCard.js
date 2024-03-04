@@ -16,11 +16,16 @@ function PathCard({ path, onUpdate }) {
   const userPhoto = user.uid === path.user_id ? `${user.photoURL}` : `${path.user_photo}`;
 
   return (
-    <Card variant="danger" style={{ width: '18rem', padding: '10px', margin: '10px' }}>
-      <Card.Title>{path.title}</Card.Title>
-      <Card.Img style={{ width: '100%', height: '250px' }} variant="top" src={path.image} />
-      <Card.Body>
-        <Card.Text>{`Goal: ${path.goal}`}</Card.Text>
+    <Card
+      variant="grey"
+      style={{
+        width: '18rem', padding: '10px', margin: '10px', background: 'black',
+      }}
+    >
+      <Card.Title style={{ background: 'grey', borderRadius: '5px' }}>{path.title}</Card.Title>
+      <Card.Img style={{ width: '100%', height: '250px', borderRadius: '15px' }} variant="top" src={path.image} />
+      <Card.Body variant="grey">
+        <Card.Text style={{ background: 'grey', borderRadius: '5px' }}>{`Goal: ${path.goal}`}</Card.Text>
         <img
           src={userPhoto}
           alt="User profile"
@@ -31,11 +36,11 @@ function PathCard({ path, onUpdate }) {
             objectFit: 'cover',
             border: '4px solid',
             padding: '4px',
-            borderColor: 'black',
-            margin: '2px',
+            borderColor: 'grey',
+            margin: '10px',
           }}
         />
-        <Card.Text>{madeBy}</Card.Text>
+        <Card.Text style={{ background: 'grey', borderRadius: '5px' }}>{madeBy}</Card.Text>
         <Link href={`/conceptual-knowledge/${path.firebaseKey}`} passHref>
           <Button variant="dark" style={{ marginRight: '10px' }}>View</Button>
         </Link>

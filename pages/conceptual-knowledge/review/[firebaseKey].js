@@ -45,23 +45,23 @@ function ReviewConceptualKnowledge() {
         variant="dark"
         style={{
           width: '23rem',
-          height: 'auto',
-          backgroundColor: '#f8f9fa',
+          backgroundColor: 'black',
           borderRadius: '10px',
-          padding: '20px',
+          padding: '10px',
           display: 'flex',
           flexDirection: 'column',
           boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.1)',
+          textAlign: 'center',
         }}
       >
         {!showAnswer && (
         <div>
-          <h4 style={{ marginBottom: '20px' }}>{conceptualCard.question}</h4>
+          <h4 style={{ marginBottom: '20px', background: 'grey', borderRadius: '5px' }}>{conceptualCard.question}</h4>
           <Form.Control
             as="textarea"
             style={{
               width: '18rem',
-              height: '100px',
+              height: 'auto',
               margin: '10px',
               padding: '10px',
             }}
@@ -74,14 +74,11 @@ function ReviewConceptualKnowledge() {
         </div>
         )}
         {showAnswer && (
-        <div>
-          <h4 style={{ marginBottom: '10px' }}>{conceptualCard.question}</h4>
-          <p>__________________________________</p>
-          <h5 style={{ marginBottom: '10px' }}>{conceptualCard.answer}</h5>
-          <p>__________________________________</p>
-          <h5 style={{ marginBottom: '10px' }}>what I remember</h5>
-          <p>__________________________________</p>
-          <h6 style={{ marginBottom: '1px' }}>{userAnswer}</h6>
+        <div style={{ height: 'auto' }}>
+          <h4 style={{ marginBottom: '10px', background: 'grey', borderRadius: '5px' }}>{conceptualCard.question}</h4>
+          <h5 style={{ marginBottom: '10px', background: 'grey', borderRadius: '5px' }}>{conceptualCard.answer}</h5>
+          <h5 style={{ marginBottom: '10px', background: 'grey', borderRadius: '5px' }}>what I remember</h5>
+          <h6 style={{ marginBottom: '1px', background: 'grey', borderRadius: '5px' }}>{userAnswer}</h6>
           <Button variant="dark" style={{ margin: '10px' }} onClick={handleShowAnswer}>Review</Button>
         </div>
         )}

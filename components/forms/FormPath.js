@@ -48,8 +48,8 @@ function FormPath({ objPath }) {
     }
   };
   return (
-    <Form variant="dark" onSubmit={handleSubmit} style={{ backgroundColor: 'grey' }}>
-      <h2 className="text-black mt-5">{objPath.firebaseKey ? 'Update' : 'Create'} Learning Path</h2>
+    <Form variant="dark" onSubmit={handleSubmit}>
+      <h2 className="text-black mt-5" style={{ display: 'flex', justifyContent: 'center' }}>{objPath.firebaseKey ? 'Update' : 'Create'} Learning Path</h2>
 
       <Form.Label style={{ color: 'black' }}>Title</Form.Label>
       <Form.Control
@@ -80,9 +80,11 @@ function FormPath({ objPath }) {
         style={{ backgroundColor: 'grey', color: 'black', border: '1px solid white' }}
       />
 
-      <Button variant="dark" type="submit">
-        { objPath.firebaseKey ? 'Update' : 'Create'} Path
-      </Button>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Button variant="dark" type="submit" style={{ margin: '10px' }}>
+          {objPath.firebaseKey ? 'Update' : 'Create'} Path
+        </Button>
+      </div>
     </Form>
   );
 }

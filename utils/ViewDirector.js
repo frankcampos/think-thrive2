@@ -23,10 +23,10 @@ const ViewDirectorBasedOnUserAuthStatus = ({ component: Component, pageProps }) 
         </div>
         <footer style={{ background: 'grey', marginTop: '30px' }}>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.linkedin.com/in/frank-parada-campos-214a48229/" target="_blank" rel="noopener noreferrer">
               <img src="https://cdn.icon-icons.com/icons2/2428/PNG/512/linkedin_black_logo_icon_147114.png" alt="LinkedIn" style={{ width: '30px', height: '30px', marginRight: '10px' }} />
             </a>
-            <a href="https://github.com/" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/frankcampos" target="_blank" rel="noopener noreferrer">
               <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub" style={{ width: '30px', height: '30px' }} />
             </a>
           </div>

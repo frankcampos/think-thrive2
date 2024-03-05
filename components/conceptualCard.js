@@ -32,10 +32,15 @@ function ConceptualCard({ conceptualCard, onUpdate, userID }) {
     onUpdate();
   };
   return (
-    <Card variant="danger" style={{ width: '19rem', padding: '10px', margin: '10px' }}>
-      <Card.Title>{conceptualCard.question}</Card.Title>
-      <Card.Img style={{ width: '100%', height: '250px' }} variant="top" src={conceptualCard.imageUrl} />
-      <Card.Text onClick={handleShowModal}>
+    <Card
+      variant="danger"
+      style={{
+        width: '19rem', padding: '10px', margin: '10px', background: 'black', borderRadius: '10px',
+      }}
+    >
+      <Card.Title style={{ background: 'grey', borderRadius: '5px' }}>{conceptualCard.question}</Card.Title>
+      <Card.Img style={{ borderRadius: '10px', width: '100%', height: '250px' }} variant="top" src={conceptualCard.imageUrl} />
+      <Card.Text style={{ background: 'grey', borderRadius: '5px', marginTop: '10px' }} onClick={handleShowModal}>
         Tags: {tags.map((tag) => (
           <span key={tag.firebaseKey}>{tag.tag_label} -</span>
       ))}

@@ -50,7 +50,7 @@ function ConceptualCardForm({ objConceptualCard, pathId }) {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <h2 className="text-white mt-5">{objConceptualCard.firebaseKey ? 'Update' : 'Create'} Conceptual Card</h2>
+      <h2 className="text-black mt-5">{objConceptualCard.firebaseKey ? 'Update' : 'Create'} Conceptual Card</h2>
 
       <Form.Label style={{ color: 'white' }}>Question</Form.Label>
       <Form.Control

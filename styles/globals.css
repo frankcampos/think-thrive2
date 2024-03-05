@@ -6,6 +6,10 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  min-height: 100vh;
+  position: relative;
+  background-color:black;
+  padding-bottom: 40px;  /* Add this line */
 }
 
 a {
@@ -17,10 +21,17 @@ a {
   box-sizing: border-box;
 }
 
-body {
-  background-color:black;
+.container {
+  margin-bottom: 40px;  /* Add this line */
 }
 
 .Button:hover {
   background-color: blue;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  margin-top: 40px;
 }

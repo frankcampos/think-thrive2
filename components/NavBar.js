@@ -7,7 +7,7 @@ import { signOut } from '../utils/auth';
 
 export default function NavBar() {
   return (
-    <Navbar collapseOnSelect expand="lg" bg="black" variant="dark">
+    <Navbar collapseOnSelect expand="lg" bg="grey" variant="dark" style={{ background: 'grey', marginBottom: '40px' }}>
       {' '}
       {/* Change the bg and variant props here */}
       <Container fluid>

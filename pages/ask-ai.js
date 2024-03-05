@@ -24,16 +24,27 @@ export default function Home() {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        background: 'black',
+      }}
+    >
       <form onSubmit={handleSubmit}>
         <input
           type="text"
           value={prompt}
+          placeholder="Ask me anything"
           onChange={(e) => setPrompt(e.target.value)}
+          style={{ background: 'white', borderRadius: '5px' }}
         />
-        <button type="submit">Generate</button>
+        <button type="submit">Ask</button>
       </form>
-      <p style={{ color: 'white' }}>{result}</p>
+      <p style={{ color: 'white', background: 'black' }}>{result}</p>
     </div>
   );
 }

@@ -48,10 +48,10 @@ function FormPath({ objPath }) {
     }
   };
   return (
-    <Form onSubmit={handleSubmit}>
-      <h2 className="text-white mt-5">{objPath.firebaseKey ? 'Update' : 'Create'} Learning Path</h2>
+    <Form variant="dark" onSubmit={handleSubmit}>
+      <h2 className="text-black mt-5" style={{ display: 'flex', justifyContent: 'center' }}>{objPath.firebaseKey ? 'Update' : 'Create'} Learning Path</h2>
 
-      <Form.Label style={{ color: 'white' }}>Title</Form.Label>
+      <Form.Label style={{ color: 'black' }}>Title</Form.Label>
       <Form.Control
         type="text"
         placeholder="Enter Title"
@@ -61,7 +61,7 @@ function FormPath({ objPath }) {
         style={{ backgroundColor: 'grey', color: 'black', border: '1px solid white' }}
       />
 
-      <Form.Label style={{ color: 'white' }}>Image</Form.Label>
+      <Form.Label style={{ color: 'black' }}>Image</Form.Label>
       <Form.Control
         type="text"
         placeholder="Enter Image URL"
@@ -70,7 +70,7 @@ function FormPath({ objPath }) {
         onChange={handleChange}
         style={{ backgroundColor: 'grey', color: 'black', border: '1px solid white' }}
       />
-      <Form.Label style={{ color: 'white' }}>Goal</Form.Label>
+      <Form.Label style={{ color: 'black' }}>Goal</Form.Label>
       <Form.Control
         type="text"
         placeholder="Enter Goal"
@@ -80,9 +80,11 @@ function FormPath({ objPath }) {
         style={{ backgroundColor: 'grey', color: 'black', border: '1px solid white' }}
       />
 
-      <Button variant="dark" type="submit">
-        { objPath.firebaseKey ? 'Update' : 'Create'} Path
-      </Button>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Button variant="dark" type="submit" style={{ margin: '10px' }}>
+          {objPath.firebaseKey ? 'Update' : 'Create'} Path
+        </Button>
+      </div>
     </Form>
   );
 }

@@ -36,8 +36,7 @@ function ModalTags({
     });
   };
 
-  const deleteTagOfTheConceptualCard = (tagObject) => {
-    console.warn('this is my tagObject', tagObject.firebaseKey);
+  const removeTagOfTheConceptualCard = (tagObject) => {
     const tagId = tagObject.firebaseKey;
     getConceptualTagByTagId(tagId).then((data) => {
       const { firebaseKey } = Object.values(data)[0];
@@ -45,11 +44,14 @@ function ModalTags({
       deleteConceptualTag(firebaseKey);
       setSearchTerm('');
       setFilteredTags(filteredTags);
-      setConceptualTags(filteredTags);
+      // I was using filteredTags also in setContentualTags
+      setConceptualTags((prevTags) => [...prevTags, {
+        firebaseKey, tag_id: tagObject.firebaseKey, tag_label: tagObject.label, conceptual_card_id: conceptualCardId,
+      }]);
     });
   };
 
-  const isTagINConceptualCard = (tag, conceptualCardsTags) => conceptualCardsTags.some((conceptualtag) => conceptualtag.tag_label === tag.label);
+  const isTagINConceptualCard = (tag, conceptualCardsTags, conceptualCardID) => conceptualCardsTags.some((conceptualtag) => conceptualtag.tag_label === tag.label && conceptualtag.conceptual_card_id === conceptualCardID);
 
   const addTagToTheConceptualCard = (tagObject) => {
     createConceptualTag({ tag_id: tagObject.firebaseKey, tag_label: tagObject.label, conceptual_card_id: conceptualCardId }).then(({ name }) => {
@@ -60,10 +62,10 @@ function ModalTags({
     });
   };
 
-  const tagsController = (tag, conceptualCardsTags) => {
-    const tagIsInConceptualCard = isTagINConceptualCard(tag, conceptualCardsTags);
+  const tagsController = (tag, conceptualCardsTags, conceptualCardID) => {
+    const tagIsInConceptualCard = isTagINConceptualCard(tag, conceptualCardsTags, conceptualCardID);
     if (tagIsInConceptualCard) {
-      deleteTagOfTheConceptualCard(tag);
+      removeTagOfTheConceptualCard(tag);
       setSearchTerm('');
     } else {
       addTagToTheConceptualCard(tag);
@@ -98,10 +100,10 @@ function ModalTags({
         style={{ marginLeft: '20px' }}
         variant="dark"
         onClick={() => {
-          tagsController(tag, conceptualTags);
+          tagsController(tag, conceptualTags, conceptualCardId);
         }}
       >
-        {isTagINConceptualCard(tag, conceptualTags) ? 'Remove' : 'Add'}
+        {isTagINConceptualCard(tag, conceptualTags, conceptualCardId) ? 'Remove' : 'Add'}
       </Button>
     </div>
   ))

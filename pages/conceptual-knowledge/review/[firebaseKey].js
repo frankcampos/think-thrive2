@@ -40,7 +40,7 @@ function ReviewConceptualKnowledge() {
     try {
       const response = await axios.post('/api/openai', {
         model: 'gpt-4-turbo',
-        prompt: `Given the question: '${question}' and the provided answer: '${userAnswer}', please evaluate the accuracy, clarity, and completeness of the answer. Offer constructive feedback on how the answer could be improved, including suggestions for making it more understandable and engaging, and point out any missing information or inaccuracies.`,
+        prompt: `Hey there! You've just tackled a flashcard with the question: '${question}' and you've provided this answer: '${userAnswer}'. Let's take a moment to dive into how accurate and helpful your answer was. We'll look into the details together and see if there's anything missing or if there were any inaccuracies. I'll also share some tips on how you can make your answers even stronger, clearer, and more engaging. The goal here is to boost your understanding and make learning a more enjoyable journey. Ready? Let's get started!`,
         temperature: 0.7,
         max_tokens: 200,
       });

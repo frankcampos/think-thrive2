@@ -21,7 +21,7 @@ function ConceptualCard({ conceptualCard, onUpdate, userID }) {
     getConceptualTagsByConceptualCardId(conceptualCard.firebaseKey).then((response) => {
       setTags(response);
     });
-  }, [conceptualCard.pathId, showModal]); // Add showModal as a dependency
+  }, [conceptualCard.pathId, showModal]);
 
   const handleShowModal = () => {
     setShowModal(true);

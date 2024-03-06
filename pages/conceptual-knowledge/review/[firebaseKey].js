@@ -76,7 +76,7 @@ function ReviewConceptualKnowledge() {
   };
   return (
     <div style={{
-      display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh',
+      display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'auto', padding: '20px',
     }}
     >
       <Card

@@ -42,7 +42,18 @@ function ConceptualCard({ conceptualCard, onUpdate, userID }) {
       <Card.Img style={{ borderRadius: '10px', width: '100%', height: '250px' }} variant="top" src={conceptualCard.imageUrl} />
       <Card.Text style={{ background: 'grey', borderRadius: '5px', marginTop: '10px' }} onClick={handleShowModal}>
         Tags: {tags.map((tag) => (
-          <span key={tag.firebaseKey}>{tag.tag_label} -</span>
+          <span
+            key={tag.firebaseKey}
+            style={{
+              display: 'inline-block',
+              padding: '5px',
+              margin: '2px',
+              borderRadius: '5px',
+              backgroundColor: 'black',
+              color: 'white',
+            }}
+          >{tag.tag_label}
+          </span>
       ))}
       </Card.Text>
       <ModalTags show={showModal} onHide={handleCloseModal} conceptualCardId={conceptualCard.firebaseKey} />

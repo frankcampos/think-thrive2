@@ -2,6 +2,7 @@
 import { Modal, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+import ModalHeader from 'react-bootstrap/ModalHeader';
 import { createTag, getTags, updateTag } from '../api/tagsData';
 import {
   createConceptualTag, deleteConceptualTag, getConceptualTagByTagId, getConceptualTags, updateConceptualTag,
@@ -85,19 +86,24 @@ function ModalTags({
   }, [searchTerm]);
 
   return (
-    <Modal show={show} onHide={onHide}>
-      <Modal.Header closeButton>
+    <Modal className="my-dark-modal text-dark" show={show} onHide={onHide}>
+      <ModalHeader closeButton closeVariant=" white">
         <Modal.Title>Tags</Modal.Title>
-      </Modal.Header>
+      </ModalHeader>
       <Modal.Body>
         <input type="text" placeholder="Search Tag" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
       </Modal.Body>
       {
   filteredTags.map((tag) => (
-    <div key={tag.firebaseKey}>
+    <div
+      key={tag.firebaseKey}
+      style={{
+        display: 'inline-block', padding: '5px', borderRadius: '5px', backgroundColor: '#f0f0f0', margin: '5px', color: 'black',
+      }}
+    >
       {tag.label}
       <Button
-        style={{ marginLeft: '20px' }}
+        style={{ marginLeft: '20px', backgroundColor: '#007bff', color: 'white' }}
         variant="dark"
         onClick={() => {
           tagsController(tag, conceptualTags, conceptualCardId);

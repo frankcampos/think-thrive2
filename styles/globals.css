@@ -9,7 +9,10 @@ body {
   min-height: 100vh;
   position: relative;
   background-color:black;
-  padding-bottom: 40px;  /* Add this line */
+  /* padding-bottom: 40px;  */
+  button:hover {
+    background-color: blue;
+  }
 }
 
 a {
@@ -22,9 +25,21 @@ a {
 }
 
 .container {
-  margin-bottom: 40px;  /* Add this line */
+  margin-bottom: 40px;
 }
 
-.Button:hover {
-  background-color: blue;
+.my-dark-modal .modal-content{
+  background-color: black;
+  color: white;
+  text-align: center;
 }
+
+
+.my-dark-modal .modal-header {
+  background-color: black;
+  color: black;
+ Button {
+   background-color:whitesmoke;
+   color:white;}
+ color:white; 
+ }

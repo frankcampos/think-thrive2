@@ -34,4 +34,18 @@ const updateProceduralKnowledge = (payload) => new Promise((resolve, reject) => 
     });
 });
 
-export { createProceduralKnowledge, updateProceduralKnowledge };
+const getProcedureKnowledgeByPathId = (pathId) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/proceduralknowledge.json?orderBy="pathId"&equalTo="${pathId}"`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => resolve(Object.values(data)))
+    .catch((error) => {
+      reject(error);
+    });
+});
+
+export { createProceduralKnowledge, updateProceduralKnowledge, getProcedureKnowledgeByPathId };

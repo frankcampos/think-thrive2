@@ -7,6 +7,7 @@ const initialState = {
   title: '',
   taskSteps: '',
   picture: '',
+  type: 'procedural',
 };
 
 const ProceduralCardFormModal = ({ show, onHide, pathId }) => {

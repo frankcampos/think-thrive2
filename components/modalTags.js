@@ -18,7 +18,7 @@ function ModalTags({
   useEffect(() => {
     getTags().then((tagsArray) => setTags(tagsArray));
     getConceptualTags().then((conceptualTagsArray) => setConceptualTags(conceptualTagsArray));
-  }, [filteredTags, conceptualTags]);
+  }, [searchTerm, filteredTags]); // [filteredTags, conceptualTags] it was causing to many re-renders
 
   const addTag = () => {
     if (searchTerm.trim() === '') {

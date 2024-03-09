@@ -12,6 +12,7 @@ const initialState = {
   imageUrl: '',
   difficulty: '',
   nextReviewDate: '',
+  type: 'conceptual',
 };
 
 function ConceptualCardForm({ objConceptualCard, pathId }) {
@@ -95,6 +96,7 @@ ConceptualCardForm.propTypes = {
     difficulty: PropTypes.string,
     firebaseKey: PropTypes.string,
     nextReviewDate: PropTypes.string,
+    type: PropTypes.string,
   }).isRequired,
   pathId: PropTypes.string.isRequired,
 };

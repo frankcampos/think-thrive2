@@ -36,14 +36,14 @@ function ConceptualCardForm({ objConceptualCard, pathId }) {
     console.warn(formState);
     if (objConceptualCard.firebaseKey) {
       updateConceptualKnowledge(formState).then(() => {
-        router.push(`/conceptual-knowledge/${objConceptualCard.pathId}`);
+        router.push(`/conceptual-knowledge/${pathId}`);
       });
     } else {
       const payload = { ...formState, pathId };
       createConceptualKnowledge(payload).then(({ name }) => {
         const patchPayload = { firebaseKey: name };
         updateConceptualKnowledge(patchPayload).then(() => {
-          router.push('/');
+          router.push(`/conceptual-knowledge/${pathId}`);
         });
       });
     }

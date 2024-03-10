@@ -28,6 +28,7 @@ function ConceptualKnowledgePage() {
   };
 
   const getallProceduralKnowledge = () => {
+    getSinglePath(firebaseKey).then((response) => setuniqueId(response.user_id));
     getProcedureKnowledgeByPathId(firebaseKey).then((response) => setProceduralKnowledgeCards(response));
   };
 
@@ -35,8 +36,6 @@ function ConceptualKnowledgePage() {
     getAllTheConceptualKnowledge();
     getallProceduralKnowledge();
   }, []);
-
-  console.warn('proceduralknowledgeCards', proceduralknowledgeCards);
 
   const handleModalClose = () => {
     setShowModal(false);

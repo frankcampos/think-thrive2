@@ -40,7 +40,7 @@ const ProceduralCardFormModal = ({ show, onHide, pathId }) => {
   return (
     <Modal className="my-dark-modal" show={show} onHide={onHide} fullscreen={fullscreen}>
       <Modal.Header closeButton>
-        <Modal.Title>Create Conceptual Card</Modal.Title>
+        <Modal.Title>Create A Procedural Card</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit}>

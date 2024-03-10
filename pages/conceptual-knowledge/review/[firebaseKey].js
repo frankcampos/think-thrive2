@@ -114,14 +114,46 @@ function ReviewConceptualKnowledge() {
         )}
         {showAnswer && (
         <div style={{ height: 'auto' }}>
-          <h3 style={{ marginBottom: '10px', background: 'grey', borderRadius: '5px' }}>{conceptualCard.question}</h3>
-          <h4 style={{ marginBottom: '10px', background: 'white', borderRadius: '5px' }}>{conceptualCard.answer}</h4>
-          <h3 style={{ marginBottom: '10px', background: 'grey', borderRadius: '5px' }}>My Answer</h3>
-          <h4 style={{ marginBottom: '10px', background: 'white', borderRadius: '5px' }}>{userAnswer}</h4>
-          <h3 style={{ marginBottom: '10px', background: 'grey', borderRadius: '5px' }}>Answer Feedback</h3>
-          <h4 style={{ marginBottom: '10px', background: 'white', borderRadius: '5px' }}>{feedback}</h4>
-          <h3 style={{ marginBottom: '10px', background: 'grey', borderRadius: '5px' }}>Example</h3>
-          <h4 style={{ marginBottom: '1px', background: 'white', borderRadius: '5px' }}>{example}</h4>
+          <h3 style={{
+            marginBottom: '10px', background: 'grey', borderRadius: '5px', padding: '5px',
+          }}
+          >{conceptualCard.question}
+          </h3>
+          <h4 style={{
+            marginBottom: '10px', background: 'white', borderRadius: '5px', padding: '5px',
+          }}
+          >{conceptualCard.answer}
+          </h4>
+          <h3 style={{
+            marginBottom: '10px', background: 'grey', borderRadius: '5px', padding: '5px',
+          }}
+          >My Answer
+          </h3>
+          <h4 style={{
+            marginBottom: '10px', background: 'white', borderRadius: '5px', padding: '5px',
+          }}
+          >{userAnswer}
+          </h4>
+          <h3 style={{
+            marginBottom: '10px', background: 'grey', borderRadius: '5px', padding: '5px',
+          }}
+          >Answer Feedback
+          </h3>
+          <h4 style={{
+            marginBottom: '10px', background: 'white', borderRadius: '5px', padding: '5px',
+          }}
+          >{feedback}
+          </h4>
+          <h3 style={{
+            marginBottom: '10px', background: 'grey', borderRadius: '5px', padding: '5px',
+          }}
+          >Example
+          </h3>
+          <h4 style={{
+            marginBottom: '1px', background: 'white', borderRadius: '5px', padding: '5px',
+          }}
+          >{example}
+          </h4>
           <Button variant="dark" style={{ margin: '10px' }} onClick={handleShowAnswer}>Review</Button>
           <Button variant="dark" style={{ margin: '10px' }} onClick={handleClose}>Close</Button>
         </div>

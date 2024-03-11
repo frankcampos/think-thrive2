@@ -13,9 +13,18 @@ function ProceduralCard({ proceduralCard, onUpdate, userID }) {
         width: '19rem', padding: '10px', margin: '10px', background: 'black', borderRadius: '10px',
       }}
     >
-      <Card.Title style={{ background: 'grey', borderRadius: '5px' }}>{proceduralCard.title}</Card.Title>
-      <Card.Img variant="top" src={proceduralCard.picture} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
-      <Card.Text style={{ background: 'grey', borderRadius: '5px', marginTop: '10px' }}>
+      <Card.Title style={{ background: 'grey', borderRadius: '5px', padding: '5px' }}>{proceduralCard.title}</Card.Title>
+      <Card.Img
+        variant="top"
+        src={proceduralCard.picture}
+        style={{
+          width: '100%', height: '200px', objectFit: 'cover', borderRadius: '10px',
+        }}
+      />
+      <Card.Text style={{
+        background: 'grey', borderRadius: '5px', marginTop: '10px', padding: '5px',
+      }}
+      >
         Tags:
       </Card.Text>
       <Card.Body>

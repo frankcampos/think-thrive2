@@ -22,10 +22,16 @@ function PathCard({ path, onUpdate }) {
         width: '18rem', padding: '10px', margin: '10px', background: 'black',
       }}
     >
-      <Card.Title style={{ background: 'grey', borderRadius: '5px' }}>{path.title}</Card.Title>
-      <Card.Img style={{ width: '100%', height: '250px', borderRadius: '15px' }} variant="top" src={path.image} />
+      <Card.Title style={{ background: 'grey', borderRadius: '5px', padding: '5px' }}>{path.title}</Card.Title>
+      <Card.Img
+        style={{
+          width: '100%', height: '250px', borderRadius: '15px', padding: '5px',
+        }}
+        variant="top"
+        src={path.image}
+      />
       <Card.Body variant="grey">
-        <Card.Text style={{ background: 'grey', borderRadius: '5px' }}>{`Goal: ${path.goal}`}</Card.Text>
+        <Card.Text style={{ background: 'grey', borderRadius: '5px', padding: '5px' }}>{`Goal: ${path.goal}`}</Card.Text>
         <img
           src={userPhoto}
           alt="User profile"
@@ -40,7 +46,7 @@ function PathCard({ path, onUpdate }) {
             margin: '10px',
           }}
         />
-        <Card.Text style={{ background: 'grey', borderRadius: '5px' }}>{madeBy}</Card.Text>
+        <Card.Text style={{ background: 'grey', borderRadius: '5px', padding: '5px' }}>{madeBy}</Card.Text>
         <Link href={`/conceptual-knowledge/${path.firebaseKey}`} passHref>
           <Button variant="dark" style={{ marginRight: '10px' }}>View</Button>
         </Link>

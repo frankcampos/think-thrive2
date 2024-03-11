@@ -9,10 +9,6 @@ body {
   min-height: 100vh;
   position: relative;
   background-color:black;
-  /* padding-bottom: 40px;  */
-  button:hover {
-    background-color: blue;
-  }
 }
 
 a {
@@ -28,12 +24,19 @@ a {
   margin-bottom: 40px;
 }
 
+.btn:hover {
+  background-color: blue !important;
+}
+
 .my-dark-modal .modal-content{
   background-color: black;
   color: white;
   text-align: center;
 }
 
+.active-link {
+  color: blue;
+}
 
 .my-dark-modal .modal-header {
   background-color: black;

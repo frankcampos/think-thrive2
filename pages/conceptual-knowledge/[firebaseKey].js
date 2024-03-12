@@ -59,7 +59,7 @@ function ConceptualKnowledgePage() {
           <Button variant="dark" style={{ margin: '0 10px 10px' }} onClick={handleModalOpen}>
             Add A Procedural Card
           </Button>
-          <ProceduralCardFormModal show={showModal} onHide={handleModalClose} pathId={firebaseKey} />
+          <ProceduralCardFormModal show={showModal} onHide={handleModalClose} pathId={firebaseKey} onUpdate={getallProceduralKnowledge} />
         </div>
       )}
       <div className="d-flex flex-wrap justify-content-center">
@@ -69,7 +69,7 @@ function ConceptualKnowledgePage() {
           } if (card.type === 'procedural') {
             return <ProceduralCard key={card.firebaseKey} proceduralCard={card} onUpdate={getallProceduralKnowledge} userID={uniqueId} />;
           }
-          return null; // Add this line to return null if the card type is neither 'conceptual' nor 'procedural'
+          return null;
         })}
       </div>
     </div>

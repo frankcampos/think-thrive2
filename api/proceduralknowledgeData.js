@@ -48,4 +48,22 @@ const getProcedureKnowledgeByPathId = (pathId) => new Promise((resolve, reject) 
     });
 });
 
-export { createProceduralKnowledge, updateProceduralKnowledge, getProcedureKnowledgeByPathId };
+const deleteProceduralKnowledge = (firebaseKey) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/proceduralknowledge/${firebaseKey}.json`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      resolve(data);
+    })
+    .catch((error) => {
+      reject(error);
+    });
+});
+
+export {
+  createProceduralKnowledge, updateProceduralKnowledge, getProcedureKnowledgeByPathId, deleteProceduralKnowledge,
+};

@@ -79,6 +79,12 @@ function ConceptualCard({ conceptualCard, onUpdate, userID }) {
             </Button>
           </>
         )}
+        <Card.Text style={{
+          background: 'grey', borderRadius: '5px', marginTop: '20px', padding: '5px', width: 'auto', color: 'white',
+        }}
+        >
+          Conceptual Card
+        </Card.Text>
       </Card.Body>
     </Card>
   );

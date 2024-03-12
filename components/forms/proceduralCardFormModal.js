@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { updateProceduralKnowledge, createProceduralKnowledge } from '../../api/proceduralknowledgeData';
 
@@ -10,8 +10,14 @@ const initialState = {
   type: 'procedural',
 };
 
-const ProceduralCardFormModal = ({ show, onHide, pathId }) => {
+const ProceduralCardFormModal = ({
+  show, onHide, pathId, onUpdate, objProceduralCard,
+}) => {
   const [formInput, setFormInput] = useState(initialState);
+
+  useEffect(() => {
+    if (objProceduralCard && objProceduralCard.firebaseKey) setFormInput({ ...objProceduralCard });
+  }, [objProceduralCard]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,6 +29,15 @@ const ProceduralCardFormModal = ({ show, onHide, pathId }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (objProceduralCard.firebaseKey) {
+      updateProceduralKnowledge(formInput).then(() => {
+        setFormInput(initialState);
+        onHide();
+        onUpdate();
+      });
+      return;
+    }
+
     const payload = {
       ...formInput,
       pathId,
@@ -32,6 +47,7 @@ const ProceduralCardFormModal = ({ show, onHide, pathId }) => {
       updateProceduralKnowledge(patchPayload).then(() => {
         setFormInput(initialState);
         onHide();
+        onUpdate();
       });
     });
   };
@@ -69,7 +85,19 @@ const ProceduralCardFormModal = ({ show, onHide, pathId }) => {
 ProceduralCardFormModal.propTypes = {
   show: PropTypes.bool.isRequired,
   onHide: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired,
   pathId: PropTypes.string.isRequired,
+  objProceduralCard: PropTypes.shape({
+    title: PropTypes.string,
+    picture: PropTypes.string,
+    taskSteps: PropTypes.string,
+    pathId: PropTypes.string,
+    firebaseKey: PropTypes.string,
+  }),
+};
+
+ProceduralCardFormModal.defaultProps = {
+  objProceduralCard: null,
 };
 
 export default ProceduralCardFormModal;

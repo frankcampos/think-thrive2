@@ -56,7 +56,7 @@ const ProceduralCardFormModal = ({
   return (
     <Modal className="my-dark-modal" show={show} onHide={onHide} fullscreen={fullscreen}>
       <Modal.Header closeButton>
-        <Modal.Title>Create A Procedural Card</Modal.Title>
+        <Modal.Title>{objProceduralCard && objProceduralCard.firebaseKey ? 'Update Procedural Card' : 'Create Procedural Card'}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
@@ -75,7 +75,7 @@ const ProceduralCardFormModal = ({
         </Form>
       </Modal.Body>
       <Modal.Footer style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
-        <Button type="button" onClick={handleSubmit}>Create</Button>
+        <Button type="button" onClick={handleSubmit}>{objProceduralCard && objProceduralCard.firebaseKey ? 'Update' : 'Create'}</Button>
         <Button variant="dark" type="button" onClick={onHide}>Close</Button>
       </Modal.Footer>
     </Modal>

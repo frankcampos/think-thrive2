@@ -1,7 +1,6 @@
 import { clientCredentials } from '../utils/client';
 
 const endpoint = clientCredentials.databaseURL;
-console.warn(endpoint);
 
 const createPath = (payload) => new Promise((resolve, reject) => {
   fetch(`${endpoint}/paths.json`, {

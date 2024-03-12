@@ -23,7 +23,6 @@ function ProceduralCard({ proceduralCard, onUpdate, userID }) {
     setShowModal(true);
   };
 
-  console.warn('onUpdate', onUpdate);
   return (
     <Card
       style={{

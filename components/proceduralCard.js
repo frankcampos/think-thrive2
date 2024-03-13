@@ -44,7 +44,7 @@ function ProceduralCard({ proceduralCard, onUpdate, userID }) {
         Tags:
       </Card.Text>
       <Card.Body>
-        <Link href="./" passHref>
+        <Link href={`/procedural-knowledge/review/${proceduralCard.firebaseKey}`} passHref>
           <Button variant="dark" style={{ marginRight: '10px' }}>Review
           </Button>
         </Link>

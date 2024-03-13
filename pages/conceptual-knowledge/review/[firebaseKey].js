@@ -18,9 +18,6 @@ function ReviewConceptualKnowledge() {
   const [feedback, setFeedback] = useState('');
 
   const { question } = conceptualCard;
-  console.warn(firebaseKey, 'firebaseKey');
-
-  console.warn('question', conceptualCard.pathId);
 
   async function generateExample() {
     try {
@@ -54,10 +51,10 @@ function ReviewConceptualKnowledge() {
     getSingleConceptualKnowledge(firebaseKey).then((response) => {
       setConceptualCard(response);
       setShowAnswer(false);
-      generateExample();
+      // generateExample();
     });
   },
-  [userAnswer]);
+  []);
 
   const handleClose = () => {
     router.push(`/conceptual-knowledge/${conceptualCard.pathId}`);
@@ -65,6 +62,7 @@ function ReviewConceptualKnowledge() {
 
   const handleShowAnswer = () => {
     getAnswerFeedBack();
+    generateExample();
     setUserAnswer('');
     if (showAnswer) {
       setShowAnswer(false);

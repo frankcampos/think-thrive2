@@ -9,13 +9,12 @@ function FeedbackOnStepsModal({ feedbackMessage, handleShow }) {
   const handleClose = () => setShow(false);
 
   useEffect(() => {
-    if (handleShow) {
+    if (handleShow && feedbackMessage) {
       setShow(true);
     }
   }, [feedbackMessage]);
 
   console.warn('modal', feedbackMessage);
-
   const text = feedbackMessage;
 
   return (

@@ -22,9 +22,8 @@ const ProceduralCardKnowledgeReviewPage = () => {
     try {
       const response = await axios.post('/api/openai', {
         model: 'gpt-4-turbo',
-        prompt: `Please explain the answer to this ${taskSteps} in the simplest way possible, as if you're talking to someone who's never heard about the topic before. Include an example of an acronym and a short, easy-to-understand story related to the taskSteps: '${taskSteps}'. Make sure your explanation is very clear and use examples that are easy to relate to.`,
-        temperature: 0.7,
-        max_tokens: 200,
+        prompt: `Considering the task of '${proceduralCard.title}', you've outlined these steps: '${taskSteps}'. Let's take a closer look together to see if anything might have been missed or could be tweaked for better clarity or efficiency. After reviewing, I'll suggest a revised set of steps that includes any improvements or additional actions needed to complete the task more effectively. Remember, it's all about making the process as smooth and straightforward as possible for you.`,
+        max_tokens: 600,
       });
       setExample(response.data.choices[0].message.content);
     } catch (error) {
@@ -54,10 +53,10 @@ const ProceduralCardKnowledgeReviewPage = () => {
 
   return (
     <div>
-      <h1 style={{ textAlign: 'center' }}>{proceduralCard.title}</h1>
+      <h1 style={{ textAlign: 'center', padding: '10px' }}>{proceduralCard.title ? proceduralCard.title.toUpperCase() : ''}</h1>
       <img
         style={{
-          display: 'block', marginLeft: 'auto', marginRight: 'auto', marginTop: ' 20px', width: '90%', height: '90%',
+          display: 'block', marginLeft: 'auto', marginRight: 'auto', marginTop: ' 20px', width: '50%', height: '50%',
         }}
         src={proceduralCard.picture}
         alt={proceduralCard.title}
@@ -65,13 +64,13 @@ const ProceduralCardKnowledgeReviewPage = () => {
       <Button
         onClick={() => setShowSteps(!showSteps)}
         style={{
-          display: 'block', marginLeft: 'auto', marginRight: 'auto', marginTop: '20px',
+          display: 'block', marginLeft: 'auto', marginRight: 'auto', marginTop: '20px', marginBottom: '20px',
         }}
       >{showSteps ? 'Hide Steps' : 'Show Steps'}
       </Button>
       {!showSteps && (
         <div>
-          <h2 style={{ textAlign: 'center' }}>Steps</h2>
+          <h2 style={{ textAlign: 'center', paddingBottom: '10px' }}>Steps</h2>
           <Form>
             <Form.Group controlId="formTaskSteps">
               <Form.Label>Type the Steps that you remenber</Form.Label>
@@ -81,7 +80,7 @@ const ProceduralCardKnowledgeReviewPage = () => {
           <Button
             onClick={handleSubmit}
             style={{
-              display: 'block', marginLeft: 'auto', marginRight: 'auto', marginTop: '20px',
+              display: 'block', marginLeft: 'auto', marginRight: 'auto', marginTop: '20px', marginBottom: '20px',
             }}
           >feedback on steps
           </Button>

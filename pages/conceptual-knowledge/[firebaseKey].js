@@ -63,7 +63,7 @@ function ConceptualKnowledgePage() {
           <Button variant="dark" style={{ margin: '0 10px 10px' }} onClick={handleModalOpen}>
             Add A Procedural Card
           </Button>
-          <ProceduralCardFormModal show={showModal} onHide={handleModalClose} pathId={firebaseKey} onUpdate={getallProceduralKnowledge} />
+          <ProceduralCardFormModal show={showModal} onHide={handleModalClose} pathId={firebaseKey} onUpdate={getallProceduralKnowledge} objProceduralCard={null} />
         </div>
       )}
       <div className="d-flex flex-wrap justify-content-center">

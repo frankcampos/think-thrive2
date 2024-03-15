@@ -64,6 +64,20 @@ const deleteProceduralKnowledge = (firebaseKey) => new Promise((resolve, reject)
     });
 });
 
+const getProceduralKnowledgeByFirebaseKey = (firebaseKey) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/proceduralknowledge/${firebaseKey}.json`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => resolve(data))
+    .catch((error) => {
+      reject(error);
+    });
+});
+
 export {
-  createProceduralKnowledge, updateProceduralKnowledge, getProcedureKnowledgeByPathId, deleteProceduralKnowledge,
+  createProceduralKnowledge, updateProceduralKnowledge, getProcedureKnowledgeByPathId, deleteProceduralKnowledge, getProceduralKnowledgeByFirebaseKey,
 };

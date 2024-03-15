@@ -21,8 +21,12 @@ function ConceptualKnowledgePage() {
   const { user } = useAuth();
 
   const getAllTheConceptualKnowledge = () => {
+    console.warn('hi', firebaseKey);
     if (firebaseKey) {
-      getSinglePath(firebaseKey).then((response) => setuniqueId(response.user_id));
+      getSinglePath(firebaseKey).then((response) => {
+        console.warn('hi', response);
+        setuniqueId(response.user_id);
+      });
       getConceptualKnowledgeByPathId(firebaseKey).then((response) => setConceptualKnowledgeCards(response));
     }
   };

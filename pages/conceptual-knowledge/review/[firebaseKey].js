@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import Container from 'react-bootstrap/Container';
 import { getSingleConceptualKnowledge } from '../../../api/conceptualknowledgeData';
 
 function ReviewConceptualKnowledge() {
@@ -73,7 +74,7 @@ function ReviewConceptualKnowledge() {
     }
   };
   return (
-    <div style={{
+    <Container style={{
       display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'auto', padding: '20px',
     }}
     >
@@ -157,7 +158,7 @@ function ReviewConceptualKnowledge() {
         </div>
         )}
       </Card>
-    </div>
+    </Container>
   );
 }
 

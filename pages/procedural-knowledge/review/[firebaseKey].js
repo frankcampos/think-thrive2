@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
-  Button, Container, Form, Spinner,
+  Button, Container, Form, Spinner, Row, Col,
 } from 'react-bootstrap';
 import { getProceduralKnowledgeByFirebaseKey } from '../../../api/proceduralknowledgeData';
 import FeedbackOnStepsModal from '../../../components/feedbackonStepsModal';
@@ -59,35 +59,58 @@ const ProceduralCardKnowledgeReviewPage = () => {
   };
 
   return (
-    <Container fluid style={{ background: 'grey', position: 'relative' }}>
+    <Container
+      style={{
+        background: 'black', position: 'relative', width: '90%', borderRadius: '10px', padding: '20px',
+      }}
+    >
       <Button
         onClick={() => router.push(`/conceptual-knowledge/${proceduralCard.pathId}`)}
         style={{
-          position: 'absolute', right: 0, marginTop: '10px', marginRight: '10px',
+          position: 'absolute', right: 0, marginTop: '10px', marginRight: '10px', background: 'grey', color: 'black',
         }}
       >X
       </Button>
-      <h1 style={{ textAlign: 'center', padding: '10px' }}>{proceduralCard.title ? proceduralCard.title.toUpperCase() : ''}</h1>
-      <img
-        style={{
-          display: 'block', marginLeft: 'auto', marginRight: 'auto', marginTop: ' 20px', width: '50%', height: '50%',
-        }}
-        src={proceduralCard.picture}
-        alt={proceduralCard.title}
-      />
+      <h1 style={{
+        textAlign: 'center', padding: '10px', background: 'grey', borderRadius: '10px',
+      }}
+      >{proceduralCard.title ? proceduralCard.title.toUpperCase() : ''}
+      </h1>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%',
+      }}
+      >
+        <img
+          style={{
+            marginTop: '20px',
+            width: '50%',
+            height: '50%',
+            borderRadius: '10px',
+          }}
+          src={proceduralCard.picture}
+          alt={proceduralCard.title}
+        />
+      </div>
       <Button
         onClick={() => {
           setShowSteps(!showSteps);
           setShowModal(false); // hide the modal when the "Hide Steps" button is clicked
         }}
         style={{
-          display: 'block', marginLeft: 'auto', marginRight: 'auto', marginTop: '20px', marginBottom: '20px',
+          display: 'block', marginLeft: 'auto', marginRight: 'auto', marginTop: '20px', marginBottom: '20px', background: 'grey', color: 'black',
         }}
       >{showSteps ? 'Hide Steps' : 'Show Steps'}
       </Button>
       {!showSteps && (
         <div>
-          <h2 style={{ textAlign: 'center', paddingBottom: '10px' }}>Steps</h2>
+          <h2 style={{
+            textAlign: 'center', paddingBottom: '10px', background: 'grey', color: ' black', borderRadius: '10px',
+          }}
+          >Steps
+          </h2>
           {loading && (
           <div style={{
             display: 'flex',
@@ -96,44 +119,71 @@ const ProceduralCardKnowledgeReviewPage = () => {
             height: '10vh',
           }}
           >
-            <Spinner animation="border" variant="primary" />
-            <p>Loading...</p>
+            <Spinner animation="border" variant="white" />
+            <p style={{ color: 'white' }}>Loading...</p>
           </div>
           )}
           <Form>
             <Form.Group controlId="formTaskSteps">
-              <Form.Label>Type the Steps that you remenber</Form.Label>
+              <Form.Label style={{ color: 'white' }}>Type the Steps that you remember</Form.Label>
               <Form.Control as="textarea" rows={10} placeholder="Recall your steps" name="taskSteps" value={taskSteps} onChange={handleChange} />
             </Form.Group>
           </Form>
-          <Button
-            onClick={handleSubmit}
-            style={{
-              display: 'block', marginLeft: 'auto', marginRight: 'auto', marginTop: '20px', marginBottom: '20px',
-            }}
-          >feedback on steps
-          </Button>
-          {!loading && showModal && <FeedbackOnStepsModal feedbackMessage={example} handleShow={showModal} />}
+          <Row>
+            <Col>
+              <Button
+                variant="secondary"
+                onClick={handleSubmit}
+                style={{
+                  display: 'block', marginLeft: 'auto', marginRight: 'auto', marginTop: '20px', marginBottom: '20px', color: 'black',
+                }}
+              >feedback on steps
+              </Button>
+            </Col>
+            <Col>
+              <Button
+                onClick={() => router.push(`/conceptual-knowledge/${proceduralCard.pathId}`)}
+                style={{
+                  display: 'block',
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                  marginTop: '20px',
+                  marginBottom: '20px',
+                  color: 'black',
+                }}
+                variant="secondary"
+              >Close
+              </Button>
+            </Col>
+          </Row>
+            {!loading && showModal && <FeedbackOnStepsModal feedbackMessage={example} handleShow={showModal} />}
         </div>
       )}
       {showSteps && (
         <div>
-          <h2 style={{ textAlign: 'center' }}>Steps</h2>
+          <h2 style={{ textAlign: 'center', color: 'white' }}>Steps</h2>
           <Form>
             <Form.Group controlId="formTaskSteps">
-              <Form.Label>TaskSteps</Form.Label>
+              <Form.Label style={{ color: 'white' }}>TaskSteps</Form.Label>
               <Form.Control as="textarea" rows={10} placeholder="BreakDown Each Task Into Steps" name="taskStepsRecall" value={proceduralCard.taskSteps} onChange={handleChange} />
             </Form.Group>
           </Form>
+          <Button
+            onClick={() => router.push(`/conceptual-knowledge/${proceduralCard.pathId}`)}
+            style={{
+              display: 'block',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              marginTop: '20px',
+              marginBottom: '20px',
+              color: 'black',
+            }}
+            variant="secondary"
+          >Close
+          </Button>
         </div>
       )}
-      <Button
-        onClick={() => router.push(`/conceptual-knowledge/${proceduralCard.pathId}`)}
-        style={{
-          display: 'block', marginLeft: 'auto', marginRight: 'auto', marginTop: '20px', marginBottom: '20px',
-        }}
-      >Close
-      </Button>
+
     </Container>
   );
 };

@@ -29,14 +29,13 @@ export default function NavBar() {
             <Link passHref href="/my-paths">
               <Nav.Link variant="underline" className={router.pathname === '/my-paths' ? 'active-link' : ''}>My Paths</Nav.Link>
             </Link>
-            <Link passHref href="/ask-ai">
-              <Nav.Link variant="underline" className={router.pathname === '/ask-ai' ? 'active-link' : ''}>Ask me AI</Nav.Link>
-            </Link>
           </Nav>
           <Nav style={{ alignContent: 'flex-end' }}>
-            <Button variant="dark" onClick={signOut}>
-              Sign Out
-            </Button>
+            <Link passHref href="/">
+              <Button variant="dark" onClick={signOut}>
+                Sign Out
+              </Button>
+            </Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

@@ -2,7 +2,9 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Button, Form } from 'react-bootstrap';
+import {
+  Button, Container, Form, Spinner,
+} from 'react-bootstrap';
 import { getProceduralKnowledgeByFirebaseKey } from '../../../api/proceduralknowledgeData';
 import FeedbackOnStepsModal from '../../../components/feedbackonStepsModal';
 
@@ -13,12 +15,15 @@ const ProceduralCardKnowledgeReviewPage = () => {
   const [taskSteps, setTaskSteps] = useState('');
   const [proceduralCard, setProceduralCard] = useState({});
   const [example, setExample] = useState('');
-  console.warn(taskSteps);
+  const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     getProceduralKnowledgeByFirebaseKey(firebaseKey).then((response) => setProceduralCard(response));
   }, [firebaseKey]);
 
   async function getStepsFeedBack() {
+    setLoading(true);
     try {
       const response = await axios.post('/api/openai', {
         model: 'gpt-4-turbo',
@@ -28,6 +33,8 @@ const ProceduralCardKnowledgeReviewPage = () => {
       setExample(response.data.choices[0].message.content);
     } catch (error) {
       console.error('Error OpenAi:', error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -45,14 +52,21 @@ const ProceduralCardKnowledgeReviewPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.warn(taskSteps);
+
     getStepsFeedBack();
+    setTaskSteps('');
+    setShowModal(true);
   };
 
-  console.warn('this is the example', example);
-
   return (
-    <div>
+    <Container fluid style={{ background: 'grey', position: 'relative' }}>
+      <Button
+        onClick={() => router.push(`/conceptual-knowledge/${proceduralCard.pathId}`)}
+        style={{
+          position: 'absolute', right: 0, marginTop: '10px', marginRight: '10px',
+        }}
+      >X
+      </Button>
       <h1 style={{ textAlign: 'center', padding: '10px' }}>{proceduralCard.title ? proceduralCard.title.toUpperCase() : ''}</h1>
       <img
         style={{
@@ -62,7 +76,10 @@ const ProceduralCardKnowledgeReviewPage = () => {
         alt={proceduralCard.title}
       />
       <Button
-        onClick={() => setShowSteps(!showSteps)}
+        onClick={() => {
+          setShowSteps(!showSteps);
+          setShowModal(false); // hide the modal when the "Hide Steps" button is clicked
+        }}
         style={{
           display: 'block', marginLeft: 'auto', marginRight: 'auto', marginTop: '20px', marginBottom: '20px',
         }}
@@ -71,6 +88,18 @@ const ProceduralCardKnowledgeReviewPage = () => {
       {!showSteps && (
         <div>
           <h2 style={{ textAlign: 'center', paddingBottom: '10px' }}>Steps</h2>
+          {loading && (
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '10vh',
+          }}
+          >
+            <Spinner animation="border" variant="primary" />
+            <p>Loading...</p>
+          </div>
+          )}
           <Form>
             <Form.Group controlId="formTaskSteps">
               <Form.Label>Type the Steps that you remenber</Form.Label>
@@ -84,7 +113,7 @@ const ProceduralCardKnowledgeReviewPage = () => {
             }}
           >feedback on steps
           </Button>
-          <FeedbackOnStepsModal feedbackMessage={example} handleShow={handleSubmit} />
+          {!loading && showModal && <FeedbackOnStepsModal feedbackMessage={example} handleShow={showModal} />}
         </div>
       )}
       {showSteps && (
@@ -98,7 +127,14 @@ const ProceduralCardKnowledgeReviewPage = () => {
           </Form>
         </div>
       )}
-    </div>
+      <Button
+        onClick={() => router.push(`/conceptual-knowledge/${proceduralCard.pathId}`)}
+        style={{
+          display: 'block', marginLeft: 'auto', marginRight: 'auto', marginTop: '20px', marginBottom: '20px',
+        }}
+      >Close
+      </Button>
+    </Container>
   );
 };
 

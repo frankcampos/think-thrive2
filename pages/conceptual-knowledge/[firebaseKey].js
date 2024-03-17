@@ -10,6 +10,7 @@ import ProceduralCardFormModal from '../../components/forms/proceduralCardFormMo
 import { useAuth } from '../../utils/context/authContext';
 import { getConceptualKnowledgeByPathId } from '../../api/conceptualknowledgeData';
 import { getSinglePath } from '../../api/pathsData';
+import InstructionConceptualAndProceduralModal from '../../components/conceptual-proceduralInstructionsModal';
 
 function ConceptualKnowledgePage() {
   const router = useRouter();
@@ -63,6 +64,7 @@ function ConceptualKnowledgePage() {
           <Button variant="dark" style={{ margin: '0 10px 10px' }} onClick={handleModalOpen}>
             Add A Procedural Card
           </Button>
+          <InstructionConceptualAndProceduralModal />
           <ProceduralCardFormModal show={showModal} onHide={handleModalClose} pathId={firebaseKey} onUpdate={getallProceduralKnowledge} objProceduralCard={null} />
         </div>
       )}

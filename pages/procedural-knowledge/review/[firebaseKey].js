@@ -165,7 +165,7 @@ const ProceduralCardKnowledgeReviewPage = () => {
           <Form>
             <Form.Group controlId="formTaskSteps">
               <Form.Label style={{ color: 'white' }}>TaskSteps</Form.Label>
-              <Form.Control as="textarea" rows={10} placeholder="BreakDown Each Task Into Steps" name="taskStepsRecall" value={proceduralCard.taskSteps} onChange={handleChange} />
+              <Form.Control as="textarea" rows={10} placeholder="BreakDown Each Task Into Steps" name="taskStepsRecall" value={proceduralCard.taskSteps} onChange={handleChange} readOnly style={{ fontSize: '20px' }} />
             </Form.Group>
           </Form>
           <Button

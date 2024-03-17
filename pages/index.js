@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Button } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { getAllPaths } from '../api/pathsData';
@@ -18,19 +18,21 @@ function Home() {
   useEffect(() => { getAllThePaths(); }, []);
 
   return (
-    <div className="text-center my-4 d-flex flex-wrap justify-content-evenly ">
-      <Link href="./path/new" passHref>
-        <Button variant="dark" style={{ margin: '0 0 10px' }}>
-          Add A Learning Path
-        </Button>
-      </Link>
-      <InstructionsModal />
+    <Container fluid>
+      <div className="d-flex flex-wrap justify-content-evenly" style={{ margin: '0 auto' }}>
+        <Link href="./path/new" passHref>
+          <Button variant="dark" style={{ margin: '0 0 10px' }}>
+            Add A Learning Path
+          </Button>
+        </Link>
+        <InstructionsModal style={{ margin: '10px' }} />
+      </div>
       <div className="d-flex flex-wrap justify-content-evenly" style={{ margin: '0 auto' }}>
         {paths.map((path) => (
           <PathCard key={path.firebaseKey} path={path} onUpdate={getAllThePaths} />
         ))}
       </div>
-    </div>
+    </Container>
   );
 }
 

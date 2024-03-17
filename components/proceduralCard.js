@@ -1,15 +1,20 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProceduralCardFormModal from './forms/proceduralCardFormModal';
 import { deleteProceduralKnowledge } from '../api/proceduralknowledgeData';
 import { useAuth } from '../utils/context/authContext';
+import { getProceduralTagsByProceduralCardId } from '../api/proceduraltagsData';
+import ProceduralModalTags from './proceduralmodalTags';
 
 function ProceduralCard({ proceduralCard, onUpdate, userID }) {
   const { user } = useAuth();
   const [showModal, setShowModal] = useState(false);
+  const [showTagsModal, setShowTagsModal] = useState(false);
+  const [tags, setTags] = useState([]);
 
   const deletethisProceduralCard = () => {
     if (window.confirm(`Are you sure you want to delete this ${proceduralCard.title}?`)) deleteProceduralKnowledge(proceduralCard.firebaseKey).then(onUpdate());
@@ -22,6 +27,20 @@ function ProceduralCard({ proceduralCard, onUpdate, userID }) {
   const handleModalOpen = () => {
     setShowModal(true);
   };
+
+  const handleTagsModalClose = () => {
+    setShowTagsModal(false);
+  };
+
+  const handleTagsModalOpen = () => {
+    setShowTagsModal(true);
+  };
+
+  useEffect(() => {
+    getProceduralTagsByProceduralCardId(proceduralCard.firebaseKey).then((response) => {
+      setTags(response);
+    });
+  }, [proceduralCard.pathId, showTagsModal, showModal]);
 
   return (
     <Card
@@ -37,12 +56,28 @@ function ProceduralCard({ proceduralCard, onUpdate, userID }) {
           width: '100%', height: '200px', objectFit: 'cover', borderRadius: '10px',
         }}
       />
-      <Card.Text style={{
-        background: 'grey', borderRadius: '5px', marginTop: '10px', padding: '5px',
-      }}
+      <Card.Text
+        style={{
+          background: 'grey', borderRadius: '5px', marginTop: '10px', padding: '5px',
+        }}
+        onClick={handleTagsModalOpen}
       >
-        Tags:
+        Tags:{tags.map((tag) => (
+          <span
+            key={tag.firebaseKey}
+            style={{
+              display: 'inline-block',
+              padding: '5px',
+              margin: '2px',
+              borderRadius: '5px',
+              backgroundColor: 'black',
+              color: 'white',
+            }}
+          >{tag.tag_label}
+          </span>
+      ))}
       </Card.Text>
+      <ProceduralModalTags show={showTagsModal} onHide={handleTagsModalClose} proceduralCardId={proceduralCard.firebaseKey} />
       <Card.Body>
         <Link href={`/procedural-knowledge/review/${proceduralCard.firebaseKey}`} passHref>
           <Button variant="dark" style={{ marginRight: '10px' }}>Review

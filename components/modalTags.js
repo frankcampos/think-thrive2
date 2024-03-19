@@ -41,7 +41,6 @@ function ModalTags({
     const tagId = tagObject.firebaseKey;
     getConceptualTagByTagId(tagId).then((data) => {
       const { firebaseKey } = Object.values(data)[0];
-      console.warn('this is my firebasekey', firebaseKey);
       deleteConceptualTag(firebaseKey);
       setSearchTerm('');
       setFilteredTags(filteredTags);

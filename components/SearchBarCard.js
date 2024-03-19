@@ -31,6 +31,7 @@ function SearchBarCards({ onSearchTermChange, onFilterChange }) {
       style={{
         display: 'flex', flexDirection: 'row', alignItems: 'center', backgroundColor: 'black', padding: '20px', borderRadius: '10px',
       }}
+      className="search-bar-cards"
     >
       <select
         value={searchBy}

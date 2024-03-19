@@ -8,7 +8,6 @@ function EditConceptualCard() {
   const { firebaseKey } = router.query;
   // it is pasing the pahtId to the form no good
   const [editConceptualCard, setEditConceptualCard] = useState({});
-  console.warn(firebaseKey);
 
   useEffect(() => {
     if (firebaseKey) {

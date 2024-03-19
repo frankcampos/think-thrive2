@@ -41,7 +41,6 @@ function ProceduralModalTags({
     const tagId = tagObject.firebaseKey;
     getProceduralTagsByTagId(tagId).then((data) => {
       const { firebaseKey } = Object.values(data)[0];
-      console.warn('this is my firebasekey', firebaseKey);
       deleteProceduralTag(firebaseKey);
       setSearchTerm('');
       setFilteredTags(filteredTags);

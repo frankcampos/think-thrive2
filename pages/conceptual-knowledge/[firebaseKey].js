@@ -1,7 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Button } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import ConceptualCard from '../../components/conceptualCard';
 import ProceduralCard from '../../components/proceduralCard';
@@ -11,6 +12,7 @@ import { useAuth } from '../../utils/context/authContext';
 import { getConceptualKnowledgeByPathId } from '../../api/conceptualknowledgeData';
 import { getSinglePath } from '../../api/pathsData';
 import InstructionConceptualAndProceduralModal from '../../components/conceptual-proceduralInstructionsModal';
+import SearchBarCards from '../../components/SearchBarCard';
 
 function ConceptualKnowledgePage() {
   const router = useRouter();
@@ -20,12 +22,12 @@ function ConceptualKnowledgePage() {
   const [uniqueId, setuniqueId] = useState('');
   const [showModal, setShowModal] = useState(false);
   const { user } = useAuth();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filter, setFilter] = useState('');
 
   const getAllTheConceptualKnowledge = () => {
-    console.warn('hi', firebaseKey);
     if (firebaseKey) {
       getSinglePath(firebaseKey).then((response) => {
-        console.warn('hi', response);
         setuniqueId(response.user_id);
       });
       getConceptualKnowledgeByPathId(firebaseKey).then((response) => setConceptualKnowledgeCards(response));
@@ -51,11 +53,22 @@ function ConceptualKnowledgePage() {
   };
 
   const mixedCards = [...ConceptualKnowledgeCards, ...proceduralknowledgeCards];
+  const filteredCards = mixedCards.filter((card) => {
+    if (filter === 'procedural') {
+      return card.title && card.title.toLowerCase().includes(searchTerm.toLowerCase());
+    } if (filter === 'conceptual') {
+      return card.question && card.question.toLowerCase().includes(searchTerm.toLowerCase());
+    } if (filter === 'all') {
+      return card && ((card.title && card.title.toLowerCase().includes(searchTerm.toLowerCase())) || (card.question && card.question.toLowerCase().includes(searchTerm.toLowerCase())));
+    }
+    return true;
+  });
 
   return (
-    <div className="text-center my-4">
+    <Container className="text-center my-4">
       {uniqueId === user.uid && (
         <div>
+
           <Link href={`/conceptual-knowledge/new/${firebaseKey}`} passHref>
             <Button variant="dark" style={{ margin: '0 0 10px' }}>
               Add A Conceptual Card
@@ -64,21 +77,40 @@ function ConceptualKnowledgePage() {
           <Button variant="dark" style={{ margin: '0 10px 10px' }} onClick={handleModalOpen}>
             Add A Procedural Card
           </Button>
+
           <InstructionConceptualAndProceduralModal />
+          <SearchBarCards
+            style={{
+              margin: '20px',
+              backgroundColor: '#333',
+              color: '#fff',
+            }}
+            onSearchTermChange={setSearchTerm}
+            onFilterChange={setFilter}
+          />
           <ProceduralCardFormModal show={showModal} onHide={handleModalClose} pathId={firebaseKey} onUpdate={getallProceduralKnowledge} objProceduralCard={null} />
         </div>
       )}
       <div className="d-flex flex-wrap justify-content-center">
-        {mixedCards.map((card) => {
-          if (card.type === 'conceptual') {
-            return <ConceptualCard key={card.firebaseKey} conceptualCard={card} onUpdate={getAllTheConceptualKnowledge} userID={uniqueId} />;
-          } if (card.type === 'procedural') {
-            return <ProceduralCard key={card.firebaseKey} proceduralCard={card} onUpdate={getallProceduralKnowledge} userID={uniqueId} />;
-          }
-          return null;
-        })}
+        {filteredCards.length === 0 ? (
+          <div style={{ textAlign: 'center', marginTop: '50px' }}>
+            <h2>Oops!</h2>
+            <p>No cards match your search.</p>
+            <img src="https://thumbs.dreamstime.com/b/expression-words-design-oops-illustration-162212955.jpg" alt="No match" style={{ width: '200px', height: '200px', objectFit: 'cover' }} />
+            <p>Try adjusting your search or filter settings.</p>
+          </div>
+        ) : (
+          filteredCards.map((card) => {
+            if (card.type === 'conceptual') {
+              return <ConceptualCard key={card.firebaseKey} conceptualCard={card} onUpdate={getAllTheConceptualKnowledge} userID={uniqueId} />;
+            } if (card.type === 'procedural') {
+              return <ProceduralCard key={card.firebaseKey} proceduralCard={card} onUpdate={getallProceduralKnowledge} userID={uniqueId} />;
+            }
+            return null;
+          })
+        )}
       </div>
-    </div>
+    </Container>
   );
 }
 

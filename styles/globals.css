@@ -48,3 +48,48 @@ a {
  color:white; 
 border: 2px solid white;
  }
+
+ 
+
+.search-bar-cards {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: black;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.search-bar-cards select {
+  margin-right: 10px;
+  background-color: #555;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.search-bar-cards input {
+  flex: 1;
+  background-color: #555;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+@media (max-width: 600px) {
+  .search-bar-cards {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .search-bar-cards select {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .search-bar-cards input {
+    width: 100%;
+  }
+}

@@ -13,7 +13,6 @@ function MyPaths() {
   const getAllThePaths = () => {
     getPathsByUserId(user.uid).then((response) => {
       setPaths(response);
-      console.warn(response);
     });
   };
 

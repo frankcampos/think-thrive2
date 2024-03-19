@@ -22,8 +22,6 @@ function ConceptualCardForm({ objConceptualCard, pathId }) {
     if (objConceptualCard.firebaseKey) setFormState({ ...objConceptualCard });
   }, [objConceptualCard]);
 
-  console.warn('this is the form state', objConceptualCard);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormState((prevState) => ({
@@ -34,7 +32,6 @@ function ConceptualCardForm({ objConceptualCard, pathId }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.warn(formState);
     if (objConceptualCard.firebaseKey) {
       updateConceptualKnowledge(formState).then(() => {
         router.push(`/conceptual-knowledge/${objConceptualCard.pathId}`);

@@ -26,7 +26,6 @@ const ProceduralCardFormModal = ({
       [name]: value,
     }));
   };
-  console.warn('this is the form state', objProceduralCard);
   const handleSubmit = (e) => {
     e.preventDefault();
     if (objProceduralCard && objProceduralCard.firebaseKey) {

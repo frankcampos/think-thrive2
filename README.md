@@ -1,7 +1,4 @@
-# Think Thrive
-
-# Think Thrive  [![Netlify Status](https://api.netlify.com/api/v1/badges/4ab7e730-7ed3-4cfd-a988-66195e79a991/deploy-status)](https://app.netlify.com/sites/drt-sortinghat/deploys)
-<!-- update the netlify badge above with your own badge that you can find at netlify under settings/general#status-badges -->
+# Think Thrive [![Netlify Status](https://api.netlify.com/api/v1/badges/1996d30f-f2f7-4e64-aa02-88e9960680bc/deploy-status)](https://app.netlify.com/sites/fantastic-manatee-697af7/deploys)
 
 Here I am putting an overview of what my project is about. It comes below the name of my project so that others can read what it is about and get more details.
 

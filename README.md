@@ -1,4 +1,4 @@
-# React/Next.js Template
+# Think Thrive
 
 [See Live Demo of this Template](https://drt-next-js-template.netlify.app/)
 

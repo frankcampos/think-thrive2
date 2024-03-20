@@ -30,7 +30,7 @@ function PathCard({ path, onUpdate }) {
         variant="top"
         src={path.image}
       />
-      <Card.Body variant="grey">
+      <Card.Body variant="grey" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Card.Text style={{ background: 'grey', borderRadius: '5px', padding: '5px' }}>{`Goal: ${path.goal}`}</Card.Text>
         <img
           src={userPhoto}
@@ -47,17 +47,19 @@ function PathCard({ path, onUpdate }) {
           }}
         />
         <Card.Text style={{ background: 'grey', borderRadius: '5px', padding: '5px' }}>{madeBy}</Card.Text>
-        <Link href={`/conceptual-knowledge/${path.firebaseKey}`} passHref>
-          <Button variant="dark" style={{ marginRight: '10px' }}>View</Button>
-        </Link>
-        {user.uid === path.user_id && (
-          <>
+        <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+          <Link href={`/conceptual-knowledge/${path.firebaseKey}`} passHref>
+            <Button variant="dark" style={{ marginRight: '10px' }}>View</Button>
+          </Link>
+          {user.uid === path.user_id && (
+          <div style={{ display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
             <Link href={`/path/edit/${path.firebaseKey}`} passHref>
               <Button variant="dark" style={{ marginRight: '10px' }}>Edit</Button>
             </Link>
             <Button variant="dark" onClick={deletethisPath} style={{ marginRight: '10px' }}>Delete</Button>
-          </>
-        )}
+          </div>
+          )}
+        </div>
       </Card.Body>
     </Card>
   );

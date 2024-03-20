@@ -18,7 +18,7 @@ function Home() {
   useEffect(() => { getAllThePaths(); }, []);
 
   return (
-    <Container fluid>
+    <Container>
       <div className="d-flex flex-wrap justify-content-evenly" style={{ margin: '0 auto' }}>
         <Link href="./path/new" passHref>
           <Button variant="dark" style={{ margin: '0 0 10px' }}>

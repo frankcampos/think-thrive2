@@ -2,7 +2,7 @@
 
 Here I am putting an overview of what my project is about. It comes below the name of my project so that others can read what it is about and get more details.
 
-[View App](#your-link)
+[View App](https://fantastic-manatee-697af7.netlify.app/)
 
 ## Get Started <!-- OPTIONAL, but doesn't hurt -->
 PLACE CODE SNIPPET HERE
@@ -22,9 +22,10 @@ PLACE CODE SNIPPET HERE
 https://www.loom.com/share/829b90d831ea441ba2db6bea724af210
 
 ## Relevant Links <!-- Link to all the things that are required outside of the ones that have their own section -->
-- [Check out the deployed site](#your-link)
-- [Wireframes](#your-link)
-- [Project Board](#your-link)
+- [Check out the deployed site](https://fantastic-manatee-697af7.netlify.app/)
+- [Wireframes](https://www.figma.com/file/LX2fOHHE462e3smUUTm2Q6/ThinkThrive?type=design&node-id=0%3A1&mode=design&t=ePzO94fHno8TfzEf-1)
+- [Project Board](https://github.com/users/frankcampos/projects/6/views/1)
+- [Database Relationship Diagram](https://dbdiagram.io/d/ThinkThrive_with_streachgoals-65c9543fac844320aee9917f)
 
 ## Code Snippet <!-- OPTIONAL, but doesn't hurt -->
 PLACE CODE SNIPPET HERE
@@ -33,4 +34,4 @@ PLACE CODE SNIPPET HERE
 <img width="1148" alt="Your Alt" src="your-link.png">
 
 ## Contributors
-- [YOUR NAME](https://github.com/your-github-url)
+- [Frank Campos](https://github.com/frankcampos)

@@ -97,7 +97,7 @@ function ReviewConceptualKnowledge() {
           <Form.Control
             as="textarea"
             style={{
-              width: '18rem',
+              width: '98%',
               height: 'auto',
               margin: '10px',
               padding: '10px',

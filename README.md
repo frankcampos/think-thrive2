@@ -18,8 +18,8 @@ PLACE CODE SNIPPET HERE
 - Card Ordering: Sort the student cards by some criteria (i.e. alphabetically by name, by house)
 - Voldermort's Army: Create a separate container of cards that hold the cards for students that have been expelled. These should be styled differently from Hogwarts students.
 
-## Video Walkthrough of APP NAME <!-- A loom link is sufficient -->
-https://www.loom.com/share/829b90d831ea441ba2db6bea724af210
+## Video Walkthrough of Think Thrive <!-- A loom link is sufficient -->
+https://www.loom.com/share/c54f4815e95d4a3da9ad7a7fbd19368f?sid=e38bdb4e-42c2-4652-ab91-7be3b3c9ca2a
 
 ## Relevant Links <!-- Link to all the things that are required outside of the ones that have their own section -->
 - [Check out the deployed site](https://fantastic-manatee-697af7.netlify.app/)

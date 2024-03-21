@@ -31,8 +31,14 @@ https://www.loom.com/share/c54f4815e95d4a3da9ad7a7fbd19368f?sid=e38bdb4e-42c2-46
 PLACE CODE SNIPPET HERE
 
 ## Project Screenshots <!-- These can be inside of your project. Look at the repos from class and see how the images are included in the readme -->
-  ![Login Page](https://github.com/frankcampos/think-thrive2/assets/26656478/757c8126-fd68-40ef-819e-4b61ceabff31)
- ![Landing Page](https://github.com/frankcampos/think-thrive2/assets/26656478/276e187c-9541-4cc7-b786-97af5a375bf0)
+  Login Page ![Login Page](https://github.com/frankcampos/think-thrive2/assets/26656478/757c8126-fd68-40ef-819e-4b61ceabff31)
+ Landing Page ![Landing Page](https://github.com/frankcampos/think-thrive2/assets/26656478/276e187c-9541-4cc7-b786-97af5a375bf0)
+ Instructional Modal(pop-up)![Screenshot from 2024-03-21 06-31-07](https://github.com/frankcampos/think-thrive2/assets/26656478/9dc0d2f3-c91c-46dc-b65b-76e715473a2c)
+ Procedural Card Review![Screenshot from 2024-03-21 06-31-34](https://github.com/frankcampos/think-thrive2/assets/26656478/d61d4333-e44a-4053-967c-9410f76988d4)
+ AI-Powered Answer Card![Screenshot from 2024-03-21 06-32-32](https://github.com/frankcampos/think-thrive2/assets/26656478/c175ddce-f140-4cac-b847-58562d7e53d8)
+
+
+
 
 
 

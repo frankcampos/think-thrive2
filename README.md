@@ -31,8 +31,8 @@ https://www.loom.com/share/c54f4815e95d4a3da9ad7a7fbd19368f?sid=e38bdb4e-42c2-46
 PLACE CODE SNIPPET HERE
 
 ## Project Screenshots <!-- These can be inside of your project. Look at the repos from class and see how the images are included in the readme -->
-##Login Page![Screenshot from 2024-03-21 06-29-56](https://github.com/frankcampos/think-thrive2/assets/26656478/757c8126-fd68-40ef-819e-4b61ceabff31)
-##Landing Page![Screenshot from 2024-03-21 06-30-34](https://github.com/frankcampos/think-thrive2/assets/26656478/276e187c-9541-4cc7-b786-97af5a375bf0)
+##Login Page  ![Screenshot from 2024-03-21 06-29-56](https://github.com/frankcampos/think-thrive2/assets/26656478/757c8126-fd68-40ef-819e-4b61ceabff31)
+##Landing Page  ![Screenshot from 2024-03-21 06-30-34](https://github.com/frankcampos/think-thrive2/assets/26656478/276e187c-9541-4cc7-b786-97af5a375bf0)
 
 
 

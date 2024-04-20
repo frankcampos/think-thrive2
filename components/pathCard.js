@@ -19,7 +19,7 @@ function PathCard({ path, onUpdate }) {
     <Card
       variant="grey"
       style={{
-        width: '18rem', padding: '10px', margin: '10px', background: 'black',
+        width: '18rem', padding: '10px', margin: '10px', background: 'black', boxShadow: '5px 5px 5px grey', borderRadius: '15px',
       }}
     >
       <Card.Title style={{ background: 'grey', borderRadius: '5px', padding: '5px' }}>{path.title}</Card.Title>

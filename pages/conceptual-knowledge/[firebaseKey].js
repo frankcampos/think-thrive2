@@ -66,9 +66,9 @@ function ConceptualKnowledgePage() {
 
   return (
     <Container className="text-center my-4">
-      {uniqueId === user.uid && (
-        <div>
-
+      <div>
+        {uniqueId === user.uid && (
+        <>
           <Link href={`/conceptual-knowledge/new/${firebaseKey}`} passHref>
             <Button variant="dark" style={{ margin: '0 0 10px' }}>
               Add A Conceptual Card
@@ -77,20 +77,24 @@ function ConceptualKnowledgePage() {
           <Button variant="dark" style={{ margin: '0 10px 10px' }} onClick={handleModalOpen}>
             Add A Procedural Card
           </Button>
+        </>
+        )}
+      </div>
+      <div>
+        <InstructionConceptualAndProceduralModal />
+        <SearchBarCards
+          style={{
+            margin: '20px',
+            backgroundColor: '#333',
+            color: '#fff',
+          }}
+          onSearchTermChange={setSearchTerm}
+          onFilterChange={setFilter}
+        />
+        <h1>I have {ConceptualKnowledgeCards.length + proceduralknowledgeCards.length} cards in total</h1>
+        <ProceduralCardFormModal show={showModal} onHide={handleModalClose} pathId={firebaseKey} onUpdate={getallProceduralKnowledge} objProceduralCard={null} />
+      </div>
 
-          <InstructionConceptualAndProceduralModal />
-          <SearchBarCards
-            style={{
-              margin: '20px',
-              backgroundColor: '#333',
-              color: '#fff',
-            }}
-            onSearchTermChange={setSearchTerm}
-            onFilterChange={setFilter}
-          />
-          <ProceduralCardFormModal show={showModal} onHide={handleModalClose} pathId={firebaseKey} onUpdate={getallProceduralKnowledge} objProceduralCard={null} />
-        </div>
-      )}
       <div className="d-flex flex-wrap justify-content-center">
         {filteredCards.length === 0 ? (
           <div style={{ textAlign: 'center', marginTop: '50px' }}>

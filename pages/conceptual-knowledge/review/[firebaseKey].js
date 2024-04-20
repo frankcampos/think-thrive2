@@ -92,70 +92,87 @@ function ReviewConceptualKnowledge() {
         }}
       >
         {!showAnswer && (
-        <div>
-          <h4 style={{ marginBottom: '20px', background: 'grey', borderRadius: '5px' }}>{conceptualCard.question}</h4>
-          <Form.Control
-            as="textarea"
-            style={{
-              width: '98%',
-              height: 'auto',
-              margin: '10px',
-              padding: '10px',
-            }}
-            type="text"
-            placeholder="Enter Answer"
-            value={userAnswer}
-            onChange={(e) => setUserAnswer(e.target.value)}
-          />
-          <Button variant="dark" style={{ margin: '10px' }} onClick={handleShowAnswer}>Show the Answer</Button>
-          <Button variant="dark" style={{ margin: '10px' }} onClick={handleClose}>Close</Button>
-        </div>
+          <div>
+            <h4 style={{ marginBottom: '20px', background: 'grey', borderRadius: '5px' }}>{conceptualCard.question}</h4>
+            <Form.Control
+              as="textarea"
+              style={{
+                width: '98%',
+                height: 'auto',
+                margin: '10px',
+                padding: '10px',
+              }}
+              type="text"
+              placeholder="Enter Answer"
+              value={userAnswer}
+              onChange={(e) => setUserAnswer(e.target.value)}
+            />
+            <Button variant="dark" style={{ margin: '10px' }} onClick={handleShowAnswer}>Show the Answer</Button>
+            <Button variant="dark" style={{ margin: '10px' }} onClick={handleClose}>Close</Button>
+          </div>
         )}
         {showAnswer && (
-        <div style={{ height: 'auto' }}>
-          <h3 style={{
-            marginBottom: '10px', background: 'grey', borderRadius: '5px', padding: '5px',
-          }}
-          >{conceptualCard.question}
-          </h3>
-          <h4 style={{
-            marginBottom: '10px', background: 'white', borderRadius: '5px', padding: '5px',
-          }}
-          >{conceptualCard.answer}
-          </h4>
-          <h3 style={{
-            marginBottom: '10px', background: 'grey', borderRadius: '5px', padding: '5px',
-          }}
-          >My Answer
-          </h3>
-          <h4 style={{
-            marginBottom: '10px', background: 'white', borderRadius: '5px', padding: '5px',
-          }}
-          >{userAnswer}
-          </h4>
-          <h3 style={{
-            marginBottom: '10px', background: 'grey', borderRadius: '5px', padding: '5px',
-          }}
-          >Answer Feedback
-          </h3>
-          <h4 style={{
-            marginBottom: '10px', background: 'white', borderRadius: '5px', padding: '5px',
-          }}
-          >{feedback}
-          </h4>
-          <h3 style={{
-            marginBottom: '10px', background: 'grey', borderRadius: '5px', padding: '5px',
-          }}
-          >Example
-          </h3>
-          <h4 style={{
-            marginBottom: '1px', background: 'white', borderRadius: '5px', padding: '5px',
-          }}
-          >{example}
-          </h4>
-          <Button variant="dark" style={{ margin: '10px' }} onClick={handleShowAnswer}>Review</Button>
-          <Button variant="dark" style={{ margin: '10px' }} onClick={handleClose}>Close</Button>
-        </div>
+          <div style={{ height: 'auto' }}>
+            <h3 style={{
+              marginBottom: '10px', background: 'grey', borderRadius: '5px', padding: '5px',
+            }}
+            >{conceptualCard.question}
+            </h3>
+            <h4 style={{
+              marginBottom: '10px', background: 'white', borderRadius: '5px', padding: '5px',
+            }}
+            >{conceptualCard.answer}
+            </h4>
+            <h3 style={{
+              marginBottom: '10px', background: 'grey', borderRadius: '5px', padding: '5px',
+            }}
+            >My Answer
+            </h3>
+            <h4 style={{
+              marginBottom: '10px', background: 'white', borderRadius: '5px', padding: '5px',
+            }}
+            >{userAnswer}
+            </h4>
+            <h3 style={{
+              marginBottom: '10px', background: 'grey', borderRadius: '5px', padding: '5px',
+            }}
+            >Answer Feedback
+            </h3>
+            <pre style={{
+              marginBottom: '10px',
+              background: 'white',
+              borderRadius: '5px',
+              padding: '5px',
+              whiteSpace: 'pre-wrap',
+              fontSize: '16px', // Add this line to make the text bigger
+            }}
+            >
+              <code>
+                {feedback}
+              </code>
+            </pre>
+            <h3 style={{
+              marginBottom: '10px', background: 'grey', borderRadius: '5px', padding: '5px',
+            }}
+            >Example
+            </h3>
+            <pre style={{
+              marginBottom: '10px',
+              background: 'white',
+              borderRadius: '5px',
+              padding: '5px',
+              whiteSpace: 'pre-wrap',
+              fontSize: '16px', // Add this line to make the text bigger
+
+            }}
+            >
+              <code>
+                {example}
+              </code>
+            </pre>
+            <Button variant="dark" style={{ margin: '10px' }} onClick={handleShowAnswer}>Review</Button>
+            <Button variant="dark" style={{ margin: '10px' }} onClick={handleClose}>Close</Button>
+          </div>
         )}
       </Card>
     </Container>

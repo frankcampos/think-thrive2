@@ -45,7 +45,7 @@ function ProceduralCard({ proceduralCard, onUpdate, userID }) {
   return (
     <Card
       style={{
-        width: '19rem', padding: '10px', margin: '10px', background: 'black', borderRadius: '10px',
+        width: '19rem', padding: '10px', margin: '10px', background: 'black', borderRadius: '10px', boxShadow: '5px 5px 5px grey',
       }}
     >
       <Card.Title style={{ background: 'grey', borderRadius: '5px', padding: '5px' }}>{proceduralCard.title}</Card.Title>
@@ -80,25 +80,25 @@ function ProceduralCard({ proceduralCard, onUpdate, userID }) {
       <ProceduralModalTags show={showTagsModal} onHide={handleTagsModalClose} proceduralCardId={proceduralCard.firebaseKey} />
       <Card.Body>
         <Link href={`/procedural-knowledge/review/${proceduralCard.firebaseKey}`} passHref>
-          <Button variant="dark" style={{ marginRight: '10px' }}>Review
+          <Button variant="dark" style={{ marginRight: '10px', boxShadow: '2px 2px 2px white' }}>Review
           </Button>
         </Link>
         {user.uid === userID && (
-        <>
-          <Button variant="dark" style={{ marginRight: '10px' }} onClick={handleModalOpen}>
-            Edit
-          </Button>
-          <ProceduralCardFormModal
-            show={showModal}
-            onHide={handleModalClose}
-            pathId={proceduralCard.pathId}
-            onUpdate={onUpdate}
-            objProceduralCard={proceduralCard}
-          />
-          <Button variant="dark" onClick={deletethisProceduralCard} style={{ marginRight: '10px' }}>
-            Delete
-          </Button>
-        </>
+          <>
+            <Button variant="dark" style={{ marginRight: '10px', boxShadow: '2px 2px 2px white' }} onClick={handleModalOpen}>
+              Edit
+            </Button>
+            <ProceduralCardFormModal
+              show={showModal}
+              onHide={handleModalClose}
+              pathId={proceduralCard.pathId}
+              onUpdate={onUpdate}
+              objProceduralCard={proceduralCard}
+            />
+            <Button variant="dark" onClick={deletethisProceduralCard} style={{ marginRight: '10px', boxShadow: '2px 2px 2px white' }}>
+              Delete
+            </Button>
+          </>
         )}
         <Card.Text style={{
           background: 'grey', borderRadius: '5px', marginTop: '20px', padding: '5px', width: 'auto', color: 'blue',

@@ -35,7 +35,7 @@ function ConceptualCard({ conceptualCard, onUpdate, userID }) {
     <Card
       variant="danger"
       style={{
-        width: '19rem', padding: '10px', margin: '10px', background: 'black', borderRadius: '10px',
+        width: '19rem', padding: '10px', margin: '10px', background: 'black', borderRadius: '10px', boxShadow: '5px 5px 5px grey',
       }}
     >
       <Card.Title style={{ background: 'grey', borderRadius: '5px', padding: '5px' }}>{conceptualCard.question}</Card.Title>
@@ -64,17 +64,17 @@ function ConceptualCard({ conceptualCard, onUpdate, userID }) {
       <ModalTags show={showModal} onHide={handleCloseModal} conceptualCardId={conceptualCard.firebaseKey} />
       <Card.Body>
         <Link href={`/conceptual-knowledge/review/${conceptualCard.firebaseKey}`} passHref>
-          <Button variant="dark" style={{ marginRight: '10px' }}>Review
+          <Button variant="dark" style={{ marginRight: '10px', boxShadow: '2px 2px 2px white' }}>Review
           </Button>
         </Link>
         {user.uid === userID && (
           <>
             <Link href={`/conceptual-knowledge/edit/${conceptualCard.firebaseKey}`} passHref>
-              <Button variant="dark" style={{ marginRight: '10px' }}>
+              <Button variant="dark" style={{ marginRight: '10px', boxShadow: '2px 2px 2px white' }}>
                 Edit
               </Button>
             </Link>
-            <Button variant="dark" onClick={deletethisConceptualCard} style={{ marginRight: '10px' }}>
+            <Button variant="dark" onClick={deletethisConceptualCard} style={{ marginRight: '10px', boxShadow: '2px 2px 2px white' }}>
               Delete
             </Button>
           </>

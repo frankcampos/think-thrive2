@@ -31,10 +31,20 @@ const AuthProvider = (props) => {
     }); // creates a single global listener for auth state changed
   }, []);
 
+  const signInAsGuest = async () => {
+    try {
+      const userCredential = await firebase.auth().signInAnonymously();
+      setUser(userCredential.user);
+    } catch (error) {
+      console.error('Error signing in as guest', error);
+    }
+  };
+
   const value = useMemo( // https://reactjs.org/docs/hooks-reference.html#usememo
     () => ({
       user,
       userLoading: user === null,
+      signInAsGuest,
       // as long as user === null, will be true
       // As soon as the user value !== null, value will be false
     }),

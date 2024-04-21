@@ -12,7 +12,7 @@ function PathCard({ path, onUpdate }) {
   const deletethisPath = () => {
     if (window.confirm(`Are you sure you want to delete this ${path.title}?`)) deletePath(path.firebaseKey).then(onUpdate());
   };
-  const madeBy = user.uid === path.user_id ? `Made by: ${user.displayName}` : `Made by: ${path.user_name}`;
+  const madeBy = user.uid === path.user_id ? `${user.displayName}` : `${path.user_name}`;
   const userPhoto = user.uid === path.user_id ? `${user.photoURL}` : `${path.user_photo}`;
 
   return (
@@ -46,7 +46,7 @@ function PathCard({ path, onUpdate }) {
             margin: '10px',
           }}
         />
-        <Card.Text style={{ background: 'grey', borderRadius: '5px', padding: '5px' }}>{madeBy}</Card.Text>
+        <Card.Text id="names">{madeBy}</Card.Text>
         <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
           <Link href={`/conceptual-knowledge/${path.firebaseKey}`} passHref>
             <Button variant="dark" style={{ marginRight: '10px' }}>View</Button>

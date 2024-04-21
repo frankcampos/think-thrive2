@@ -21,7 +21,7 @@ const ViewDirectorBasedOnUserAuthStatus = ({ component: Component, pageProps }) 
         <div
           className="container"
           style={{
-            backgroundColor: 'white', border: '1px solid black', borderRadius: '10px', flex: 1, padding: '20px',
+            backgroundColor: 'transparent',
           }}
         >
           <Component {...pageProps} />

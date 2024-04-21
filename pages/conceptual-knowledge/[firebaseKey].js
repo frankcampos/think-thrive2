@@ -91,7 +91,7 @@ function ConceptualKnowledgePage() {
           onSearchTermChange={setSearchTerm}
           onFilterChange={setFilter}
         />
-        <h1>I have {ConceptualKnowledgeCards.length + proceduralknowledgeCards.length} cards in total</h1>
+        <h1 id="totalCards">I have {ConceptualKnowledgeCards.length + proceduralknowledgeCards.length} cards in total</h1>
         <ProceduralCardFormModal show={showModal} onHide={handleModalClose} pathId={firebaseKey} onUpdate={getallProceduralKnowledge} objProceduralCard={null} />
       </div>
 

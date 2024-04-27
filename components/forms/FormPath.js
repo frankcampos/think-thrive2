@@ -32,19 +32,21 @@ function FormPath({ objPath }) {
     }));
   };
 
-  const handleImageChange = (e) => {
-    if (e.target.files[0]) {
-      const imageFile = e.target.files[0];
-      const storageRef = storage.ref();
-      const imageRef = storageRef.child(`images/${imageFile.name}`);
-      imageRef.put(imageFile).then(() => {
-        imageRef.getDownloadURL().then((url) => {
-          setFormState((prevState) => ({
-            ...prevState,
-            image: url,
-          }));
-        });
-      });
+  const handleImageChange = async (e) => {
+    try {
+      if (e.target.files[0]) {
+        const imageFile = e.target.files[0];
+        const storageRef = storage.ref();
+        const imageRef = storageRef.child(`images/${imageFile.name}`);
+        await imageRef.put(imageFile);
+        const url = await imageRef.getDownloadURL();
+        setFormState((prevState) => ({
+          ...prevState,
+          image: url,
+        }));
+      }
+    } catch (error) {
+      console.error('Error uploading image or getting download URL:', error);
     }
   };
 

@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
+import firebase from 'firebase/app';
+import 'firebase/storage';
 import { updateProceduralKnowledge, createProceduralKnowledge } from '../../api/proceduralknowledgeData';
 
 const initialState = {
@@ -14,6 +16,25 @@ const ProceduralCardFormModal = ({
   show, onHide, pathId, onUpdate, objProceduralCard,
 }) => {
   const [formInput, setFormInput] = useState(initialState);
+  const storage = firebase.storage();
+
+  const handleImageChange = async (e) => {
+    try {
+      if (e.target.files[0]) {
+        const imageFile = e.target.files[0];
+        const storageRef = storage.ref();
+        const imageRef = storageRef.child(`images/${imageFile.name}`);
+        await imageRef.put(imageFile);
+        const url = await imageRef.getDownloadURL();
+        setFormInput((prevState) => ({
+          ...prevState,
+          picture: url,
+        }));
+      }
+    } catch (error) {
+      console.error('Error uploading image or getting download URL:', error);
+    }
+  };
 
   useEffect(() => {
     if (objProceduralCard && objProceduralCard.firebaseKey) setFormInput({ ...objProceduralCard });
@@ -70,6 +91,10 @@ const ProceduralCardFormModal = ({
           <Form.Group controlId="formImage">
             <Form.Label>Image</Form.Label>
             <Form.Control type="text" placeholder="Image Url" value={formInput.picture} name="picture" onChange={handleChange} />
+          </Form.Group>
+          <Form.Group controlId="formImage">
+            <Form.Label>Upload Image</Form.Label>
+            <Form.Control type="file" placeholder="upload Image" name="pictureFile" onChange={handleImageChange} />
           </Form.Group>
         </Form>
       </Modal.Body>

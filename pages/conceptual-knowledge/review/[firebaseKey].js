@@ -54,13 +54,18 @@ function ReviewConceptualKnowledge() {
       setShowAnswer(false);
       // generateExample();
     });
-  },
-  []);
+  }, []);
 
   const handleClose = () => {
     router.push(`/conceptual-knowledge/${conceptualCard.pathId}`);
   };
 
+  const handleGoToTestMode = () => {
+    router.push({
+      pathname: '/Test',
+      query: { firebaseKey },
+    });
+  };
   const handleShowAnswer = () => {
     getAnswerFeedBack();
     generateExample();
@@ -109,6 +114,7 @@ function ReviewConceptualKnowledge() {
             />
             <Button variant="dark" style={{ margin: '10px' }} onClick={handleShowAnswer}>Show the Answer</Button>
             <Button variant="dark" style={{ margin: '10px' }} onClick={handleClose}>Close</Button>
+            <Button variant="dark" style={{ margin: '10px' }} onClick={handleGoToTestMode}>Go to Test Mode</Button>
           </div>
         )}
         {showAnswer && (

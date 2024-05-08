@@ -37,10 +37,10 @@ function ProceduralCard({ proceduralCard, onUpdate, userID }) {
   };
 
   useEffect(() => {
-    getProceduralTagsByProceduralCardId(proceduralCard.firebaseKey).then((response) => {
+    getProceduralTagsByProceduralCardId(proceduralCard?.firebaseKey).then((response) => {
       setTags(response);
     });
-  }, [proceduralCard.pathId, showTagsModal, showModal]);
+  }, [proceduralCard?.pathId, showTagsModal, showModal]);
 
   return (
     <Card
@@ -48,10 +48,10 @@ function ProceduralCard({ proceduralCard, onUpdate, userID }) {
         width: '19rem', padding: '10px', margin: '10px', background: 'black', borderRadius: '10px', boxShadow: '5px 5px 5px grey',
       }}
     >
-      <Card.Title style={{ background: 'grey', borderRadius: '5px', padding: '5px' }}>{proceduralCard.title}</Card.Title>
+      <Card.Title style={{ background: 'grey', borderRadius: '5px', padding: '5px' }}>{proceduralCard?.title}</Card.Title>
       <Card.Img
         variant="top"
-        src={proceduralCard.picture}
+        src={proceduralCard?.picture}
         style={{
           width: '100%', height: '200px', objectFit: 'cover', borderRadius: '10px',
         }}
@@ -77,9 +77,9 @@ function ProceduralCard({ proceduralCard, onUpdate, userID }) {
           </span>
       ))}
       </Card.Text>
-      <ProceduralModalTags show={showTagsModal} onHide={handleTagsModalClose} proceduralCardId={proceduralCard.firebaseKey} />
+      <ProceduralModalTags show={showTagsModal} onHide={handleTagsModalClose} proceduralCardId={proceduralCard?.firebaseKey} />
       <Card.Body>
-        <Link href={`/procedural-knowledge/review/${proceduralCard.firebaseKey}`} passHref>
+        <Link href={`/procedural-knowledge/review/${proceduralCard?.firebaseKey}`} passHref>
           <Button variant="dark" style={{ marginRight: '10px', boxShadow: '2px 2px 2px white' }}>Review
           </Button>
         </Link>
@@ -91,7 +91,7 @@ function ProceduralCard({ proceduralCard, onUpdate, userID }) {
             <ProceduralCardFormModal
               show={showModal}
               onHide={handleModalClose}
-              pathId={proceduralCard.pathId}
+              pathId={proceduralCard?.pathId}
               onUpdate={onUpdate}
               objProceduralCard={proceduralCard}
             />

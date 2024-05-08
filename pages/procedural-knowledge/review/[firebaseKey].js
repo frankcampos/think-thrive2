@@ -58,6 +58,13 @@ const ProceduralCardKnowledgeReviewPage = () => {
     setShowModal(true);
   };
 
+  const handleGoToTestMode = () => {
+    router.push({
+      pathname: '/Test',
+      query: { firebaseKey },
+    });
+  };
+
   return (
     <Container
       style={{
@@ -74,7 +81,7 @@ const ProceduralCardKnowledgeReviewPage = () => {
       <h1 style={{
         textAlign: 'center', padding: '10px', background: 'grey', borderRadius: '10px',
       }}
-      >{proceduralCard.title ? proceduralCard.title.toUpperCase() : ''}
+      >{proceduralCard?.title ? proceduralCard.title.toUpperCase() : ''}
       </h1>
       <div style={{
         display: 'flex',
@@ -90,7 +97,7 @@ const ProceduralCardKnowledgeReviewPage = () => {
             height: '50%',
             borderRadius: '10px',
           }}
-          src={proceduralCard.picture}
+          src={proceduralCard?.picture}
           alt={proceduralCard.title}
         />
       </div>
@@ -153,6 +160,19 @@ const ProceduralCardKnowledgeReviewPage = () => {
                 }}
                 variant="secondary"
               >Close
+              </Button>
+              <Button
+                onClick={handleGoToTestMode}
+                style={{
+                  display: 'block',
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                  marginTop: '20px',
+                  marginBottom: '20px',
+                  color: 'black',
+                }}
+                variant="secondary"
+              >Test Mode
               </Button>
             </Col>
           </Row>

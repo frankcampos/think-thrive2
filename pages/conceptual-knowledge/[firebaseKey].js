@@ -6,6 +6,7 @@ import { Button, Container } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import ConceptualCard from '../../components/conceptualCard';
 import ProceduralCard from '../../components/proceduralCard';
+import TestMode from '../../components/TestMode';
 import { getProcedureKnowledgeByPathId } from '../../api/proceduralknowledgeData';
 import ProceduralCardFormModal from '../../components/forms/proceduralCardFormModal';
 import { useAuth } from '../../utils/context/authContext';
@@ -24,6 +25,13 @@ function ConceptualKnowledgePage() {
   const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState('');
+  // Create a state variable for test mode
+  const [isTestMode, setIsTestMode] = useState(false);
+
+  // Add a function to toggle test mode
+  const toggleTestMode = () => {
+    setIsTestMode(!isTestMode);
+  };
 
   const getAllTheConceptualKnowledge = () => {
     if (firebaseKey) {
@@ -68,16 +76,19 @@ function ConceptualKnowledgePage() {
     <Container className="text-center my-4">
       <div>
         {uniqueId === user.uid && (
-        <>
-          <Link href={`/conceptual-knowledge/new/${firebaseKey}`} passHref>
-            <Button variant="dark" style={{ margin: '0 0 10px' }}>
-              Add A Conceptual Card
+          <>
+            <Link href={`/conceptual-knowledge/new/${firebaseKey}`} passHref>
+              <Button variant="dark" style={{ margin: '0 0 10px' }}>
+                Add A Conceptual Card
+              </Button>
+            </Link>
+            <Button variant="dark" style={{ margin: '0 10px 10px' }} onClick={handleModalOpen}>
+              Add A Procedural Card
             </Button>
-          </Link>
-          <Button variant="dark" style={{ margin: '0 10px 10px' }} onClick={handleModalOpen}>
-            Add A Procedural Card
-          </Button>
-        </>
+            <Button variant="dark" style={{ margin: '0 10px 10px' }} onClick={toggleTestMode}>
+              {isTestMode ? 'Exit Test Mode' : 'Enter Test Mode'}
+            </Button>
+          </>
         )}
       </div>
       <div>
@@ -96,14 +107,15 @@ function ConceptualKnowledgePage() {
       </div>
 
       <div className="d-flex flex-wrap justify-content-center">
-        {filteredCards.length === 0 ? (
+        {!isTestMode && filteredCards.length === 0 ? (
           <div style={{ textAlign: 'center', marginTop: '50px' }}>
             <h2>Oops!</h2>
             <p>No cards match your search.</p>
             <img src="https://thumbs.dreamstime.com/b/expression-words-design-oops-illustration-162212955.jpg" alt="No match" style={{ width: '200px', height: '200px', objectFit: 'cover' }} />
             <p>Try adjusting your search or filter settings.</p>
           </div>
-        ) : (
+        ) : null}
+        {!isTestMode ? (
           filteredCards.map((card) => {
             if (card.type === 'conceptual') {
               return <ConceptualCard key={card.firebaseKey} conceptualCard={card} onUpdate={getAllTheConceptualKnowledge} userID={uniqueId} />;
@@ -112,7 +124,10 @@ function ConceptualKnowledgePage() {
             }
             return null;
           })
-        )}
+        ) : null}
+        {isTestMode ? (
+          <TestMode cards={mixedCards} userID={uniqueId} />
+        ) : null}
       </div>
     </Container>
   );

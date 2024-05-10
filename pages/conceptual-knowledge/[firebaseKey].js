@@ -92,6 +92,9 @@ function ConceptualKnowledgePage() {
         )}
       </div>
       <div>
+        <Button variant="dark" style={{ margin: '0 10px 10px' }} onClick={toggleTestMode}>
+          {isTestMode ? 'Exit Test Mode' : 'Enter Test Mode'}
+        </Button>
         <InstructionConceptualAndProceduralModal />
         <SearchBarCards
           style={{

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Button, Modal } from 'react-bootstrap';
 
 const conceptualSteps = [
@@ -108,6 +109,17 @@ function StepCard({ step, index, accent }) {
   );
 }
 
+StepCard.propTypes = {
+  step: PropTypes.shape({
+    icon: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    tip: PropTypes.string.isRequired,
+  }).isRequired,
+  index: PropTypes.number.isRequired,
+  accent: PropTypes.string.isRequired,
+};
+
 function SectionHeader({ emoji, label, accent }) {
   return (
     <div style={{
@@ -133,6 +145,12 @@ function SectionHeader({ emoji, label, accent }) {
     </div>
   );
 }
+
+SectionHeader.propTypes = {
+  emoji: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  accent: PropTypes.string.isRequired,
+};
 
 function InstructionConceptualAndProceduralModal() {
   const [show, setShow] = useState(false);

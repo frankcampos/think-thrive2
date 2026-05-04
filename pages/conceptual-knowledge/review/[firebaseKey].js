@@ -3,7 +3,94 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import { getSingleConceptualKnowledge } from '../../../api/conceptualknowledgeData';
+
+const ACCENT = '#00d4ff';
+const STEPS = ['Question', 'Your Answer', 'AI Review'];
+
+function ReviewStepper({ current }) {
+  return (
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      padding: '14px 24px',
+      background: 'rgba(0,0,0,0.15)',
+      borderBottom: '1px solid rgba(255,255,255,0.06)',
+    }}
+    >
+      {STEPS.map((label, i) => {
+        const done = i < current;
+        const active = i === current;
+        let circleBg = 'rgba(255,255,255,0.06)';
+        if (done) circleBg = ACCENT;
+        else if (active) circleBg = 'rgba(0,212,255,0.15)';
+
+        let circleColor = 'rgba(255,255,255,0.3)';
+        if (done) circleColor = '#0a0a1a';
+        else if (active) circleColor = ACCENT;
+
+        let labelColor = 'rgba(255,255,255,0.25)';
+        if (active) labelColor = ACCENT;
+        else if (done) labelColor = 'rgba(0,212,255,0.6)';
+
+        return (
+          <div key={label} style={{ display: 'flex', alignItems: 'center', flex: i < STEPS.length - 1 ? 1 : 'none' }}>
+            <div style={{
+              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px',
+            }}
+            >
+              <div style={{
+                width: '28px',
+                height: '28px',
+                borderRadius: '50%',
+                background: circleBg,
+                border: `2px solid ${done || active ? ACCENT : 'rgba(255,255,255,0.15)'}`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '0.72rem',
+                fontWeight: '700',
+                color: circleColor,
+                transition: 'all 0.3s ease',
+                flexShrink: 0,
+              }}
+              >
+                {done ? '✓' : i + 1}
+              </div>
+              <span style={{
+                fontSize: '0.58rem',
+                fontWeight: '600',
+                textTransform: 'uppercase',
+                letterSpacing: '0.6px',
+                color: labelColor,
+                whiteSpace: 'nowrap',
+                transition: 'color 0.3s ease',
+              }}
+              >
+                {label}
+              </span>
+            </div>
+            {i < STEPS.length - 1 && (
+              <div style={{
+                flex: 1,
+                height: '2px',
+                margin: '0 8px',
+                marginBottom: '22px',
+                background: done ? ACCENT : 'rgba(255,255,255,0.08)',
+                borderRadius: '1px',
+                transition: 'background 0.4s ease',
+              }}
+              />
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+ReviewStepper.propTypes = { current: PropTypes.number.isRequired };
 
 function ReviewConceptualKnowledge() {
   const router = useRouter();
@@ -14,11 +101,18 @@ function ReviewConceptualKnowledge() {
   const [loading, setLoading] = useState(false);
   const [answered, setAnswered] = useState(false);
   const bottomRef = useRef(null);
+  const uidRef = useRef(0);
+
+  let currentStep = 0;
+  if (answered && loading) currentStep = 1;
+  else if (answered) currentStep = 2;
 
   useEffect(() => {
     getSingleConceptualKnowledge(firebaseKey).then((response) => {
       setConceptualCard(response);
-      setMessages([{ role: 'bot', type: 'question', content: response.question }]);
+      setMessages([{
+        role: 'bot', type: 'question', content: response.question, uid: 0,
+      }]);
     });
   }, []);
 
@@ -27,7 +121,10 @@ function ReviewConceptualKnowledge() {
   }, [messages, loading]);
 
   const pushMessage = (role, content, type = 'text') => {
-    setMessages((prev) => [...prev, { role, content, type }]);
+    uidRef.current += 1;
+    setMessages((prev) => [...prev, {
+      role, content, type, uid: uidRef.current,
+    }]);
   };
 
   const handleSend = async () => {
@@ -65,7 +162,9 @@ function ReviewConceptualKnowledge() {
   };
 
   const handleReset = () => {
-    setMessages([{ role: 'bot', type: 'question', content: conceptualCard.question }]);
+    setMessages([{
+      role: 'bot', type: 'question', content: conceptualCard.question, uid: 0,
+    }]);
     setAnswered(false);
     setInput('');
   };
@@ -90,8 +189,8 @@ function ReviewConceptualKnowledge() {
 
   const getLabelFor = (role, type) => {
     if (role === 'user') return { text: 'Your Answer', color: '#c084fc' };
-    if (type === 'question') return { text: 'Question', color: '#00d4ff' };
-    if (type === 'answer') return { text: 'Correct Answer', color: '#00d4ff' };
+    if (type === 'question') return { text: 'Question', color: ACCENT };
+    if (type === 'answer') return { text: 'Correct Answer', color: ACCENT };
     if (type === 'feedback') return { text: 'AI Feedback', color: '#a78bfa' };
     if (type === 'example') return { text: 'Example & Tip', color: '#667eea' };
     return null;
@@ -108,13 +207,12 @@ function ReviewConceptualKnowledge() {
         minHeight: '540px',
       }}
       >
-
         {/* Header */}
         <div style={{
           background: 'rgba(255,255,255,0.07)',
           backdropFilter: 'blur(16px)',
           border: '1px solid rgba(0,212,255,0.25)',
-          borderBottom: '1px solid rgba(255,255,255,0.08)',
+          borderBottom: 'none',
           borderRadius: '16px 16px 0 0',
           padding: '14px 18px',
           display: 'flex',
@@ -134,12 +232,11 @@ function ReviewConceptualKnowledge() {
               fontSize: '1rem',
               flexShrink: 0,
             }}
-            >
-              ◆
+            >◆
             </div>
             <div>
               <div style={{
-                fontSize: '0.68rem', fontWeight: '700', color: '#00d4ff', letterSpacing: '1px', textTransform: 'uppercase',
+                fontSize: '0.68rem', fontWeight: '700', color: ACCENT, letterSpacing: '1px', textTransform: 'uppercase',
               }}
               >Conceptual Review
               </div>
@@ -148,6 +245,9 @@ function ReviewConceptualKnowledge() {
           </div>
           <Button className="glass-btn-outline" size="sm" onClick={handleClose}>← Back</Button>
         </div>
+
+        {/* Stepper */}
+        <ReviewStepper current={currentStep} />
 
         {/* Chat window */}
         <div style={{
@@ -163,11 +263,11 @@ function ReviewConceptualKnowledge() {
           gap: '18px',
         }}
         >
-          {messages.map((msg, i) => {
+          {messages.map((msg) => {
             const label = getLabelFor(msg.role, msg.type);
             const isUser = msg.role === 'user';
             return (
-              <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: isUser ? 'flex-end' : 'flex-start' }}>
+              <div key={msg.uid} style={{ display: 'flex', flexDirection: 'column', alignItems: isUser ? 'flex-end' : 'flex-start' }}>
                 {label && (
                   <span style={{
                     fontSize: '0.63rem',
@@ -179,8 +279,7 @@ function ReviewConceptualKnowledge() {
                     paddingLeft: isUser ? 0 : '4px',
                     paddingRight: isUser ? '4px' : 0,
                   }}
-                  >
-                    {label.text}
+                  >{label.text}
                   </span>
                 )}
                 <div style={isUser ? {
@@ -194,8 +293,7 @@ function ReviewConceptualKnowledge() {
                   background: 'rgba(192,132,252,0.18)',
                   border: '1px solid rgba(192,132,252,0.4)',
                 } : getBotBubbleStyle(msg.type)}
-                >
-                  {msg.content}
+                >{msg.content}
                 </div>
               </div>
             );
@@ -216,14 +314,14 @@ function ReviewConceptualKnowledge() {
                 {[0, 1, 2].map((d) => (
                   <div
                     key={d}
+                    className="typing-dot"
                     style={{
                       width: '7px',
                       height: '7px',
                       borderRadius: '50%',
-                      background: '#00d4ff',
+                      background: ACCENT,
                       animationDelay: `${d * 0.2}s`,
                     }}
-                    className="typing-dot"
                   />
                 ))}
               </div>
@@ -246,10 +344,9 @@ function ReviewConceptualKnowledge() {
             <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-end' }}>
               <textarea
                 rows={3}
-                placeholder="Write your answer from memory… (Enter to send, Shift+Enter for newline)"
+                placeholder="Write your answer from memory… use Enter for new lines"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
                 className="glass-input"
                 style={{
                   flex: 1, resize: 'none', borderRadius: '10px', padding: '10px 14px', fontSize: '0.9rem',
@@ -276,16 +373,6 @@ function ReviewConceptualKnowledge() {
         </div>
       </div>
 
-      <style jsx>{`
-        .typing-dot {
-          animation: typingBounce 1.2s ease-in-out infinite;
-        }
-        @keyframes typingBounce {
-          0%, 60%, 100% { transform: translateY(0); opacity: 0.6; }
-          30% { transform: translateY(-6px); opacity: 1; }
-        }
-      `}
-      </style>
     </div>
   );
 }

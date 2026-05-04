@@ -2,6 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 import { Button, Container } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import ConceptualCard from '../../components/conceptualCard';
@@ -81,6 +82,11 @@ function CardDeck({ total, onTestMode }) {
     </div>
   );
 }
+
+CardDeck.propTypes = {
+  total: PropTypes.number.isRequired,
+  onTestMode: PropTypes.func.isRequired,
+};
 
 function ConceptualKnowledgePage() {
   const router = useRouter();

@@ -1,63 +1,199 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
+const conceptualSteps = [
+  {
+    icon: '🤔',
+    title: 'Write a question',
+    description: 'Something you want to understand. Frame it as a real question you\'d ask yourself.',
+    tip: 'Example: "What is Agile Methodology?"',
+  },
+  {
+    icon: '✍️',
+    title: 'Write the answer in your own words',
+    description: 'Don\'t copy-paste. Paraphrasing forces you to actually understand the concept.',
+    tip: 'You can always edit it later as your understanding improves.',
+  },
+  {
+    icon: '🏷️',
+    title: 'Add tags',
+    description: 'Click the Tags area on any card to organize it. You can create, add, or remove tags.',
+    tip: 'Example tags: #Agile #SoftwareDevelopment #ProjectManagement',
+  },
+  {
+    icon: '🤖',
+    title: 'Review with AI feedback',
+    description: 'Hit Review, type your answer from memory, then reveal the correct answer. AI will grade your response and give you a simplified example.',
+    tip: 'The AI uses GPT-4 to provide personalized feedback on your answer.',
+  },
+];
+
+const proceduralSteps = [
+  {
+    icon: '📋',
+    title: 'Name the skill or task',
+    description: 'Use a clear "How to..." format so you know exactly what procedure this covers.',
+    tip: 'Example: "How to run a Next.js server" or "How to make chicken soup"',
+  },
+  {
+    icon: '🔢',
+    title: 'Break it into numbered steps',
+    description: 'List each action required to complete the task. Number them clearly.',
+    tip: 'Example: 1. Open terminal  2. cd into project  3. Run npm run dev',
+  },
+  {
+    icon: '🔁',
+    title: 'Review by recalling steps',
+    description: 'Hit Review, try to recall the steps from memory, then reveal them to compare.',
+    tip: 'Use "Feedback on Steps" to get AI recommendations on what you missed.',
+  },
+];
+
+const stepCardStyle = {
+  display: 'flex',
+  gap: '16px',
+  alignItems: 'flex-start',
+  background: 'rgba(255,255,255,0.06)',
+  border: '1px solid rgba(255,255,255,0.1)',
+  borderRadius: '12px',
+  padding: '16px',
+  marginBottom: '10px',
+};
+
+function StepCard({ step, index, accent }) {
+  return (
+    <div style={stepCardStyle}>
+      <div style={{
+        fontSize: '1.5rem', lineHeight: 1, flexShrink: 0, width: '36px', textAlign: 'center',
+      }}
+      >
+        {step.icon}
+      </div>
+      <div style={{ flex: 1 }}>
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px',
+        }}
+        >
+          <span style={{
+            background: `${accent}22`,
+            color: accent,
+            fontSize: '0.68rem',
+            fontWeight: '700',
+            padding: '1px 7px',
+            borderRadius: '10px',
+            border: `1px solid ${accent}55`,
+          }}
+          >
+            Step {index + 1}
+          </span>
+          <span style={{ fontWeight: '700', fontSize: '0.92rem', color: 'white' }}>{step.title}</span>
+        </div>
+        <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', marginBottom: '8px' }}>
+          {step.description}
+        </p>
+        <div style={{
+          background: `${accent}11`,
+          borderLeft: `3px solid ${accent}`,
+          borderRadius: '0 6px 6px 0',
+          padding: '6px 10px',
+          fontSize: '0.78rem',
+          color: 'rgba(255,255,255,0.5)',
+          fontStyle: 'italic',
+        }}
+        >
+          {step.tip}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SectionHeader({ emoji, label, accent }) {
+  return (
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+      marginBottom: '14px',
+      marginTop: '8px',
+      paddingBottom: '10px',
+      borderBottom: `1px solid ${accent}33`,
+    }}
+    >
+      <span style={{ fontSize: '1.3rem' }}>{emoji}</span>
+      <div>
+        <div style={{ fontWeight: '700', fontSize: '1rem', color: 'white' }}>{label}</div>
+        <div style={{
+          fontSize: '0.72rem', color: accent, fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px',
+        }}
+        >
+          Card Type
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function InstructionConceptualAndProceduralModal() {
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  const text = `The primary objective of creating procedural and conceptual cards is to facilitate navigation between two main ideas: 'how-to' and 'what is it'.
-
-  How to Add a Conceptual Card
-  1. Click on 'Add a Conceptual Card'. A form with fields for a question, an answer, and image inputs will appear.
-  2. When typing the answer, formulate it in your own words; do not copy and paste. You have the option to edit the answer later if needed.
-  3. The picture input can be left empty, but if a visual representation is necessary, you can add one by searching for the desired image using the browser, right-clicking on it, and selecting "copy image address" to paste into the input field.
-  4. After clicking the create button, the newly created card will be displayed. You can also add tags by clicking on the tag label; this is mainly for organizing your cards. You have the flexibility to create a new tag, add a tag to your card, or remove one.
-  5. Additionally, you have the options to edit and delete the card. When you click on the review button, it will present the card in a 'flashcard' style, displaying a question. Type what you remember. After finishing, clicking the button will reveal the answer, showing both the answer you provided when creating the card and the answer you just typed. It will also give you feedback on your answer and provide an example.
-  
-  Example for Adding a Conceptual Card:
-  Title: "What is Agile Methodology?"
-  Question: "Explain the Agile software development process."
-  -Answer: "Agile methodology is a practice that promotes continuous iteration of development and testing throughout the software development lifecycle of the project. It involves breaking the project into small, manageable units called sprints, allowing teams to focus on high-quality development, testing, and collaboration."
-  Image Input: For a visual representation, you might add an infographic that outlines the Agile process stages. If you don't have an image ready, you can later add one by finding an Agile process diagram online, right-clicking it, and selecting "copy image address" to paste into the input field.
-  -Tags: #AgileMethodology #SoftwareDevelopment #ProjectManagement
-  
-  How to Add a Procedural Card
-  1. Click on 'Add Procedural Card'. You will see a form with fields for the title, task steps, and image inputs.
-  2. In the title, specify the skill that you want to remember, such as 'How to run the server in Next.js' or 'How to make chicken soup'. For the task steps, number the steps required to complete the task or at least separate them clearly.
-  3. You can leave the image input empty and add it later, following the same process as for adding an image to a conceptual card.
-  4. After clicking Create, your new card will be displayed. You can delete, edit, and review it, and you have the same features to add, remove, and create tags as with your conceptual card.
-  5. When you click the review button, you will see a card with the title of the skill, and if available, the picture associated with the skill. You will see a button to display the steps; clicking on it will show you the steps that you typed in your form when creating the card. You will have an input field where you can type the steps that you remember. After finishing, you can click the 'feedback on steps' button. It will display a modal with feedback on your steps, offering recommendations if you forgot any of those steps.
-  
-  Example for Adding a Procedural Card:
-  Title: "How to Create a Basic HTML Page"
-  -Task Steps:
-    1. Open a text editor: Start by opening your preferred code editor (e.g., Visual Studio Code).
-    2. Write the basic structure: Type the basic HTML structure, including the <!DOCTYPE html> <html>, <head>, and <body> tags,
-    3. Add a title: Inside the <head> section, add a <title> tag to name your webpage.
-    4. Insert content: In the <body> section, add your content, such as <h1> for headings and <p> for paragraphs.
-  5. Save the file: Save your file with a .html extension (e.g., index.html).
-  6. View in a browser: Open the file in a web browser to see your basic HTML page.
-  Image Input: You could add a screenshot of simple HTML code in the text editor or a flowchart diagramming the steps. If you don't have an image now, you can add it later by following the same image addition process described above.
-  Tags: #HTML #WebDevelopment #CodingBasics
-  `;
-
   return (
     <>
-      <Button variant="dark" style={{ margin: '0 0 10px' }} onClick={handleShow}>
+      <Button className="glass-btn-outline" style={{ margin: '0 0 10px' }} onClick={() => setShow(true)}>
         How It Works
       </Button>
 
-      <Modal className="my-dark-modal" show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Creating Your Conceptual and Procedural Card : A Guide</Modal.Title>
+      <Modal
+        show={show}
+        onHide={() => setShow(false)}
+        centered
+        size="lg"
+        contentClassName="glass-modal-content"
+      >
+        <Modal.Header
+          closeButton
+          closeVariant="white"
+          style={{
+            background: 'transparent',
+            borderBottom: '1px solid rgba(255,255,255,0.1)',
+            padding: '20px 24px',
+          }}
+        >
+          <div>
+            <div style={{
+              fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '1px', color: '#c084fc', marginBottom: '4px',
+            }}
+            >
+              Knowledge Cards
+            </div>
+            <Modal.Title style={{ fontWeight: '700', fontSize: '1.3rem', color: 'white' }}>
+              How to Build Your Cards
+            </Modal.Title>
+          </div>
         </Modal.Header>
-        <Modal.Body style={{ whiteSpace: 'pre-wrap' }}>{text}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
+
+        <Modal.Body style={{ padding: '24px', maxHeight: '65vh', overflowY: 'auto' }}>
+          <SectionHeader emoji="💡" label="Conceptual Cards — What is it?" accent="#00d4ff" />
+          {conceptualSteps.map((step, i) => (
+            <StepCard key={step.title} step={step} index={i} accent="#00d4ff" />
+          ))}
+
+          <div style={{ margin: '24px 0 16px', borderTop: '1px solid rgba(255,255,255,0.08)' }} />
+
+          <SectionHeader emoji="⚙️" label="Procedural Cards — How to do it?" accent="#c084fc" />
+          {proceduralSteps.map((step, i) => (
+            <StepCard key={step.title} step={step} index={i} accent="#c084fc" />
+          ))}
+        </Modal.Body>
+
+        <Modal.Footer style={{
+          background: 'transparent',
+          borderTop: '1px solid rgba(255,255,255,0.1)',
+          padding: '16px 24px',
+          justifyContent: 'flex-end',
+        }}
+        >
+          <Button className="glass-btn" onClick={() => setShow(false)}>Got it</Button>
         </Modal.Footer>
       </Modal>
     </>

@@ -5,34 +5,68 @@ import {
 } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import { signOut } from '../utils/auth';
+import { useAuth } from '../utils/context/authContext';
 
 export default function NavBar() {
   const router = useRouter();
+  const { user } = useAuth();
+
   return (
-    <Navbar collapseOnSelect expand="lg" bg="grey" variant="dark" style={{ background: 'grey', marginBottom: '40px' }}>
-      {' '}
-      {/* Change the bg and variant props here */}
+    <Navbar
+      collapseOnSelect
+      expand="lg"
+      variant="dark"
+      className="glass-nav"
+      style={{ marginBottom: '40px', padding: '12px 0' }}
+    >
       <Container fluid>
-        <Nav>
-          <Image src="/thinkthrive.png" alt="Think Thrive" className=" logo" style={{ height: '40px', width: '40px', backgroundColor: 'transparent' }} />
+        <Nav style={{ alignItems: 'center', gap: '8px' }}>
+          <Image
+            src="/thinkthrive.png"
+            alt="Think Thrive"
+            style={{
+              height: '36px', width: '36px', borderRadius: '8px',
+            }}
+          />
           <Link passHref href="/">
-            <Navbar.Brand>ThinkThrive</Navbar.Brand>
+            <Navbar.Brand style={{ fontWeight: '700', fontSize: '1.2rem', letterSpacing: '0.3px' }}>
+              ThinkThrive
+            </Navbar.Brand>
           </Link>
         </Nav>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
-            {/* CLOSE NAVBAR ON LINK SELECTION: https://stackoverflow.com/questions/72813635/collapse-on-select-react-bootstrap-navbar-with-nextjs-not-working */}
+          <Nav className="me-auto" style={{ gap: '4px' }}>
             <Link passHref href="/">
-              <Nav.Link className={router.pathname === '/' ? 'active-link' : ''}>Learning Paths</Nav.Link>
+              <Nav.Link
+                className={router.pathname === '/' ? 'active-link' : ''}
+                style={{ fontWeight: '500' }}
+              >
+                Learning Paths
+              </Nav.Link>
             </Link>
             <Link passHref href="/my-paths">
-              <Nav.Link variant="underline" className={router.pathname === '/my-paths' ? 'active-link' : ''}>My Paths</Nav.Link>
+              <Nav.Link
+                className={router.pathname === '/my-paths' ? 'active-link' : ''}
+                style={{ fontWeight: '500' }}
+              >
+                My Paths
+              </Nav.Link>
             </Link>
           </Nav>
-          <Nav style={{ alignContent: 'flex-end' }}>
+          <Nav style={{ alignItems: 'center', gap: '12px' }}>
+            {user?.photoURL && (
+              <Image
+                src={user.photoURL}
+                alt="User avatar"
+                roundedCircle
+                style={{
+                  height: '32px', width: '32px', border: '2px solid rgba(255,255,255,0.3)',
+                }}
+              />
+            )}
             <Link passHref href="/">
-              <Button variant="dark" onClick={signOut}>
+              <Button className="glass-btn-outline" onClick={signOut} size="sm">
                 Sign Out
               </Button>
             </Link>

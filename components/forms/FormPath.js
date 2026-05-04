@@ -26,10 +26,7 @@ function FormPath({ objPath }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormState((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    setFormState((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const handleImageChange = async (e) => {
@@ -40,10 +37,7 @@ function FormPath({ objPath }) {
         const imageRef = storageRef.child(`images/${imageFile.name}`);
         await imageRef.put(imageFile);
         const url = await imageRef.getDownloadURL();
-        setFormState((prevState) => ({
-          ...prevState,
-          image: url,
-        }));
+        setFormState((prevState) => ({ ...prevState, image: url }));
       }
     } catch (error) {
       console.error('Error uploading image or getting download URL:', error);
@@ -61,8 +55,7 @@ function FormPath({ objPath }) {
         ...formState, user_id: user.uid, user_name: user.displayName, user_photo: user.photoURL,
       };
       createPath(payload).then(({ name }) => {
-        const patchPayload = { firebaseKey: name };
-        updatePath(patchPayload).then(() => {
+        updatePath({ firebaseKey: name }).then(() => {
           router.push('/');
         });
       });
@@ -70,52 +63,72 @@ function FormPath({ objPath }) {
   };
 
   return (
-    <Form variant="dark" onSubmit={handleSubmit}>
-      <h2 className="text-black mt-5" style={{ display: 'flex', justifyContent: 'center' }}>{objPath.firebaseKey ? 'Update' : 'Create'} Learning Path</h2>
+    <div
+      className="glass-card"
+      style={{ maxWidth: '560px', margin: '0 auto', padding: '36px 32px' }}
+    >
+      <h2 style={{
+        fontWeight: '700',
+        fontSize: '1.5rem',
+        marginBottom: '28px',
+        color: 'white',
+        textAlign: 'center',
+      }}
+      >
+        {objPath.firebaseKey ? 'Update' : 'Create'} Learning Path
+      </h2>
 
-      <Form.Label style={{ color: 'black' }}>Title</Form.Label>
-      <Form.Control
-        type="text"
-        placeholder="Enter Title"
-        name="title"
-        value={formState.title}
-        onChange={handleChange}
-        style={{ backgroundColor: 'grey', color: 'black', border: '1px solid white' }}
-      />
+      <Form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div>
+          <Form.Label style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', marginBottom: '6px' }}>Title</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter Title"
+            name="title"
+            value={formState.title}
+            onChange={handleChange}
+            className="glass-input"
+          />
+        </div>
 
-      <Form.Label style={{ color: 'black' }}>Image URL or Upload Image</Form.Label>
-      <Form.Control
-        type="text"
-        name="image"
-        value={formState.image}
-        onChange={handleChange}
-        placeholder="Enter the URL of an image"
-        style={{ backgroundColor: 'grey', color: 'black', border: '1px solid white' }}
-      />
+        <div>
+          <Form.Label style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', marginBottom: '6px' }}>Image URL or Upload Image</Form.Label>
+          <Form.Control
+            type="text"
+            name="image"
+            value={formState.image}
+            onChange={handleChange}
+            placeholder="Enter the URL of an image"
+            className="glass-input"
+            style={{ marginBottom: '8px' }}
+          />
+          <Form.Control
+            type="file"
+            name="imageFile"
+            onChange={handleImageChange}
+            className="glass-input"
+          />
+        </div>
 
-      <Form.Control
-        type="file"
-        name="imageFile"
-        onChange={handleImageChange}
-        style={{ backgroundColor: 'grey', color: 'black', border: '1px solid white' }}
-      />
+        <div>
+          <Form.Label style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', marginBottom: '6px' }}>Goal</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter Goal"
+            name="goal"
+            value={formState.goal}
+            onChange={handleChange}
+            className="glass-input"
+          />
+        </div>
 
-      <Form.Label style={{ color: 'black' }}>Goal</Form.Label>
-      <Form.Control
-        type="text"
-        placeholder="Enter Goal"
-        name="goal"
-        value={formState.goal}
-        onChange={handleChange}
-        style={{ backgroundColor: 'grey', color: 'black', border: '1px solid white' }}
-      />
-
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <Button variant="dark" type="submit" style={{ margin: '10px' }}>
-          {objPath.firebaseKey ? 'Update' : 'Create'} Path
-        </Button>
-      </div>
-    </Form>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '8px' }}>
+          <Button className="glass-btn" type="submit">
+            {objPath.firebaseKey ? 'Update Path' : 'Create Path'}
+          </Button>
+        </div>
+      </Form>
+    </div>
   );
 }
 

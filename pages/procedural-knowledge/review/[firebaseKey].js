@@ -1,210 +1,328 @@
 /* eslint-disable @next/next/no-img-element */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
-import {
-  Button, Container, Form, Spinner, Row, Col,
-} from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { getProceduralKnowledgeByFirebaseKey } from '../../../api/proceduralknowledgeData';
-import FeedbackOnStepsModal from '../../../components/feedbackonStepsModal';
 
 const ProceduralCardKnowledgeReviewPage = () => {
   const router = useRouter();
   const { firebaseKey } = router.query;
-  const [showSteps, setShowSteps] = useState(false);
-  const [taskSteps, setTaskSteps] = useState('');
   const [proceduralCard, setProceduralCard] = useState({});
-  const [example, setExample] = useState('');
-  const [showModal, setShowModal] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [answered, setAnswered] = useState(false);
+  const bottomRef = useRef(null);
 
   useEffect(() => {
-    getProceduralKnowledgeByFirebaseKey(firebaseKey).then((response) => setProceduralCard(response));
-  }, [firebaseKey]);
+    getProceduralKnowledgeByFirebaseKey(firebaseKey).then((response) => {
+      setProceduralCard(response);
+      setMessages([{
+        role: 'bot', type: 'task', content: response.title, picture: response.picture,
+      }]);
+    });
+  }, []);
 
-  async function getStepsFeedBack() {
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, loading]);
+
+  const pushMessage = (role, content, type = 'text') => {
+    setMessages((prev) => [...prev, { role, content, type }]);
+  };
+
+  const handleSend = async () => {
+    if (!input.trim() || loading || answered) return;
+    const userSteps = input.trim();
+    setInput('');
+    setAnswered(true);
+    pushMessage('user', userSteps, 'user-steps');
     setLoading(true);
+
     try {
-      const response = await axios.post('/api/openai', {
-        model: 'gpt-4-turbo',
-        prompt: `Considering the task of '${proceduralCard.title}', you've outlined these steps: '${taskSteps}'. Let's take a closer look together to see if anything might have been missed or could be tweaked for better clarity or efficiency. After reviewing, I'll suggest a revised set of steps that includes any improvements or additional actions needed to complete the task more effectively. Remember, it's all about making the process as smooth and straightforward as possible for you.`,
+      const feedbackRes = await axios.post('/api/openai', {
+        model: 'gpt-4o-mini',
+        prompt: `Considering the task of '${proceduralCard.title}', you've outlined these steps: '${userSteps}'. Let's take a closer look together to see if anything might have been missed or could be tweaked for better clarity or efficiency. After reviewing, I'll suggest a revised set of steps that includes any improvements or additional actions needed to complete the task more effectively. Remember, it's all about making the process as smooth and straightforward as possible for you.`,
         max_tokens: 600,
       });
-      setExample(response.data.choices[0].message.content);
-    } catch (error) {
-      console.error('Error OpenAi:', error);
+
+      pushMessage('bot', proceduralCard.taskSteps, 'steps');
+      pushMessage('bot', feedbackRes.data.choices[0].message.content, 'feedback');
+    } catch (err) {
+      pushMessage('bot', 'Sorry, something went wrong getting AI feedback.', 'error');
     } finally {
       setLoading(false);
     }
-  }
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'taskSteps') {
-      setTaskSteps(value);
-    } else {
-      setProceduralCard((prevState) => ({
-        ...prevState,
-        [name]: value,
-      }));
-    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    getStepsFeedBack();
-    setTaskSteps('');
-    setShowModal(true);
+  const handleReset = () => {
+    setMessages([{
+      role: 'bot', type: 'task', content: proceduralCard.title, picture: proceduralCard.picture,
+    }]);
+    setAnswered(false);
+    setInput('');
   };
 
-  const handleGoToTestMode = () => {
-    router.push({
-      pathname: '/Test',
-      query: { firebaseKey },
-    });
+  const handleClose = () => router.push(`/conceptual-knowledge/${proceduralCard.pathId}`);
+
+  const getBotBubbleStyle = (type) => {
+    const base = {
+      maxWidth: '78%',
+      padding: '14px 18px',
+      borderRadius: '18px 18px 18px 4px',
+      fontSize: '0.95rem',
+      lineHeight: 1.65,
+      color: 'white',
+      whiteSpace: 'pre-wrap',
+    };
+    if (type === 'steps') return { ...base, background: 'rgba(192,132,252,0.12)', border: '1px solid rgba(192,132,252,0.3)' };
+    if (type === 'feedback') return { ...base, background: 'rgba(102,126,234,0.12)', border: '1px solid rgba(102,126,234,0.3)' };
+    return { ...base, background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)' };
+  };
+
+  const getLabelFor = (role, type) => {
+    if (role === 'user') return { text: 'Your Steps', color: '#00d4ff' };
+    if (type === 'task') return { text: 'Task', color: '#c084fc' };
+    if (type === 'steps') return { text: 'Correct Steps', color: '#c084fc' };
+    if (type === 'feedback') return { text: 'AI Feedback', color: '#a78bfa' };
+    return null;
   };
 
   return (
-    <Container
-      style={{
-        background: 'black', position: 'relative', width: '90%', borderRadius: '10px', padding: '20px',
-      }}
-    >
-      <Button
-        onClick={() => router.push(`/conceptual-knowledge/${proceduralCard.pathId}`)}
-        style={{
-          position: 'absolute', right: 0, marginTop: '10px', marginRight: '10px', background: 'grey', color: 'black',
-        }}
-      >X
-      </Button>
-      <h1 style={{
-        textAlign: 'center', padding: '10px', background: 'grey', borderRadius: '10px',
-      }}
-      >{proceduralCard?.title ? proceduralCard.title.toUpperCase() : ''}
-      </h1>
+    <div style={{ display: 'flex', justifyContent: 'center', padding: '20px 16px' }}>
       <div style={{
+        width: '100%',
+        maxWidth: '720px',
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100%',
+        flexDirection: 'column',
+        height: 'calc(100vh - 120px)',
+        minHeight: '540px',
       }}
       >
-        <img
-          style={{
-            marginTop: '20px',
-            width: '50%',
-            height: '50%',
-            borderRadius: '10px',
-          }}
-          src={proceduralCard?.picture}
-          alt={proceduralCard.title}
-        />
-      </div>
-      <Button
-        onClick={() => {
-          setShowSteps(!showSteps);
-          setShowModal(false); // hide the modal when the "Hide Steps" button is clicked
-        }}
-        style={{
-          display: 'block', marginLeft: 'auto', marginRight: 'auto', marginTop: '20px', marginBottom: '20px', background: 'grey', color: 'black',
-        }}
-      >{showSteps ? 'Hide Steps' : 'Show Steps'}
-      </Button>
-      {!showSteps && (
-        <div>
-          <h2 style={{
-            textAlign: 'center', paddingBottom: '10px', background: 'grey', color: ' black', borderRadius: '10px',
-          }}
-          >Steps
-          </h2>
-          {loading && (
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '10vh',
-          }}
-          >
-            <Spinner animation="border" variant="white" />
-            <p style={{ color: 'white' }}>Loading...</p>
-          </div>
-          )}
-          <Form>
-            <Form.Group controlId="formTaskSteps">
-              <Form.Label style={{ color: 'white' }}>Type the Steps that you remember</Form.Label>
-              <Form.Control as="textarea" rows={10} placeholder="Recall your steps" name="taskSteps" value={taskSteps} onChange={handleChange} />
-            </Form.Group>
-          </Form>
-          <Row>
-            <Col>
-              <Button
-                variant="secondary"
-                onClick={handleSubmit}
-                style={{
-                  display: 'block', marginLeft: 'auto', marginRight: 'auto', marginTop: '20px', marginBottom: '20px', color: 'black',
-                }}
-              >feedback on steps
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                onClick={() => router.push(`/conceptual-knowledge/${proceduralCard.pathId}`)}
-                style={{
-                  display: 'block',
-                  marginLeft: 'auto',
-                  marginRight: 'auto',
-                  marginTop: '20px',
-                  marginBottom: '20px',
-                  color: 'black',
-                }}
-                variant="secondary"
-              >Close
-              </Button>
-              <Button
-                onClick={handleGoToTestMode}
-                style={{
-                  display: 'block',
-                  marginLeft: 'auto',
-                  marginRight: 'auto',
-                  marginTop: '20px',
-                  marginBottom: '20px',
-                  color: 'black',
-                }}
-                variant="secondary"
-              >Test Mode
-              </Button>
-            </Col>
-          </Row>
-            {!loading && showModal && <FeedbackOnStepsModal feedbackMessage={example} handleShow={showModal} />}
-        </div>
-      )}
-      {showSteps && (
-        <div>
-          <h2 style={{ textAlign: 'center', color: 'white' }}>Steps</h2>
-          <Form>
-            <Form.Group controlId="formTaskSteps">
-              <Form.Label style={{ color: 'white' }}>TaskSteps</Form.Label>
-              <Form.Control as="textarea" rows={10} placeholder="BreakDown Each Task Into Steps" name="taskStepsRecall" value={proceduralCard.taskSteps} onChange={handleChange} readOnly style={{ fontSize: '20px' }} />
-            </Form.Group>
-          </Form>
-          <Button
-            onClick={() => router.push(`/conceptual-knowledge/${proceduralCard.pathId}`)}
-            style={{
-              display: 'block',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              marginTop: '20px',
-              marginBottom: '20px',
-              color: 'black',
-            }}
-            variant="secondary"
-          >Close
-          </Button>
-        </div>
-      )}
 
-    </Container>
+        {/* Header */}
+        <div style={{
+          background: 'rgba(255,255,255,0.07)',
+          backdropFilter: 'blur(16px)',
+          border: '1px solid rgba(192,132,252,0.25)',
+          borderBottom: '1px solid rgba(255,255,255,0.08)',
+          borderRadius: '16px 16px 0 0',
+          padding: '14px 18px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{
+              width: '38px',
+              height: '38px',
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, #9333ea, #c084fc)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '1rem',
+              flexShrink: 0,
+            }}
+            >
+              ⚙
+            </div>
+            <div>
+              <div style={{
+                fontSize: '0.68rem', fontWeight: '700', color: '#c084fc', letterSpacing: '1px', textTransform: 'uppercase',
+              }}
+              >Procedural Review
+              </div>
+              <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)' }}>AI-powered study session</div>
+            </div>
+          </div>
+          <Button className="glass-btn-outline" size="sm" onClick={handleClose}>← Back</Button>
+        </div>
+
+        {/* Chat window */}
+        <div style={{
+          flex: 1,
+          overflowY: 'auto',
+          background: 'rgba(0,0,0,0.25)',
+          border: '1px solid rgba(255,255,255,0.07)',
+          borderTop: 'none',
+          borderBottom: 'none',
+          padding: '20px 16px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '18px',
+        }}
+        >
+          {messages.map((msg, i) => {
+            const label = getLabelFor(msg.role, msg.type);
+            const isUser = msg.role === 'user';
+
+            if (msg.type === 'task') {
+              return (
+                <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                  {label && (
+                    <span style={{
+                      fontSize: '0.63rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '1px', color: label.color, marginBottom: '5px', paddingLeft: '4px',
+                    }}
+                    >
+                      {label.text}
+                    </span>
+                  )}
+                  <div style={{
+                    maxWidth: '78%',
+                    borderRadius: '18px 18px 18px 4px',
+                    overflow: 'hidden',
+                    background: 'rgba(192,132,252,0.1)',
+                    border: '1px solid rgba(192,132,252,0.3)',
+                  }}
+                  >
+                    {msg.picture && (
+                      <img
+                        src={msg.picture}
+                        alt={msg.content}
+                        style={{
+                          width: '100%', height: '180px', objectFit: 'cover', display: 'block',
+                        }}
+                      />
+                    )}
+                    <div style={{
+                      padding: '14px 18px', fontSize: '1rem', fontWeight: '700', color: 'white', lineHeight: 1.5,
+                    }}
+                    >
+                      {msg.content}
+                    </div>
+                    <div style={{ padding: '0 18px 14px', fontSize: '0.82rem', color: 'rgba(255,255,255,0.5)' }}>
+                      Try to recall the steps for this task from memory.
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
+            return (
+              <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: isUser ? 'flex-end' : 'flex-start' }}>
+                {label && (
+                  <span style={{
+                    fontSize: '0.63rem',
+                    fontWeight: '700',
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px',
+                    color: label.color,
+                    marginBottom: '5px',
+                    paddingLeft: isUser ? 0 : '4px',
+                    paddingRight: isUser ? '4px' : 0,
+                  }}
+                  >
+                    {label.text}
+                  </span>
+                )}
+                <div style={isUser ? {
+                  maxWidth: '78%',
+                  padding: '14px 18px',
+                  borderRadius: '18px 18px 4px 18px',
+                  fontSize: '0.95rem',
+                  lineHeight: 1.65,
+                  color: 'white',
+                  whiteSpace: 'pre-wrap',
+                  background: 'rgba(0,212,255,0.15)',
+                  border: '1px solid rgba(0,212,255,0.35)',
+                } : getBotBubbleStyle(msg.type)}
+                >
+                  {msg.content}
+                </div>
+              </div>
+            );
+          })}
+
+          {loading && (
+            <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+              <div style={{
+                padding: '14px 20px',
+                borderRadius: '18px 18px 18px 4px',
+                background: 'rgba(255,255,255,0.07)',
+                border: '1px solid rgba(255,255,255,0.12)',
+                display: 'flex',
+                gap: '6px',
+                alignItems: 'center',
+              }}
+              >
+                {[0, 1, 2].map((d) => (
+                  <div
+                    key={d}
+                    style={{
+                      width: '7px',
+                      height: '7px',
+                      borderRadius: '50%',
+                      background: '#c084fc',
+                      animationDelay: `${d * 0.2}s`,
+                    }}
+                    className="typing-dot"
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+          <div ref={bottomRef} />
+        </div>
+
+        {/* Input area */}
+        <div style={{
+          background: 'rgba(255,255,255,0.07)',
+          backdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255,255,255,0.12)',
+          borderTop: '1px solid rgba(255,255,255,0.08)',
+          borderRadius: '0 0 16px 16px',
+          padding: '14px 16px',
+        }}
+        >
+          {!answered ? (
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-end' }}>
+              <textarea
+                rows={4}
+                placeholder="Type the steps you remember… (Enter to send, Shift+Enter for newline)"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
+                className="glass-input"
+                style={{
+                  flex: 1, resize: 'none', borderRadius: '10px', padding: '10px 14px', fontSize: '0.9rem',
+                }}
+              />
+              <Button
+                className="glass-btn"
+                onClick={handleSend}
+                disabled={!input.trim() || loading}
+                style={{ padding: '12px 22px', borderRadius: '10px', flexShrink: 0 }}
+              >
+                Send →
+              </Button>
+            </div>
+          ) : (
+            <div style={{
+              display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap',
+            }}
+            >
+              <Button className="glass-btn" onClick={handleReset} disabled={loading}>Try Again</Button>
+              <Button className="glass-btn-outline" onClick={handleClose}>← Back to Cards</Button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <style jsx>{`
+        .typing-dot {
+          animation: typingBounce 1.2s ease-in-out infinite;
+        }
+        @keyframes typingBounce {
+          0%, 60%, 100% { transform: translateY(0); opacity: 0.6; }
+          30% { transform: translateY(-6px); opacity: 1; }
+        }
+      `}
+      </style>
+    </div>
   );
 };
 

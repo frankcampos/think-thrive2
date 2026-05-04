@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     case 'POST':
       try {
         const response = await axios.post(`${openaiApiUrl}/chat/completions`, {
-          model: 'gpt-3.5-turbo', // Or any other supported model
+          model: body.model || 'gpt-4o-mini',
           messages: [{ role: 'user', content: body.prompt }],
           temperature: body.temperature || 0.7,
           max_tokens: body.max_tokens || 60,

@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../utils/context/authContext';
@@ -15,78 +14,110 @@ function ConceptualCard({ conceptualCard, onUpdate, userID }) {
   const [tags, setTags] = useState([]);
 
   const deletethisConceptualCard = () => {
-    if (window.confirm(`Are you sure you want to delete this ${conceptualCard.question}?`)) deleteConceptualKnowledge(conceptualCard.firebaseKey).then(onUpdate());
+    if (window.confirm(`Are you sure you want to delete "${conceptualCard.question}"?`)) {
+      deleteConceptualKnowledge(conceptualCard.firebaseKey).then(onUpdate);
+    }
   };
+
   useEffect(() => {
-    getConceptualTagsByConceptualCardId(conceptualCard.firebaseKey).then((response) => {
-      setTags(response);
-    });
+    getConceptualTagsByConceptualCardId(conceptualCard.firebaseKey).then(setTags);
   }, [conceptualCard.pathId, showModal]);
 
-  const handleShowModal = () => {
-    setShowModal(true);
-  };
-
+  const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => {
     setShowModal(false);
     onUpdate();
   };
+
+  const isOwner = user.uid === userID;
+
   return (
-    <Card
-      variant="danger"
-      style={{
-        width: '19rem', padding: '10px', margin: '10px', background: 'black', borderRadius: '10px', boxShadow: '5px 5px 5px grey',
-      }}
-    >
-      <Card.Title style={{ background: 'grey', borderRadius: '5px', padding: '5px' }}>{conceptualCard.question}</Card.Title>
-      <Card.Img style={{ borderRadius: '10px', width: '100%', height: '250px' }} variant="top" src={conceptualCard.imageUrl} />
-      <Card.Text
-        style={{
-          background: 'grey', borderRadius: '5px', marginTop: '10px', padding: '5px',
-        }}
-        onClick={handleShowModal}
-      >
-        Tags: {tags.map((tag) => (
-          <span
-            key={tag.firebaseKey}
-            style={{
-              display: 'inline-block',
-              padding: '5px',
-              margin: '2px',
-              borderRadius: '5px',
-              backgroundColor: 'black',
-              color: 'white',
-            }}
-          >{tag.tag_label}
+    <div className="flashcard flashcard-conceptual">
+      {/* ── Header strip ── */}
+      <div className="flashcard-header flashcard-header-conceptual">
+        <span className="flashcard-header-label">
+          ◆ Conceptual
+        </span>
+        {conceptualCard.difficulty && (
+          <span style={{
+            fontSize: '0.68rem',
+            fontWeight: '700',
+            background: 'rgba(0,0,0,0.2)',
+            padding: '2px 8px',
+            borderRadius: '10px',
+            color: 'white',
+            textTransform: 'capitalize',
+          }}
+          >
+            {conceptualCard.difficulty}
           </span>
-      ))}
-      </Card.Text>
-      <ModalTags show={showModal} onHide={handleCloseModal} conceptualCardId={conceptualCard.firebaseKey} />
-      <Card.Body>
-        <Link href={`/conceptual-knowledge/review/${conceptualCard.firebaseKey}`} passHref>
-          <Button variant="dark" style={{ marginRight: '10px', boxShadow: '2px 2px 2px white' }}>Review
-          </Button>
-        </Link>
-        {user.uid === userID && (
-          <>
-            <Link href={`/conceptual-knowledge/edit/${conceptualCard.firebaseKey}`} passHref>
-              <Button variant="dark" style={{ marginRight: '10px', boxShadow: '2px 2px 2px white' }}>
-                Edit
-              </Button>
-            </Link>
-            <Button variant="dark" onClick={deletethisConceptualCard} style={{ marginRight: '10px', boxShadow: '2px 2px 2px white' }}>
-              Delete
-            </Button>
-          </>
         )}
-        <Card.Text style={{
-          background: 'grey', borderRadius: '5px', marginTop: '20px', padding: '5px', width: 'auto', color: 'white',
+      </div>
+
+      {/* ── Image zone ── */}
+      {conceptualCard.imageUrl ? (
+        <img
+          src={conceptualCard.imageUrl}
+          alt={conceptualCard.question}
+          className="flashcard-image"
+        />
+      ) : (
+        <div style={{
+          height: '120px',
+          background: 'linear-gradient(135deg, rgba(14,165,233,0.15), rgba(0,212,255,0.05))',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '2.5rem',
         }}
         >
-          Conceptual Card
-        </Card.Text>
-      </Card.Body>
-    </Card>
+          💡
+        </div>
+      )}
+
+      {/* ── Body ── */}
+      <div className="flashcard-body">
+        <p className="flashcard-title">{conceptualCard.question}</p>
+
+        {/* Tags */}
+        <div
+          className="flashcard-tags"
+          onClick={handleShowModal}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => e.key === 'Enter' && handleShowModal()}
+        >
+          {tags.length > 0 ? (
+            tags.map((tag) => (
+              <span key={tag.firebaseKey} className="glass-tag">{tag.tag_label}</span>
+            ))
+          ) : (
+            <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.3)', fontStyle: 'italic' }}>
+              + add tags
+            </span>
+          )}
+        </div>
+
+        <ModalTags show={showModal} onHide={handleCloseModal} conceptualCardId={conceptualCard.firebaseKey} />
+
+        {/* Actions */}
+        <div className="flashcard-actions">
+          <Link href={`/conceptual-knowledge/review/${conceptualCard.firebaseKey}`} passHref>
+            <Button className="glass-btn" size="sm">Review</Button>
+          </Link>
+          {isOwner && (
+            <>
+              <Link href={`/conceptual-knowledge/edit/${conceptualCard.firebaseKey}`} passHref>
+                <Button className="glass-btn-outline" size="sm">Edit</Button>
+              </Link>
+              <Button className="glass-btn-danger" size="sm" onClick={deletethisConceptualCard}>
+                Delete
+              </Button>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
 

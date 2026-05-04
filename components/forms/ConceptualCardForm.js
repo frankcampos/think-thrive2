@@ -27,10 +27,7 @@ function ConceptualCardForm({ objConceptualCard, pathId }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormState((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    setFormState((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const handleImageChange = async (e) => {
@@ -41,10 +38,7 @@ function ConceptualCardForm({ objConceptualCard, pathId }) {
         const imageRef = storageRef.child(`images/${imageFile.name}`);
         await imageRef.put(imageFile);
         const url = await imageRef.getDownloadURL();
-        setFormState((prevState) => ({
-          ...prevState,
-          imageUrl: url,
-        }));
+        setFormState((prevState) => ({ ...prevState, imageUrl: url }));
       }
     } catch (error) {
       console.error('Error uploading image or getting download URL:', error);
@@ -60,8 +54,7 @@ function ConceptualCardForm({ objConceptualCard, pathId }) {
     } else {
       const payload = { ...formState, pathId };
       createConceptualKnowledge(payload).then(({ name }) => {
-        const patchPayload = { firebaseKey: name };
-        updateConceptualKnowledge(patchPayload).then(() => {
+        updateConceptualKnowledge({ firebaseKey: name }).then(() => {
           router.push(`/conceptual-knowledge/${pathId}`);
         });
       });
@@ -69,59 +62,71 @@ function ConceptualCardForm({ objConceptualCard, pathId }) {
   };
 
   return (
-    <Form
-      onSubmit={handleSubmit}
-      style={{
-        borderColor: 'black', borderStyle: 'solid', backgroundColor: 'lightgray', padding: '10px', borderRadius: '10px',
-      }}
+    <div
+      className="glass-card"
+      style={{ maxWidth: '640px', margin: '0 auto', padding: '36px 32px' }}
     >
-      <h2
-        className="text-black mt-5"
-        style={{
-          fontSize: '2em', fontWeight: 'bold', color: 'darkslategray', textShadow: '2px 2px lightgray',
-        }}
+      <h2 style={{
+        fontWeight: '700',
+        fontSize: '1.5rem',
+        marginBottom: '28px',
+        color: 'white',
+      }}
       >
         {objConceptualCard.firebaseKey ? 'Update' : 'Create'} Conceptual Card
       </h2>
-      <Form.Label style={{ color: 'grey' }}>Question</Form.Label>
-      <Form.Control
-        type="text"
-        placeholder="Enter Question"
-        name="question"
-        value={formState.question}
-        onChange={handleChange}
-        style={{ backgroundColor: 'white', color: 'black', border: '1px solid white' }}
-      />
-      <Form.Label style={{ color: 'grey' }}>Answer</Form.Label>
-      <Form.Control
-        type="text"
-        placeholder="Enter Answer"
-        name="answer"
-        value={formState.answer}
-        onChange={handleChange}
-        style={{ backgroundColor: 'white', color: 'black', border: '1px solid white' }}
-      />
-      <Form.Label style={{ color: 'grey' }}>Enter Image URL or Upload an Image File</Form.Label>
-      <Form.Control
-        type="text"
-        placeholder="Enter Image URL"
-        name="imageUrl"
-        value={formState.imageUrl}
-        onChange={handleChange}
-        style={{
-          backgroundColor: 'white', color: 'black', border: '1px solid white', marginBottom: '10px',
-        }}
-      />
-      <Form.Control
-        type="file"
-        name="imageFile"
-        onChange={handleImageChange}
-        style={{ backgroundColor: 'lightgrey', color: 'black', border: '1px solid white' }}
-      />
-      <Button variant="dark" type="submit" style={{ margin: '10px' }}>
-        {objConceptualCard.firebaseKey ? 'Update' : 'Create'}
-      </Button>
-    </Form>
+
+      <Form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div>
+          <Form.Label style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', marginBottom: '6px' }}>Question</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter Question"
+            name="question"
+            value={formState.question}
+            onChange={handleChange}
+            className="glass-input"
+          />
+        </div>
+
+        <div>
+          <Form.Label style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', marginBottom: '6px' }}>Answer</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter Answer"
+            name="answer"
+            value={formState.answer}
+            onChange={handleChange}
+            className="glass-input"
+          />
+        </div>
+
+        <div>
+          <Form.Label style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', marginBottom: '6px' }}>Image URL</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter Image URL"
+            name="imageUrl"
+            value={formState.imageUrl}
+            onChange={handleChange}
+            className="glass-input"
+            style={{ marginBottom: '8px' }}
+          />
+          <Form.Control
+            type="file"
+            name="imageFile"
+            onChange={handleImageChange}
+            className="glass-input"
+          />
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
+          <Button className="glass-btn" type="submit">
+            {objConceptualCard.firebaseKey ? 'Update Card' : 'Create Card'}
+          </Button>
+        </div>
+      </Form>
+    </div>
   );
 }
 

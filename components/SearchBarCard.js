@@ -13,45 +13,32 @@ function SearchBarCards({ onSearchTermChange, onFilterChange }) {
     onFilterChange(searchBy);
   }, [searchBy, onFilterChange]);
 
-  const handleSearchTermChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  const handleSearchByChange = (event) => {
-    setSearchBy(event.target.value);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-  };
+  const handleSearchTermChange = (event) => setSearchTerm(event.target.value);
+  const handleSearchByChange = (event) => setSearchBy(event.target.value);
+  const handleSubmit = (event) => event.preventDefault();
 
   return (
     <form
       onSubmit={handleSubmit}
-      style={{
-        display: 'flex', flexDirection: 'row', alignItems: 'center', backgroundColor: 'black', padding: '20px', borderRadius: '10px',
-      }}
-      className="search-bar-cards"
+      className="glass-card-dark search-bar-cards"
     >
       <select
         value={searchBy}
         onChange={handleSearchByChange}
-        style={{
-          marginRight: '10px', backgroundColor: '#555', color: '#fff', border: 'none', padding: '10px', borderRadius: '5px',
-        }}
+        className="glass-input"
+        style={{ minWidth: '160px' }}
       >
-        <option value="procedural">Procedural Cards</option>
-        <option value="conceptual">Conceptual Cards</option>
         <option value="all">All Cards</option>
+        <option value="conceptual">Conceptual Cards</option>
+        <option value="procedural">Procedural Cards</option>
       </select>
       <input
         type="text"
-        placeholder="Search..."
+        placeholder="Search cards..."
         value={searchTerm}
         onChange={handleSearchTermChange}
-        style={{
-          flex: 1, backgroundColor: '#555', color: '#fff', border: 'none', padding: '10px', borderRadius: '5px',
-        }}
+        className="glass-input"
+        style={{ flex: 1 }}
       />
     </form>
   );

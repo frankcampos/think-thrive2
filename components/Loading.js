@@ -9,9 +9,9 @@ export default function Loading() {
       <Spinner
         animation="border"
         style={{
-          color: '#00BF67',
-          width: '100px',
-          height: '100px',
+          color: '#00d4ff',
+          width: '80px',
+          height: '80px',
         }}
       />
     </div>

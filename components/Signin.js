@@ -3,32 +3,67 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import { signIn } from '../utils/auth';
-import { useAuth } from '../utils/context/authContext'; // import useAuth hook
+import { useAuth } from '../utils/context/authContext';
 
 function Signin() {
-  const { signInAsGuest } = useAuth(); // get signInAsGuest from auth context
+  const { signInAsGuest } = useAuth();
 
   return (
     <div
-      className="text-center d-flex flex-column justify-content-center align-content-center"
       style={{
-        height: '90vh',
-        padding: '30px',
-        maxWidth: '400px',
-        margin: '0 auto',
-        color: 'white',
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '20px',
       }}
     >
-      <img src="/thinkthrive.png" alt="Logo" />
-      <h1>Welcome to ThinkThrive</h1>
-      <p>Our app is a platform designed to enhance your learning experience. Click the button below to get started!</p>
-      <p>Made by Frank Campos</p>
-      <Button type="button" size="lg" className="copy-btn" onClick={signIn} style={{ marginBottom: '10px' }}>
-        Sign In
-      </Button>
-      <Button type="button" size="lg" className="copy-btn" onClick={signInAsGuest}>
-        Continue as Guest
-      </Button>
+      <div
+        className="glass-card text-center"
+        style={{
+          width: '100%',
+          maxWidth: '420px',
+          padding: '48px 36px',
+        }}
+      >
+        <img
+          src="/thinkthrive.png"
+          alt="ThinkThrive Logo"
+          style={{
+            width: '80px',
+            height: '80px',
+            borderRadius: '16px',
+            marginBottom: '24px',
+          }}
+        />
+        <h1 style={{ fontWeight: '700', fontSize: '1.8rem', marginBottom: '8px' }}>
+          Welcome to ThinkThrive
+        </h1>
+        <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.95rem', marginBottom: '4px' }}>
+          Your AI-powered learning companion
+        </p>
+        <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem', marginBottom: '36px' }}>
+          Made by Frank Campos
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <Button
+            className="glass-btn"
+            size="lg"
+            onClick={signIn}
+            style={{ width: '100%' }}
+          >
+            Sign In with Google
+          </Button>
+          <Button
+            className="glass-btn-outline"
+            size="lg"
+            onClick={signInAsGuest}
+            style={{ width: '100%' }}
+          >
+            Continue as Guest
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }

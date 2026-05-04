@@ -27,13 +27,23 @@ const ViewDirectorBasedOnUserAuthStatus = ({ component: Component, pageProps }) 
           <Component {...pageProps} />
         </div>
         {/* footer at the bottom of the page  */}
-        <footer style={{ background: 'grey', marginTop: 'auto', padding: '10px 0 10px' }}>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <a href="https://www.linkedin.com/in/frank-parada-campos-214a48229/" target="_blank" rel="noopener noreferrer">
-              <img src="https://cdn.icon-icons.com/icons2/2428/PNG/512/linkedin_black_logo_icon_147114.png" alt="LinkedIn" style={{ width: '30px', height: '30px', marginRight: '10px' }} />
+        <footer style={{
+          background: 'rgba(255,255,255,0.05)',
+          backdropFilter: 'blur(10px)',
+          borderTop: '1px solid rgba(255,255,255,0.1)',
+          marginTop: 'auto',
+          padding: '16px 0',
+        }}
+        >
+          <div style={{
+            display: 'flex', justifyContent: 'center', gap: '16px', alignItems: 'center',
+          }}
+          >
+            <a href="https://www.linkedin.com/in/frank-parada-campos-214a48229/" target="_blank" rel="noopener noreferrer" style={{ opacity: 0.7 }}>
+              <img src="https://cdn.icon-icons.com/icons2/2428/PNG/512/linkedin_black_logo_icon_147114.png" alt="LinkedIn" style={{ width: '28px', height: '28px', filter: 'invert(1)' }} />
             </a>
-            <a href="https://github.com/frankcampos" target="_blank" rel="noopener noreferrer">
-              <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub" style={{ width: '30px', height: '30px' }} />
+            <a href="https://github.com/frankcampos" target="_blank" rel="noopener noreferrer" style={{ opacity: 0.7 }}>
+              <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub" style={{ width: '28px', height: '28px', filter: 'invert(1)' }} />
             </a>
           </div>
         </footer>

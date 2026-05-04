@@ -217,6 +217,12 @@ TestMode.propTypes = {
   cards: PropTypes.arrayOf(PropTypes.shape({
     type: PropTypes.string.isRequired,
     firebaseKey: PropTypes.string.isRequired,
+    imageUrl: PropTypes.string,
+    picture: PropTypes.string,
+    question: PropTypes.string,
+    title: PropTypes.string,
+    answer: PropTypes.string,
+    taskSteps: PropTypes.string,
   })).isRequired,
 };
 

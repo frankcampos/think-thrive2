@@ -1,9 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @next/next/no-html-link-for-pages */
 import React from 'react';
+import dynamic from 'next/dynamic';
 import { Button } from 'react-bootstrap';
 import { signIn } from '../utils/auth';
 import { useAuth } from '../utils/context/authContext';
+
+const PretextBackground = dynamic(() => import('./PretextBackground'), { ssr: false });
 
 function Signin() {
   const { signInAsGuest } = useAuth();
@@ -16,14 +19,18 @@ function Signin() {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '20px',
+        position: 'relative',
       }}
     >
+      <PretextBackground />
       <div
         className="glass-card text-center"
         style={{
           width: '100%',
           maxWidth: '420px',
           padding: '48px 36px',
+          position: 'relative',
+          zIndex: 1,
         }}
       >
         <img

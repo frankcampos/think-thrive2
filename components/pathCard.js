@@ -34,7 +34,7 @@ function PathCard({ path, onUpdate, size }) {
   const creator = (
     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
       <img
-        src={userPhoto}
+        src={userPhoto || '/placeholder-avatar.svg'}
         alt={madeBy}
         onError={(e) => { e.target.src = '/placeholder-avatar.svg'; }}
         style={{

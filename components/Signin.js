@@ -6,7 +6,7 @@ import { Button } from 'react-bootstrap';
 import { signIn } from '../utils/auth';
 import { useAuth } from '../utils/context/authContext';
 
-const DragonBackground = dynamic(() => import('./DragonBackground'), { ssr: false });
+const PretextBackground = dynamic(() => import('./PretextBackground'), { ssr: false });
 
 function Signin() {
   const { signInAsGuest } = useAuth();
@@ -20,9 +20,11 @@ function Signin() {
         justifyContent: 'center',
         padding: '20px',
         position: 'relative',
+        cursor: 'none',
       }}
     >
-      <DragonBackground />
+      <style>{'* { cursor: none !important; }'}</style>
+      <PretextBackground />
       <div
         className="glass-card text-center"
         style={{

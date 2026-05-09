@@ -74,15 +74,22 @@ export default function NavBar() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub" style={{ width: '22px', height: '22px', filter: 'invert(1)' }} />
             </a>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={user?.photoURL || '/placeholder-avatar.svg'}
-              alt="User avatar"
-              onError={(e) => { e.target.src = '/placeholder-avatar.svg'; }}
-              style={{
-                height: '32px', width: '32px', borderRadius: '50%', border: '2px solid rgba(255,255,255,0.3)', objectFit: 'cover',
-              }}
-            />
+            <Link passHref href="/settings">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={user?.photoURL || '/placeholder-avatar.svg'}
+                alt="User avatar"
+                onError={(e) => { e.target.src = '/placeholder-avatar.svg'; }}
+                style={{
+                  height: '32px',
+                  width: '32px',
+                  borderRadius: '50%',
+                  border: `2px solid ${router.pathname === '/settings' ? '#00d4ff' : 'rgba(255,255,255,0.3)'}`,
+                  objectFit: 'cover',
+                  cursor: 'pointer',
+                }}
+              />
+            </Link>
             <Link passHref href="/">
               <Button className="glass-btn-outline" onClick={signOut} size="sm">
                 Sign Out

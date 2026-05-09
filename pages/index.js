@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Button, Container } from 'react-bootstrap';
 import Link from 'next/link';
+import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { getAllPaths } from '../api/pathsData';
 import PathCard from '../components/pathCard';
@@ -23,6 +24,10 @@ function Home() {
 
   return (
     <Container>
+      <Head>
+        <title>Learning Paths | ThinkThrive</title>
+        <meta name="description" content="Explore community-created neuroscience-based learning paths on ThinkThrive." />
+      </Head>
       <div style={{ textAlign: 'center', marginBottom: '32px' }}>
         <h1 style={{
           fontWeight: '700', fontSize: '2rem', color: 'white', marginBottom: '6px',

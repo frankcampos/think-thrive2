@@ -39,6 +39,14 @@ const ViewDirectorBasedOnUserAuthStatus = ({ component: Component, pageProps }) 
             display: 'flex', justifyContent: 'center', gap: '16px', alignItems: 'center',
           }}
           >
+            <a
+              href="https://www.frankcampos.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.85rem', fontWeight: '500', textDecoration: 'none' }}
+            >
+              Built by Frank Campos
+            </a>
             <a href="https://www.linkedin.com/in/frank-parada-campos-214a48229/" target="_blank" rel="noopener noreferrer" style={{ opacity: 0.7 }}>
               <img src="https://cdn.icon-icons.com/icons2/2428/PNG/512/linkedin_black_logo_icon_147114.png" alt="LinkedIn" style={{ width: '28px', height: '28px', filter: 'invert(1)' }} />
             </a>

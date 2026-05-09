@@ -98,6 +98,7 @@ function TestMode({ cards }) {
           <img
             src={card.imageUrl || card.picture}
             alt={card.question || card.title}
+            onError={(e) => { e.target.src = '/placeholder-image.svg'; }}
             style={{
               width: '100%', height: '260px', objectFit: 'cover', display: 'block',
             }}

@@ -55,16 +55,15 @@ export default function NavBar() {
             </Link>
           </Nav>
           <Nav style={{ alignItems: 'center', gap: '12px' }}>
-            {user?.photoURL && (
-              <Image
-                src={user.photoURL}
-                alt="User avatar"
-                roundedCircle
-                style={{
-                  height: '32px', width: '32px', border: '2px solid rgba(255,255,255,0.3)',
-                }}
-              />
-            )}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={user?.photoURL || '/placeholder-avatar.svg'}
+              alt="User avatar"
+              onError={(e) => { e.target.src = '/placeholder-avatar.svg'; }}
+              style={{
+                height: '32px', width: '32px', borderRadius: '50%', border: '2px solid rgba(255,255,255,0.3)', objectFit: 'cover',
+              }}
+            />
             <Link passHref href="/">
               <Button className="glass-btn-outline" onClick={signOut} size="sm">
                 Sign Out

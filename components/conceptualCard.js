@@ -60,6 +60,7 @@ function ConceptualCard({ conceptualCard, onUpdate, userID }) {
           src={conceptualCard.imageUrl}
           alt={conceptualCard.question}
           className="flashcard-image"
+          onError={(e) => { e.target.src = '/placeholder-image.svg'; }}
         />
       ) : (
         <div style={{

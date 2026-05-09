@@ -36,6 +36,7 @@ function PathCard({ path, onUpdate, size }) {
       <img
         src={userPhoto}
         alt={madeBy}
+        onError={(e) => { e.target.src = '/placeholder-avatar.svg'; }}
         style={{
           width: '28px',
           height: '28px',
@@ -60,6 +61,7 @@ function PathCard({ path, onUpdate, size }) {
         <img
           src={path.image}
           alt={path.title}
+          onError={(e) => { e.target.src = '/placeholder-image.svg'; }}
           style={{
             position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover',
           }}
@@ -130,6 +132,7 @@ function PathCard({ path, onUpdate, size }) {
         <img
           src={path.image}
           alt={path.title}
+          onError={(e) => { e.target.src = '/placeholder-image.svg'; }}
           style={{
             width: '42%', objectFit: 'cover', flexShrink: 0, borderRadius: '16px 0 0 16px',
           }}
@@ -179,6 +182,7 @@ function PathCard({ path, onUpdate, size }) {
         <img
           src={path.image}
           alt={path.title}
+          onError={(e) => { e.target.src = '/placeholder-image.svg'; }}
           style={{
             width: '100%', height: '100%', objectFit: 'cover', borderRadius: '16px 16px 0 0',
           }}

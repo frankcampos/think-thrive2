@@ -1,12 +1,31 @@
 /* eslint-disable @next/next/no-img-element */
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useAuth } from './context/authContext';
 import Loading from '../components/Loading';
 import Signin from '../components/Signin';
 import NavBar from '../components/NavBar';
+import WelcomeScreen from '../components/WelcomeScreen';
 
 const ViewDirectorBasedOnUserAuthStatus = ({ component: Component, pageProps }) => {
   const { user, userLoading } = useAuth();
+  const [showWelcome, setShowWelcome] = useState(false);
+
+  useEffect(() => {
+    if (!user) return;
+    if (user.isAnonymous) {
+      setShowWelcome(true);
+    } else if (!localStorage.getItem('hasSeenWelcome')) {
+      setShowWelcome(true);
+    }
+  }, [user]);
+
+  const handleDone = () => {
+    if (!user?.isAnonymous) {
+      localStorage.setItem('hasSeenWelcome', 'true');
+    }
+    setShowWelcome(false);
+  };
 
   // if user state is null, then show loader
   if (userLoading) {
@@ -15,6 +34,9 @@ const ViewDirectorBasedOnUserAuthStatus = ({ component: Component, pageProps }) 
 
   // what the user should see if they are logged in
   if (user) {
+    if (showWelcome) {
+      return <WelcomeScreen onDone={handleDone} />;
+    }
     return (
       <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <NavBar /> {/* NavBar only visible if user is logged in and is in every view */}

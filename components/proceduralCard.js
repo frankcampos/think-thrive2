@@ -47,6 +47,7 @@ function ProceduralCard({ proceduralCard, onUpdate, userID }) {
           src={proceduralCard.picture}
           alt={proceduralCard.title}
           className="flashcard-image"
+          onError={(e) => { e.target.src = '/placeholder-image.svg'; }}
         />
       ) : (
         <div style={{

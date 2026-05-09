@@ -15,6 +15,24 @@ function PathCard({ path, onUpdate, size }) {
   const userPhoto = user.uid === path.user_id ? user.photoURL : path.user_photo;
   const isOwner = user.uid === path.user_id;
 
+  const privateBadge = path.public === false && isOwner ? (
+    <span style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '4px',
+      fontSize: '0.7rem',
+      fontWeight: '600',
+      color: 'rgba(255,255,255,0.6)',
+      background: 'rgba(255,255,255,0.1)',
+      padding: '2px 8px',
+      borderRadius: '12px',
+      border: '1px solid rgba(255,255,255,0.15)',
+    }}
+    >
+      🔒 Private
+    </span>
+  ) : null;
+
   const actions = (
     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
       <Link href={`/conceptual-knowledge/${path.firebaseKey}`} passHref>
@@ -79,16 +97,23 @@ function PathCard({ path, onUpdate, size }) {
         }}
         >
           <div style={{
-            display: 'inline-block',
-            fontSize: '0.7rem',
-            fontWeight: '700',
-            textTransform: 'uppercase',
-            letterSpacing: '1px',
-            color: '#00d4ff',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
             marginBottom: '8px',
           }}
           >
-            Featured
+            <div style={{
+              fontSize: '0.7rem',
+              fontWeight: '700',
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+              color: '#00d4ff',
+            }}
+            >
+              Featured
+            </div>
+            {privateBadge}
           </div>
           <h2 style={{
             fontWeight: '800', fontSize: '1.6rem', color: 'white', marginBottom: '8px', lineHeight: 1.2,
@@ -142,12 +167,21 @@ function PathCard({ path, onUpdate, size }) {
         }}
         >
           <div>
-            <h3 style={{
-              fontWeight: '700', fontSize: '1.1rem', color: 'white', marginBottom: '8px', lineHeight: 1.3,
+            <div style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '8px',
+              marginBottom: '8px',
             }}
             >
-              {path.title}
-            </h3>
+              <h3 style={{
+                fontWeight: '700', fontSize: '1.1rem', color: 'white', margin: 0, lineHeight: 1.3,
+              }}
+              >
+                {path.title}
+              </h3>
+              {privateBadge}
+            </div>
             <p style={{
               fontSize: '0.83rem',
               color: 'rgba(255,255,255,0.6)',
@@ -203,7 +237,7 @@ function PathCard({ path, onUpdate, size }) {
           fontWeight: '700',
           fontSize: '0.92rem',
           color: 'white',
-          marginBottom: '6px',
+          marginBottom: '4px',
           display: '-webkit-box',
           WebkitLineClamp: 2,
           WebkitBoxOrient: 'vertical',
@@ -212,6 +246,7 @@ function PathCard({ path, onUpdate, size }) {
         >
           {path.title}
         </h4>
+        {privateBadge && <div style={{ marginBottom: '4px' }}>{privateBadge}</div>}
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '6px',
         }}
@@ -243,6 +278,7 @@ PathCard.propTypes = {
     user_id: PropTypes.string,
     user_name: PropTypes.string,
     user_photo: PropTypes.string,
+    public: PropTypes.bool,
   }).isRequired,
   onUpdate: PropTypes.func.isRequired,
   size: PropTypes.oneOf(['featured', 'wide', 'default']),

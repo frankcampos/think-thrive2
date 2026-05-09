@@ -20,7 +20,7 @@ const features = [
   },
 ];
 
-export default function WelcomeScreen({ onDone }) {
+export default function WelcomeScreen({ onDone, isGuest }) {
   return (
     <div style={{
       minHeight: '100vh',
@@ -84,6 +84,17 @@ export default function WelcomeScreen({ onDone }) {
           ))}
         </div>
 
+        {isGuest && (
+          <p style={{
+            fontSize: '0.8rem',
+            color: 'rgba(255,255,255,0.4)',
+            marginBottom: '16px',
+          }}
+          >
+            As a guest you can create paths and cards — your data will be saved for this session.
+          </p>
+        )}
+
         <Button
           className="glass-btn"
           style={{ padding: '12px 40px', fontSize: '1rem', fontWeight: '700' }}
@@ -98,4 +109,9 @@ export default function WelcomeScreen({ onDone }) {
 
 WelcomeScreen.propTypes = {
   onDone: PropTypes.func.isRequired,
+  isGuest: PropTypes.bool,
+};
+
+WelcomeScreen.defaultProps = {
+  isGuest: false,
 };

@@ -35,7 +35,7 @@ const ViewDirectorBasedOnUserAuthStatus = ({ component: Component, pageProps }) 
   // what the user should see if they are logged in
   if (user) {
     if (showWelcome) {
-      return <WelcomeScreen onDone={handleDone} />;
+      return <WelcomeScreen onDone={handleDone} isGuest={user.isAnonymous} />;
     }
     return (
       <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>

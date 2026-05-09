@@ -17,7 +17,7 @@ function Home() {
   const [paths, setPaths] = useState([]);
 
   const getAllThePaths = () => {
-    getAllPaths().then((response) => setPaths(response));
+    getAllPaths().then((response) => setPaths(response.filter((p) => p.public !== false)));
   };
 
   useEffect(() => { getAllThePaths(); }, []);

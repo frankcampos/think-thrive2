@@ -12,6 +12,7 @@ const initialState = {
   title: '',
   image: '',
   goal: '',
+  public: true,
 };
 
 function FormPath({ objPath }) {
@@ -227,6 +228,37 @@ function FormPath({ objPath }) {
           />
         </div>
 
+        {/* Privacy toggle */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '14px 16px',
+          borderRadius: '10px',
+          background: 'rgba(255,255,255,0.04)',
+          border: '1px solid rgba(255,255,255,0.1)',
+        }}
+        >
+          <div>
+            <p style={{
+              color: 'rgba(255,255,255,0.85)', fontWeight: '600', fontSize: '0.88rem', margin: '0 0 2px',
+            }}
+            >
+              {formState.public !== false ? '🌐 Public' : '🔒 Private'}
+            </p>
+            <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.78rem', margin: 0 }}>
+              {formState.public !== false ? 'Visible to everyone on the home page' : 'Only accessible via direct link'}
+            </p>
+          </div>
+          <Form.Check
+            type="switch"
+            id="public-switch"
+            checked={formState.public !== false}
+            onChange={(e) => setFormState((prev) => ({ ...prev, public: e.target.checked }))}
+            style={{ transform: 'scale(1.2)', cursor: 'pointer' }}
+          />
+        </div>
+
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '4px' }}>
           <Button
             className="glass-btn"
@@ -247,6 +279,8 @@ FormPath.propTypes = {
     firebaseKey: PropTypes.string,
     image: PropTypes.string,
     title: PropTypes.string,
+    goal: PropTypes.string,
+    public: PropTypes.bool,
   }),
 };
 

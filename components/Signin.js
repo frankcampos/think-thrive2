@@ -20,8 +20,10 @@ function Signin() {
         justifyContent: 'center',
         padding: '20px',
         position: 'relative',
+        cursor: 'none',
       }}
     >
+      <style>{'* { cursor: none !important; }'}</style>
       <PretextBackground />
       <div
         className="glass-card text-center"

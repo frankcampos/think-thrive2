@@ -20,6 +20,10 @@ const MARGIN = 36;
 const CURSOR_BASE_R = 72;
 const CURSOR_PULSE_AMP = 20;
 const KW_PAD = 20;
+const MAGNET_RADIUS = 240;
+const MAGNET_STRENGTH = 0.9;
+const MAX_SPEED = 2.5;
+const CONSTELLATION_DIST = 400;
 
 const KW_DEFS = [
   {
@@ -39,7 +43,7 @@ const KW_DEFS = [
   },
 ];
 
-function getLineGeometry(y, keywords, cursor, canvasW) {
+function getLineSegments(y, keywords, cursor, canvasW) {
   let xStart = MARGIN;
   let xEnd = canvasW - MARGIN;
 
@@ -58,6 +62,8 @@ function getLineGeometry(y, keywords, cursor, canvasW) {
     }
   });
 
+  const segments = [{ x: xStart, width: Math.max(0, xEnd - xStart) }];
+
   if (cursor) {
     const r = cursor.r || CURSOR_BASE_R;
     const dy = Math.abs(y - cursor.y);
@@ -65,15 +71,19 @@ function getLineGeometry(y, keywords, cursor, canvasW) {
       const halfChord = Math.sqrt(r * r - dy * dy) + 12;
       const cLeft = cursor.x - halfChord;
       const cRight = cursor.x + halfChord;
-      if (cLeft - MARGIN >= canvasW - MARGIN - cRight) {
-        xEnd = Math.min(xEnd, cLeft);
-      } else {
-        xStart = Math.max(xStart, cRight);
-      }
+      const result = [];
+      segments.forEach(({ x, width }) => {
+        const segEnd = x + width;
+        const left = { x, width: Math.max(0, Math.min(cLeft, segEnd) - x) };
+        const right = { x: Math.max(cRight, x), width: Math.max(0, segEnd - Math.max(cRight, x)) };
+        if (left.width >= 50) result.push(left);
+        if (right.width >= 50) result.push(right);
+      });
+      return result;
     }
   }
 
-  return { x: xStart, width: Math.max(0, xEnd - xStart) };
+  return segments.filter((s) => s.width >= 50);
 }
 
 export default function PretextBackground() {
@@ -107,7 +117,6 @@ export default function PretextBackground() {
     window.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseleave', onMouseLeave);
 
-    // Init keywords with measured widths (done after fonts load)
     let keywords = [];
     let prepared = null;
     let rafId = null;
@@ -117,8 +126,26 @@ export default function PretextBackground() {
       const h = canvas.height;
       ctx.clearRect(0, 0, w, h);
 
-      // Move keywords + bounce
+      const pulseR = CURSOR_BASE_R + Math.sin(Date.now() / 380) * CURSOR_PULSE_AMP;
+      const activeCursor = cursorRef.current ? { ...cursorRef.current, r: pulseR } : null;
+
+      // Move keywords + bounce + cursor magnetism
       for (let ki = 0; ki < keywords.length; ki++) {
+        if (activeCursor) {
+          const dx = keywords[ki].px - activeCursor.x;
+          const dy = keywords[ki].py - activeCursor.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < MAGNET_RADIUS && dist > 0) {
+            const force = MAGNET_STRENGTH * (1 - dist / MAGNET_RADIUS);
+            keywords[ki].vx += (dx / dist) * force;
+            keywords[ki].vy += (dy / dist) * force;
+            const speed = Math.sqrt(keywords[ki].vx ** 2 + keywords[ki].vy ** 2);
+            if (speed > MAX_SPEED) {
+              keywords[ki].vx = (keywords[ki].vx / speed) * MAX_SPEED;
+              keywords[ki].vy = (keywords[ki].vy / speed) * MAX_SPEED;
+            }
+          }
+        }
         keywords[ki].px += keywords[ki].vx;
         keywords[ki].py += keywords[ki].vy;
         const halfW = keywords[ki].kw / 2 + KW_PAD;
@@ -127,11 +154,7 @@ export default function PretextBackground() {
         if (keywords[ki].py - halfH < 0 || keywords[ki].py + halfH > h) keywords[ki].vy *= -1;
       }
 
-      // Pulsing cursor radius
-      const pulseR = CURSOR_BASE_R + Math.sin(Date.now() / 380) * CURSOR_PULSE_AMP;
-      const activeCursor = cursorRef.current ? { ...cursorRef.current, r: pulseR } : null;
-
-      // Draw body text around keywords + pulsing cursor void
+      // Draw body text wrapping around keywords and cursor void
       if (prepared) {
         ctx.font = BODY_FONT;
         ctx.textBaseline = 'alphabetic';
@@ -141,17 +164,40 @@ export default function PretextBackground() {
         let y = MARGIN + LINE_HEIGHT;
 
         while (y <= h + LINE_HEIGHT) {
-          const { x, width } = getLineGeometry(y, keywords, activeCursor, w);
-          if (width >= 50) {
-            const line = layoutNextLine(prepared, cursor, width);
+          const segments = getLineSegments(y, keywords, activeCursor, w);
+          for (let si = 0; si < segments.length; si++) {
+            const seg = segments[si];
+            const line = layoutNextLine(prepared, cursor, seg.width);
             if (line) {
-              ctx.fillText(line.text, x, y);
+              ctx.fillText(line.text, seg.x, y);
               cursor = line.end;
             } else {
               cursor = { segmentIndex: 0, graphemeIndex: 0 };
             }
           }
           y += LINE_HEIGHT;
+        }
+      }
+
+      // Draw constellation lines between nearby keywords
+      for (let i = 0; i < keywords.length; i++) {
+        for (let j = i + 1; j < keywords.length; j++) {
+          const dx = keywords[i].px - keywords[j].px;
+          const dy = keywords[i].py - keywords[j].py;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < CONSTELLATION_DIST) {
+            const alpha = (1 - dist / CONSTELLATION_DIST) * 0.4;
+            ctx.save();
+            ctx.strokeStyle = `rgba(192,132,252,${alpha})`;
+            ctx.lineWidth = 1;
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = 'rgba(192,132,252,0.5)';
+            ctx.beginPath();
+            ctx.moveTo(keywords[i].px, keywords[i].py);
+            ctx.lineTo(keywords[j].px, keywords[j].py);
+            ctx.stroke();
+            ctx.restore();
+          }
         }
       }
 
@@ -211,7 +257,6 @@ export default function PretextBackground() {
     };
 
     document.fonts.ready.then(() => {
-      // Measure keyword dimensions now that fonts are loaded
       ctx.font = KW_FONT;
       const KW_H = 60;
       keywords = KW_DEFS.map((def) => ({
